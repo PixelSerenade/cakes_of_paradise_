@@ -4,12 +4,12 @@
   if (!image || !dots) return;
 
   const fallbackSlides = [
-    { src: '/public/images/products/theme/gender-reveal-celebration.jpg?v=20261101-real', alt: 'A pastel celebration cake shown from the front' },
-    { src: '/public/images/products/birthday/birthday-confetti.jpg?v=20261101-real', alt: 'A confetti cake shown from the front and above' },
-    { src: '/public/images/products/birthday/berry-harvest-birthday.jpg?v=20261101-real', alt: 'A berry topped celebration cake viewed from above' },
-    { src: '/public/images/products/birthday/flower-letter-birthday.jpg?v=20261101-real', alt: 'A pink floral cake shown from the front' },
-    { src: '/public/images/products/wedding/blush-bloom-wedding.jpg?v=20261101-real', alt: 'A floral tiered cake shown from the front' },
-    { src: '/public/images/products/birthday/fresh-fruit-birthday.jpg?v=20261101-real', alt: 'A fruit topped cake viewed from above' },
+    { src: '/public/images/editorial/hero-blush.webp?v=20261101-ai-hero', alt: 'AI illustrated blush celebration cake' },
+    { src: '/public/images/editorial/hero-blue.webp?v=20261101-ai-hero', alt: 'AI illustrated powder blue cake with ivory flowers' },
+    { src: '/public/images/editorial/hero-sage.webp?v=20261101-ai-hero', alt: 'AI illustrated sage green cake with cream bows' },
+    { src: '/public/images/editorial/birthday-cake.png?v=20261101-ai-hero', alt: 'AI illustrated birthday cake with colorful decorations' },
+    { src: '/public/images/editorial/anniversary-cake.png?v=20261101-ai-hero', alt: 'AI illustrated anniversary cake with vintage piping' },
+    { src: '/public/images/editorial/wedding-cake.png?v=20261101-ai-hero', alt: 'AI illustrated tiered wedding cake with delicate flowers' },
   ];
   let slides = fallbackSlides;
   let active = 0;
