@@ -1,46 +1,84 @@
 # Cake image inventory
 
-## Counts
+## Updated catalog image count
 
-- Starter catalog: **24 cakes**, each with **1 primary image**.
-- `public/images/products/`: **63 image files** across the six category folders. This includes the catalog photos and additional photos used around the site.
-- The gender reveal cake has **3 extra detail photos** in addition to its primary photo: `gender-reveal-detail-2.png`, `gender-reveal-detail-3.png`, and `gender-reveal-detail-4.png`.
-- `public/images/`: **96 image files** total, including product, editorial, gallery, account, and contact imagery.
-- Whole project: **178 raster image files**. This total also includes 45 in the older root `images/` folder, 35 loose root-level candidate/test files, and 2 scratch images. Some of these duplicate the public assets; they are not 178 unique active cake photos.
+- **55 catalog products** with one primary image each; all 55 primary files have been refreshed with stock photography.
+- **63 image files** remain under `public/images/products/`; this includes 55 catalog product photos, extra cake-detail views, and legacy/site references.
+- The gender-reveal cake retains its three extra detail photos.
+- Current stock source links and licenses are listed in [PRODUCT_PHOTO_SOURCES.md](PRODUCT_PHOTO_SOURCES.md).
+- Stock photos are references, not photographs of the bakery’s own cakes. Replace them with the bakery’s originals when those are ready.
 
-The starter catalog is in `backend/data/products.js`. The admin database can contain more products than these 24 starter entries; I could not read the live database during this inventory, so database-only products are not included below.
+## Catalog by category
 
-## Starter cakes and primary image paths
+### Birthday Cakes (6)
 
-| Category | Cake | Primary image |
-|---|---|---|
-| Birthday Cakes | Birthday Confetti Celebration Cake | `public/images/products/birthday/birthday-confetti.jpg` |
-| Birthday Cakes | Fresh Fruit Crown Birthday Cake | `public/images/products/birthday/fresh-fruit-birthday.jpg` |
-| Birthday Cakes | Classic Chocolate Truffle Birthday Cake | `public/images/products/birthday/classic-chocolate-birthday.jpg` |
-| Birthday Cakes | Fresh Harvest Berry Celebration Cake | `public/images/products/birthday/berry-harvest-birthday.jpg` |
-| Wedding Cakes | Grand 3-Tier Floral Wedding Cake | `public/images/products/wedding/luxury-tiered-wedding.jpg` |
-| Wedding Cakes | Royal Ivory & Gold Leaf Wedding Cake | `public/images/products/wedding/ivory-gold-wedding.jpg` |
-| Wedding Cakes | Blush Bloom 2-Tier Wedding Cake | `public/images/products/wedding/blush-bloom-wedding.jpg` |
-| Wedding Cakes | Pearl Elegance Floral Wedding Cake | `public/images/products/wedding/pearl-elegance-wedding.jpg` |
-| Anniversary Cakes | Rose Gold & Blush Celebration Cake | `public/images/products/anniversary/liana-blush-anniversary.jpg` |
-| Anniversary Cakes | Red Velvet Romance Heart Cake | `public/images/products/anniversary/red-velvet-anniversary.jpg` |
-| Anniversary Cakes | Chocolate Ganache Royal Crown | `public/images/products/anniversary/chocolate-ganache-anniversary.jpg` |
-| Anniversary Cakes | Citrus Cream Romance Cake | `public/images/products/anniversary/citrus-cream-anniversary.jpg` |
-| Cupcakes & Jars | Gourmet Cupcake Collection (Box of 6) | `public/images/products/cupcakes-jars/gourmet-cupcake-box.jpg` |
-| Cupcakes & Jars | Belgian Chocolate Truffle Dessert Jar | `public/images/products/cupcakes-jars/chocolate-truffle-jar.jpg` |
-| Cupcakes & Jars | Red Velvet & Cream Cheese Jar | `public/images/products/cupcakes-jars/red-velvet-cream-jar.jpg` |
-| Cupcakes & Jars | Berry Blossom Cupcake Pack (Box of 4) | `public/images/products/cupcakes-jars/berry-cloud-cupcake-pack.jpg` |
-| Theme Cakes | Pink Bow Character Theme Cake | `public/images/products/theme/minnie-mouse-theme.jpg` |
-| Theme Cakes | Pastel Cloud Baby Shower Theme Cake | `public/images/products/theme/baby-shower-celebration.jpg` |
-| Theme Cakes | Boy or Girl Gender Reveal Cake | `public/images/products/theme/gender-reveal-celebration.jpg` |
-| Theme Cakes | Butterfly Garden Theme Celebration | `public/images/products/theme/butterfly-garden-theme.jpg` |
-| Photo Cakes | Custom Edible Photo Print Cake | `public/images/products/photo/custom-edible-photo-cake.jpg` |
-| Photo Cakes | Golden Frame Edible Photo Cake | `public/images/products/photo/golden-frame-photo-cake.jpg` |
-| Photo Cakes | Sweet Memories Celebration Photo Cake | `public/images/products/photo/sweet-memories-photo-cake.jpg` |
-| Photo Cakes | Classic Portrait Edible Picture Cake | `public/images/products/photo/classic-portrait-photo-cake.jpg` |
+- Buttercream Flower Birthday Cake: `public/images/products/birthday/flower-letter-birthday.jpg`
+- Woodland Vanilla Celebration Cake: `public/images/products/birthday/woodland-vanilla-birthday.jpg`
+- Birthday Confetti Celebration Cake: `public/images/products/Birthday Cakes/birthday-confetti.jpg`
+- Fresh Fruit Crown Birthday Cake: `public/images/products/Birthday Cakes/fresh-fruit-birthday.jpg`
+- Classic Chocolate Truffle Birthday Cake: `public/images/products/Birthday Cakes/classic-chocolate-birthday.jpg`
+- Fresh Harvest Berry Celebration Cake: `public/images/products/Birthday Cakes/berry-harvest-birthday.jpg`
 
-## Folder for replacement photos
+### Wedding Cakes (10)
 
-The public asset folder already exists at `public/images/`, with cake catalog images organized by category under `public/images/products/`. When you provide real photos, keep originals together in a separate incoming folder first; then each approved photo can replace the matching primary image above without disturbing the other site artwork.
+- Ivory & Blush Rose Wedding Cake: `public/images/products/wedding/ivory-pink-rose-wedding.jpg`
+- White Garden Rose Wedding Cake: `public/images/products/wedding/white-garden-rose-wedding.jpg`
+- Red Ribbon Tiered Wedding Cake: `public/images/products/wedding/red-ribbon-tier-wedding.jpg`
+- Gold Pedestal White Rose Wedding Cake: `public/images/products/wedding/gold-pedestal-wedding.jpg`
+- Botanical Gold Wedding Cake: `public/images/products/wedding/botanical-gold-wedding.jpg`
+- Floral Vow Celebration Cake: `public/images/products/wedding/floral-vow-wedding-cake.jpg`
+- Grand 3-Tier Floral Wedding Cake: `public/images/products/Wedding Cakes/luxury-tiered-wedding.jpg`
+- Royal Ivory & Gold Leaf Wedding Cake: `public/images/products/Wedding Cakes/ivory-gold-wedding.jpg`
+- Blush Bloom 2-Tier Wedding Cake: `public/images/products/Wedding Cakes/blush-bloom-wedding.jpg`
+- Pearl Elegance Floral Wedding Cake: `public/images/products/Wedding Cakes/pearl-elegance-wedding.jpg`
 
-This inventory identifies file locations; it does not certify whether an image is AI-generated or a real bakery photo. The files do not contain reliable provenance metadata for that determination.
+### Anniversary Cakes (9)
+
+- Blush Chocolate Drip Anniversary Cake: `public/images/products/anniversary/blush-drip-anniversary.jpg`
+- Berry Layer Anniversary Cake: `public/images/products/anniversary/berry-layer-anniversary.jpg`
+- Strawberry Cream Anniversary Cake: `public/images/products/anniversary/strawberry-cream-anniversary.jpg`
+- Raspberry Cocoa Anniversary Cake: `public/images/products/anniversary/raspberry-cocoa-anniversary.jpg`
+- Tropical Fruit Anniversary Cake: `public/images/products/anniversary/tropical-fruit-anniversary.jpg`
+- Rose Gold & Blush Celebration Cake: `public/images/products/Anniversary Cakes/liana-blush-anniversary.jpg`
+- Red Velvet Romance Heart Cake: `public/images/products/Anniversary Cakes/red-velvet-anniversary.jpg`
+- Chocolate Ganache Royal Crown: `public/images/products/Anniversary Cakes/chocolate-ganache-anniversary.jpg`
+- Citrus Cream Romance Cake: `public/images/products/Anniversary Cakes/citrus-cream-anniversary.jpg`
+
+### Cupcakes & Jars (10)
+
+- Rustic Vanilla Cupcake Box: `public/images/products/cupcakes-jars/rustic-mini-cupcake-box.jpg`
+- Blueberry Swirl Cupcake Box: `public/images/products/cupcakes-jars/blueberry-swirl-cupcake-box.jpg`
+- Chocolate Curl Cupcake Pack: `public/images/products/cupcakes-jars/chocolate-curl-cupcake-pack.jpg`
+- Raspberry Cloud Cupcake Pack: `public/images/products/cupcakes-jars/raspberry-cloud-cupcake-pack.jpg`
+- Pink Sprinkle Cupcake Box: `public/images/products/cupcakes-jars/pink-sprinkle-cupcake-box.jpg`
+- Birthday Candle Cupcake Set: `public/images/products/cupcakes-jars/birthday-candle-cupcake-set.jpg`
+- Gourmet Cupcake Collection (Box of 6): `public/images/products/Cupcakes & Jars/gourmet-cupcake-box.jpg`
+- Belgian Chocolate Truffle Dessert Jar: `public/images/products/Cupcakes & Jars/chocolate-truffle-jar.jpg`
+- Red Velvet & Cream Cheese Jar: `public/images/products/Cupcakes & Jars/red-velvet-cream-jar.jpg`
+- Berry Blossom Cupcake Pack (Box of 4): `public/images/products/Cupcakes & Jars/berry-cloud-cupcake-pack.jpg`
+
+### Theme Cakes (10)
+
+- Chocolate Velvet Theme Cake: `public/images/products/theme/chocolate-velvet-theme-cake.jpg`
+- Caramel Shard Celebration Cake: `public/images/products/theme/caramel-shard-theme-cake.jpg`
+- Dark Cocoa Celebration Cake: `public/images/products/theme/dark-cocoa-theme-cake.jpg`
+- Pistachio Gold Theme Cake: `public/images/products/theme/pistachio-gold-theme-cake.jpg`
+- Golden Pedestal Theme Cake: `public/images/products/theme/golden-pedestal-theme-cake.jpg`
+- Rustic Flower Theme Cake: `public/images/products/theme/rustic-flower-theme-cake.jpg`
+- Pink Bow Character Theme Cake: `public/images/products/Theme Cakes/minnie-mouse-theme.jpg`
+- Pastel Cloud Baby Shower Theme Cake: `public/images/products/Theme Cakes/baby-shower-celebration.jpg`
+- Boy or Girl Gender Reveal Cake: `public/images/products/Theme Cakes/gender-reveal-celebration.jpg`
+- Butterfly Garden Theme Celebration: `public/images/products/Theme Cakes/butterfly-garden-theme.jpg`
+
+### Photo Cakes (10)
+
+- Raspberry Cream Photo Cake: `public/images/products/photo/raspberry-cream-photo-cake.jpg`
+- Lavender Garden Photo Cake: `public/images/products/photo/fruit-garden-photo-cake.jpg`
+- Strawberry Keepsake Photo Cake: `public/images/products/photo/strawberry-keepsake-photo-cake.jpg`
+- Berry Frame Photo Cake: `public/images/products/photo/berry-frame-photo-cake.jpg`
+- Chocolate Floral Photo Cake: `public/images/products/photo/chocolate-floral-photo-cake.jpg`
+- Citrus Memory Photo Cake: `public/images/products/photo/citrus-memory-photo-cake.jpg`
+- Custom Edible Photo Print Cake: `public/images/products/Photo Cakes/custom-edible-photo-cake.jpg`
+- Golden Frame Edible Photo Cake: `public/images/products/Photo Cakes/golden-frame-photo-cake.jpg`
+- Sweet Memories Celebration Photo Cake: `public/images/products/Photo Cakes/sweet-memories-photo-cake.jpg`
+- Classic Portrait Edible Picture Cake: `public/images/products/Photo Cakes/classic-portrait-photo-cake.jpg`

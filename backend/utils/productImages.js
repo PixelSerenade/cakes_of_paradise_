@@ -11,16 +11,21 @@ function withCategoryMatchedImage(product) {
   if (!product) return product;
   const row = typeof product.toObject === 'function' ? product.toObject() : product;
   const mapping = LEGACY_PRODUCT_IMAGES.get(row.slug || row.id);
-  if (!mapping) return row;
-
-  const oldPath = normalizePath(mapping.from);
-  const nextPath = mapping.to;
-  const image = normalizePath(row.image) === oldPath ? nextPath : row.image;
+  const oldPath = mapping ? normalizePath(mapping.from) : '';
+  const image = mapping && normalizePath(row.image) === oldPath ? mapping.to : row.image;
   const images = Array.isArray(row.images)
-    ? row.images.map((value) => normalizePath(value) === oldPath ? nextPath : value)
+    ? row.images.map((value) => mapping && normalizePath(value) === oldPath ? mapping.to : value)
     : row.images;
+  // Older MongoDB records called stock images bakery photography. Keep the
+  // visible credit honest while the stored product path remains unchanged.
+  const usesCatalogPhoto = /^\/?public\/images\/products\//.test(normalizePath(image));
+  const photoCredit = usesCatalogPhoto && row.photoCredit === 'Cakes of Paradise Bakery'
+    ? 'Stock photograph'
+    : row.photoCredit;
 
-  return { ...row, image, ...(images ? { images } : {}) };
+  if (!mapping && photoCredit === row.photoCredit) return row;
+
+  return { ...row, image, ...(images ? { images } : {}), ...(photoCredit ? { photoCredit } : {}) };
 }
 
 module.exports = { withCategoryMatchedImage };

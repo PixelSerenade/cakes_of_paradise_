@@ -1,9 +1,11 @@
 # Image Credits & Attribution
 
-All product photos listed below are royalty-free images from Unsplash and Pexels (free commercial and non-commercial license with no watermarks and no permission needed).
+> Current catalog primary-image sources are documented in [PRODUCT_PHOTO_SOURCES.md](PRODUCT_PHOTO_SOURCES.md). That inventory supersedes older product rows below where the file has since been replaced.
+
+The older table below is a legacy inventory. For current catalog image paths and source pages, use [PRODUCT_PHOTO_SOURCES.md](PRODUCT_PHOTO_SOURCES.md). Unsplash and Pexels licensing details are linked there.
 
 > **STATUS: TEMPORARY - replace with own photo**
-> Every entry below is temporary placeholder photography until the bakery shoots and uploads its own original photos.
+> Product images are stock-photo references until the bakery supplies original product photography.
 
 | Filename | Category | Product Used For | Photographer / Source | License Status |
 | :--- | :--- | :--- | :--- | :--- |
