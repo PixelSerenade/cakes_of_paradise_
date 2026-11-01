@@ -4,7 +4,7 @@ The 55 catalog product images now use real stock photographs. They are stored lo
 
 ## Shared page and hero photography
 
-Homepage, shop, category shortcuts, and supporting page art use real stock cake photography from the catalog sources below. Shared editorial, auth, and contact assets are kept as correctly sized crops so each page uses genuine photographs instead of the former generated artwork.
+Homepage and shop banners plus supporting page art use real stock cake photography from the catalog sources below. Birthday, wedding, anniversary, theme, and cupcake category shortcuts intentionally retain their previous decorative artwork for the softer pastel look. Cake listings remain real stock photographs.
 
 | Shared files | Reused real photo | Source |
 | --- | --- | --- |
@@ -78,3 +78,6 @@ Unsplash images are covered by the [Unsplash License](https://unsplash.com/licen
 | `public/images/products/photo/golden-frame-photo-cake.jpg` | photo | [Source](https://images.unsplash.com/photo-1669837126643-d4162e8d0ff4) |
 | `public/images/products/photo/sweet-memories-photo-cake.jpg` | photo | [Source](https://images.unsplash.com/photo-1641848421644-a1603f016f51) |
 | `public/images/products/photo/classic-portrait-photo-cake.jpg` | photo | [Source](https://www.pexels.com/search/printed%20cake/) |
+
+
+Category shortcut art in `public/images/categories/` was restored from the earlier design; it is used only in the homepage and shop category circles. The matching editorial and catalog listing photos remain the real stock photographs documented above.
