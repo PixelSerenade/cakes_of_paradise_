@@ -35,9 +35,6 @@ body.login-page{display:block;min-height:100vh;background:radial-gradient(ellips
 .auth-card .return-home-btn{justify-content:center;min-height:44px;padding:10px 18px;border:1px solid #e3c9bf!important;border-radius:999px;background:linear-gradient(135deg,#fffaf6,#f5e9e2)!important;color:#80645a!important;font:600 .72rem 'DM Sans',sans-serif;letter-spacing:.07em;text-decoration:none;box-shadow:0 3px 10px #6c51420c!important;transition:transform .18s ease,border-color .18s ease,background .18s ease,color .18s ease,box-shadow .18s ease}
 .auth-card .return-home-btn:hover{transform:translateY(-1px);border-color:#d4a99c!important;background:linear-gradient(135deg,#f8e9e3,#f1dfd5)!important;color:#684f47!important;box-shadow:0 7px 16px #6c514218!important}
 .auth-card .return-home-btn:focus-visible{outline:2px solid #aab29b;outline-offset:3px}
-.auth-card #registerForm>div[style*="align-items:center"]{flex-direction:row!important;justify-content:flex-start;gap:10px;margin:0 0 14px!important}
-.auth-card #regAvatarPreview{width:36px!important;height:36px!important;flex:0 0 36px;border:1px solid #dfbdb4!important;background:#f2e5dc!important;color:#8c776a!important;font-size:1rem!important;box-shadow:none!important;margin:0!important}
-.auth-card #registerForm>div[style*="align-items:center"] button{padding:0!important;color:#927568!important;font:italic .82rem 'Cormorant Garamond',Georgia,serif!important}
 .auth-reassurance{display:grid;grid-template-columns:185px minmax(0,1fr) auto;align-items:center;gap:28px;min-height:150px;margin:0 16px;padding:16px 23px;border:1px solid #c9cdb4;border-radius:12px;background:linear-gradient(105deg,#f4f0e4,#fbf7ed 55%,#f2efe3);position:relative;overflow:hidden}
 .auth-reassurance-photo{grid-area:1/1;width:175px;height:116px;object-fit:cover;object-position:center 48%;border-radius:50% 8px 8px 50%;box-shadow:0 7px 18px #5144381c;transition:opacity .2s}
 .auth-reassurance-register-photo{opacity:0}
@@ -91,16 +88,30 @@ body.login-page{display:block;min-height:100vh;background:radial-gradient(ellips
 .auth-register .auth-welcome-note{border-color:#e8c9c1;background:linear-gradient(120deg,#fff8f4,#f8eee8)}
 .auth-register .auth-welcome-note>span{border-color:#e5c3bc;background:#f7e5e1;color:#c78383}
 .auth-register .auth-welcome-note strong{color:#a87670}
-.auth-register #registerForm{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:18px;align-items:start}
-.auth-register #registerForm>div[style*="align-items:center"]{grid-column:1/-1;width:100%;display:flex;align-items:center;justify-content:flex-start;gap:12px;margin:0 0 14px!important;padding:10px 13px;border:1px solid #ead8ce;border-radius:14px;background:#fffaf5}
-.auth-register #regAvatarPreview{width:44px!important;height:44px!important;flex:0 0 44px!important;margin:0!important;background:#f5e6df!important}
-.auth-register #registerForm>div[style*="align-items:center"] button{padding:7px 11px!important;border:1px solid #e2c8be!important;border-radius:999px;color:#9b7168!important;text-decoration:none!important;transition:background .18s,border-color .18s}
-.auth-register #registerForm>div[style*="align-items:center"] button:hover{background:#f7e8e2!important;border-color:#d7b4aa!important}
-.auth-register #registerForm .form-actions{grid-column:1/-1;margin-top:8px}
-.auth-register #registerForm .form-group{margin-bottom:13px}
+.auth-register #registerForm{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-areas:"avatar avatar" "name email" "phone password" "referral referral" "actions actions";column-gap:18px;align-items:start}
+.auth-register #registerForm .register-avatar-row{grid-area:avatar;display:flex;align-items:center;gap:12px;width:100%;margin:0 0 15px;padding:9px 12px;border:1px solid #ead8ce;border-radius:14px;background:linear-gradient(110deg,#fffaf6,#f8f3ed)}
+.auth-register #regAvatarPreview{display:grid;width:42px;height:42px;flex:0 0 42px;place-items:center;overflow:hidden;padding:0;border:1px solid #e5c8bf;border-radius:50%;background:#f5e6df;color:#a6776e;font:1rem 'DM Sans',sans-serif;cursor:pointer}
+.auth-register #regAvatarPreview img{width:100%;height:100%;object-fit:cover}
+.auth-register #regAvatarPreview:focus-visible,.auth-register .register-avatar-action:focus-visible{outline:2px solid #a2aa90;outline-offset:3px}
+.auth-register .register-avatar-copy{display:grid;gap:2px;min-width:0;color:#766c61;font:400 .78rem/1.3 'DM Sans',sans-serif}
+.auth-register .register-avatar-copy strong{color:#67564c;font-size:.82rem;font-weight:600}
+.auth-register .register-avatar-copy span{color:#82766a;font-size:.73rem}
+.auth-register .register-avatar-copy small{margin-left:4px;color:#9a8c7f;font-size:.67rem}
+.auth-register .register-avatar-action{margin-left:auto;padding:7px 12px;border:1px solid #e2c8be;border-radius:999px;background:#fffaf6;color:#8f6b63;font:500 .72rem 'DM Sans',sans-serif;white-space:nowrap;cursor:pointer;transition:background .18s,border-color .18s,transform .18s}
+.auth-register .register-avatar-action:hover{transform:translateY(-1px);border-color:#d7b4aa;background:#f7e8e2}
+.auth-register #registerForm .register-field-name{grid-area:name}
+.auth-register #registerForm .register-field-email{grid-area:email}
+.auth-register #registerForm .register-field-phone{grid-area:phone}
+.auth-register #registerForm .register-field-password{grid-area:password}
+.auth-register #registerForm .register-field-referral{grid-area:referral}
+.auth-register #registerForm .form-group{min-width:0;margin-bottom:11px}
+.auth-register #registerForm .form-group label{display:flex;align-items:baseline;gap:6px}
+.auth-register .register-optional{color:#8c8074;font:400 .68rem 'DM Sans',sans-serif}
 .auth-register #registerForm input:not([type=file]){min-height:43px}
+.auth-register #registerReferralNote{max-width:100%;color:#776e63;font:400 .72rem/1.4 'DM Sans',sans-serif}
+.auth-register #registerForm .form-actions{grid-area:actions;margin-top:7px}
 .auth-register #registerSubmitBtn{letter-spacing:.02em}
-@media(max-width:520px){.auth-register #registerForm{grid-template-columns:1fr;column-gap:0}.auth-register #registerForm>div[style*="align-items:center"],.auth-register #registerForm .form-actions{grid-column:1}.auth-register #registerForm>div[style*="align-items:center"]{padding:9px 10px}.auth-register #regAvatarPreview{width:40px!important;height:40px!important;flex-basis:40px!important}}
+@media(max-width:560px){.auth-register #registerForm{grid-template-columns:1fr;grid-template-areas:"avatar" "name" "email" "phone" "password" "referral" "actions";column-gap:0}.auth-register #registerForm .register-avatar-row{padding:8px 10px}.auth-register #regAvatarPreview{width:40px;height:40px;flex-basis:40px}.auth-register .register-avatar-action{padding:7px 10px}.auth-register #registerForm .form-group{margin-bottom:12px}}
 .auth-password-field{position:relative;display:flex;align-items:center}
 .auth-password-field>input{width:100%;padding-right:48px}
 .auth-password-toggle{position:absolute;right:8px;display:grid;width:34px;height:34px;place-items:center;border:0;border-radius:50%;background:transparent;color:#7c826e;cursor:pointer}

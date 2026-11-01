@@ -232,7 +232,7 @@
   <link rel="stylesheet" href="ui-polish.css?v=20261031-toast-right">
   <link rel="stylesheet" href="paradise-theme.css">
   <link rel="stylesheet" href="site-navigation.css?v=20261031-global-nav"><link rel="stylesheet" href="shared-navigation.css?v=20261031-account-signout">
-  <link rel="stylesheet" href="auth-page.css?v=20261031-return-home-button">
+  <link rel="stylesheet" href="auth-page.css?v=20261101-register-form-neat">
   <link rel="stylesheet" href="shared-footer.css?v=20261031-newsletter-polish">
   <link rel="stylesheet" href="preferences.css?v=20261101-sitewide">
 </head>
@@ -307,38 +307,39 @@
       <p class="auth-subtitle visually-hidden">Join Cakes of Paradise for handcrafted delights</p>
 
       <!-- Optional Profile Picture Upload -->
-      <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:18px;">
-        <div id="regAvatarPreview" style="width:74px;height:74px;border-radius:50%;overflow:hidden;background:#E0587D;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:700;box-shadow:0 6px 16px rgba(233,106,141,0.3);margin-bottom:8px;border:3px solid #FFF8F5;cursor:pointer;" onclick="document.getElementById('regAvatarFileInput').click()" title="Click to upload profile photo">
+      <div class="register-avatar-row">
+        <button type="button" id="regAvatarPreview" class="register-avatar-preview" onclick="document.getElementById('regAvatarFileInput').click()" aria-label="Choose a profile photo" title="Click to upload profile photo">
           📷
-        </div>
+        </button>
         <input type="file" id="regAvatarFileInput" accept="image/*" style="display:none;" onchange="handleRegAvatarUpload(event)">
-        <button type="button" onclick="document.getElementById('regAvatarFileInput').click()" style="background:none;border:none;color:#E0587D;font-weight:600;font-size:0.82rem;cursor:pointer;text-decoration:underline;">Add a profile photo</button>
+        <div class="register-avatar-copy"><strong>Make it yours</strong><span>Add a profile photo <small>Optional</small></span></div>
+        <button type="button" class="register-avatar-action" onclick="document.getElementById('regAvatarFileInput').click()">Choose photo</button>
       </div>
 
-      <div class="form-group">
+      <div class="form-group register-field-name">
         <label for="registerName">Full Name</label>
         <input type="text" id="registerName" placeholder="Enter your full name" autocomplete="name" required oninput="updateRegAvatarInitial()">
       </div>
 
-      <div class="form-group">
+      <div class="form-group register-field-email">
         <label for="registerEmail">Email Address</label>
         <input type="email" id="registerEmail" placeholder="Enter your email address" autocomplete="email" required>
       </div>
 
-      <div class="form-group">
-        <label for="registerPhone">Phone Number <span style="font-weight:normal;color:#888;font-size:0.75rem;">(Optional)</span></label>
+      <div class="form-group register-field-phone">
+        <label for="registerPhone">Phone Number <span class="register-optional">Optional</span></label>
         <input type="tel" id="registerPhone" placeholder="Enter your phone number" autocomplete="tel">
       </div>
 
-      <div class="form-group">
-        <label for="registerReferralCode">Referral Code <span style="font-weight:normal;color:#888;font-size:0.75rem;">(Optional)</span></label>
-        <input type="text" id="registerReferralCode" placeholder="Enter a friend’s referral code" autocomplete="off" autocapitalize="characters" maxlength="32" aria-describedby="registerReferralNote">
-        <small id="registerReferralNote">After your first paid order is completed, you’ll receive 50 bonus points and your friend will receive 100 points.</small>
-      </div>
-
-      <div class="form-group">
+      <div class="form-group register-field-password">
         <label for="registerPassword">Password (6–12 characters)</label>
         <div class="auth-password-field"><input type="password" id="registerPassword" placeholder="6–12 characters" autocomplete="new-password" minlength="6" maxlength="12" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9\s]).{6,12}" title="Use 6–12 characters with uppercase and lowercase letters, a number, and a symbol." required><button type="button" class="auth-password-toggle" id="toggleRegisterPassword" aria-label="Show password" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.6"/></svg></button></div>
+      </div>
+
+      <div class="form-group register-field-referral">
+        <label for="registerReferralCode">Referral Code <span class="register-optional">Optional</span></label>
+        <input type="text" id="registerReferralCode" placeholder="Enter a friend’s referral code" autocomplete="off" autocapitalize="characters" maxlength="32" aria-describedby="registerReferralNote">
+        <small id="registerReferralNote">After your first paid order is completed, you’ll receive 50 bonus points and your friend will receive 100 points.</small>
       </div>
 
       <div class="form-actions">
@@ -421,7 +422,7 @@
     const reader = new FileReader();
     reader.onload = function(e) {
       regAvatarBase64 = e.target.result;
-      document.getElementById('regAvatarPreview').innerHTML = `<img src="${regAvatarBase64}" style="width:100%;height:100%;object-fit:cover;">`;
+      document.getElementById('regAvatarPreview').innerHTML = `<img src="${regAvatarBase64}" alt="">`;
     };
     reader.readAsDataURL(file);
   }
