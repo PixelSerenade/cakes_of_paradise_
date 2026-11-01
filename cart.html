@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="cart.css?v=20261101-real">
   <link rel="stylesheet" href="ui-polish.css?v=20261101-real">
   <link rel="stylesheet" href="paradise-theme.css?v=20261101-real">
-  <link rel="stylesheet" href="cart-redesign.css?v=20261101-real">
+  <link rel="stylesheet" href="cart-redesign.css?v=20261102-bag-portrait-oval">
   <link rel="stylesheet" href="shared-footer.css?v=20261101-real">
   <link rel="stylesheet" href="site-navigation.css?v=20261101-real">
   <link rel="stylesheet" href="shared-navigation.css?v=20261101-real">
@@ -34,7 +34,10 @@
   </section>
   <main class="cart-page-shell">
     <p id="cartPageMessage" class="account-message" role="status" aria-live="polite"></p>
-    <div id="cartEmptyState" class="cart-empty-state" hidden><h2>Your cart is waiting for something sweet.</h2><p>Choose a cake from the collection and it will be waiting here.</p><a class="btn btn-primary" href="index.html#shop">Explore cakes →</a></div>
+    <section id="cartEmptyState" class="cart-empty-state" aria-labelledby="cartEmptyTitle" hidden>
+      <div class="cart-empty-art" aria-hidden="true"><img class="cart-empty-art-photo" src="/public/images/products/birthday/strawberry-cloud.jpg?v=20261102-empty-bag-photo" alt="" loading="lazy"><span class="cart-empty-art-spark">✧</span><span class="cart-empty-art-heart">♡</span></div>
+      <div class="cart-empty-copy"><p class="cart-empty-kicker">A LITTLE ROOM FOR SOMETHING LOVELY</p><h2 id="cartEmptyTitle">Your bag is waiting for a little sweetness.</h2><p>Choose a cake for your next celebration. It’ll be right here while you decide.</p><a class="cart-empty-cta" href="shop.html?category=All">Explore the cakes <span aria-hidden="true">→</span></a><small>Freshly baked · Made with love</small></div>
+    </section>
     <div class="cart-layout" id="cartFilledState">
       <section class="cart-page-card" aria-labelledby="cartPageTitle">
         <div class="cart-page-card-heading"><h2 id="cartPageTitle">Your cakes <span id="cartPageCount">0</span></h2><a href="index.html#shop">Add another cake <span aria-hidden="true">→</span></a></div>

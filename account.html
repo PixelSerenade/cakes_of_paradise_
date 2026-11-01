@@ -12,7 +12,7 @@
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap"></noscript>
   <link rel="stylesheet" href="theme.css?v=20261101-real">
   <link rel="stylesheet" href="store.css?v=20261101-real">
-  <link rel="stylesheet" href="account.css?v=20261101-real">
+  <link rel="stylesheet" href="account.css?v=20261102-order-dialog">
   <link rel="stylesheet" href="ui-polish.css?v=20261101-real">
   <link rel="stylesheet" href="paradise-theme.css?v=20261101-real">
   <link rel="stylesheet" href="shared-footer.css?v=20261101-real">
@@ -38,7 +38,7 @@
         <span class="sidebar-heart" aria-hidden="true">♡</span>
         <nav class="profile-menu" aria-label="Your account sections">
           <a class="is-current" href="#profile"><span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.7-3.2 3.2-5 7-5s6.3 1.8 7 5"/></svg></span>Profile info</a>
-          <a href="#account-orders"><span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4h10l2 3v13H5V7l2-3Z"/><path d="M8 4v4h8V4M8 12h8M8 16h5"/></svg></span>My orders</a>
+          <a href="orders.html"><span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4h10l2 3v13H5V7l2-3Z"/><path d="M8 4v4h8V4M8 12h8M8 16h5"/></svg></span>My orders</a>
           <a href="wishlist.html"><span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.4 8.8c0 4.4-8.4 10-8.4 10s-8.4-5.6-8.4-10A4.3 4.3 0 0 1 12 6.3a4.3 4.3 0 0 1 8.4 2.5Z"/></svg></span>My wishlist</a>
           <a href="#saved-addresses"><span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.2"/></svg></span>My addresses</a>
           <a href="#occasions"><span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="15" rx="2"/><path d="M8 3v6M16 3v6M4 11h16M8 15h2M14 15h2"/></svg></span>Celebrations</a>
@@ -90,7 +90,7 @@
 
       <div class="account-column">
         <section class="account-card" id="account-orders">
-          <div class="account-card-heading"><div><span class="account-kicker">YOUR CELEBRATIONS</span><h2>Order history</h2></div><a href="index.html#shop" class="text-link">Order a cake</a></div>
+          <div class="account-card-heading"><div><span class="account-kicker">YOUR CELEBRATIONS</span><h2>Order history</h2></div><a href="orders.html" class="text-link">View all orders →</a></div>
           <div id="pastOrders" class="account-orders"><p class="empty-account">Loading orders…</p></div>
         </section>
 
@@ -120,7 +120,8 @@
           <div class="account-card-heading"><div><span class="account-kicker">A LITTLE SOMETHING LOVELY</span><h2>Gift wallet &amp; redeem a code</h2></div></div>
           <p class="account-muted">Redeem a gift card code to add its remaining balance to your wallet.</p>
           <form id="giftCardForm" class="gift-check-form"><label for="giftCardCode">Your gift card code</label><div><input id="giftCardCode" name="code" maxlength="40" autocomplete="off" placeholder="Enter the code from your gift email" required><button class="account-button secondary" type="submit">Redeem to wallet</button></div></form>
-          <p id="giftCardMessage" class="form-message" role="status"></p><details class="wallet-activity-details"><summary>Wallet activity</summary><div id="giftCardHistory" class="account-list"><p class="empty-account">Loading wallet activity…</p></div></details>
+          <p id="giftCardMessage" class="form-message" role="status"></p>
+          <details class="wallet-activity-details"><summary>Wallet activity</summary><div id="giftCardHistory" class="account-list"><p class="empty-account">Loading wallet activity…</p></div></details>
         </section>
 
       </div>
@@ -178,8 +179,15 @@
   </div>
 </footer>
 
+<dialog class="account-order-dialog" id="accountOrderDialog" aria-labelledby="accountOrderDialogTitle">
+  <section class="account-order-dialog-card">
+    <header><div><span class="account-kicker">YOUR CELEBRATION DETAILS</span><h2 id="accountOrderDialogTitle">Order details</h2></div><button type="button" id="closeAccountOrderDialog" aria-label="Close order details">×</button></header>
+    <div id="accountOrderDialogContent"></div>
+  </section>
+</dialog>
+
 <script src="api-config.js?v=20261101-real" defer></script>
-  <script src="account.js?v=20261101-real" defer></script>
+  <script src="account.js?v=20261102-orders-all" defer></script>
 <script src="motion.js?v=20261101-real" defer></script>
   <script src="shared-footer.js?v=20261101-real" defer></script>
   <script src="shared-navigation.js?v=20261101-real" defer></script>

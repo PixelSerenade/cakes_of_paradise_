@@ -13,10 +13,12 @@ const schema = new mongoose.Schema({
   receipt: { type: String, required: true, unique: true },
   paymentOrderId: { type: String, unique: true, sparse: true },
   paymentId: { type: String, default: '' },
-  paymentMethod: { type: String, enum: ['upi', 'gift-wallet'], default: 'upi' },
+  paymentMethod: { type: String, enum: ['razorpay', 'upi', 'gift-wallet'], default: 'razorpay' },
+  paymentProviderMethod: { type: String, default: '' },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', default: null, index: true },
   deliveryCodeEncrypted: { type: String, default: '', select: false },
   status: { type: String, enum: ['pending', 'paid', 'fulfilled'], default: 'pending' },
+  emailDeliveryStatus: { type: String, enum: ['pending', 'queued', 'sending', 'sent', 'failed'], default: 'pending' },
   giftCard: { type: mongoose.Schema.Types.ObjectId, ref: 'GiftCard', default: null },
 }, { timestamps: true });
 

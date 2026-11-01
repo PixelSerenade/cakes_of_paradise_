@@ -72,8 +72,9 @@ const orderSchema = new mongoose.Schema({
     enum: ['placed', 'confirmed', 'preparing', 'ready', 'shipped', 'out-for-delivery', 'completed', 'cancelled'],
     default: 'placed',
   },
+  deliveryStatus: { type: String, enum: ['not-delivered', 'delivered'], default: 'not-delivered', index: true },
   tracking: [{
-    type: { type: String, enum: ['status', 'payment', 'refund'], default: 'status' },
+    type: { type: String, enum: ['status', 'delivery', 'payment', 'payment-method', 'refund'], default: 'status' },
     status: { type: String, required: true },
     from: { type: String, default: '' },
     to: { type: String, default: '' },

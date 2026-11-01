@@ -40,17 +40,20 @@ const { isSaleEligible } = require('../utils/orderMetrics');
 const { app } = require('../server');
 
 let providerOrderId = '';
+let providerAmountPaise = 0;
 let refundId = '';
 let refundStartCount = 0;
 razorpay.createOrder = async (amount) => {
   providerOrderId = `order_test_${Date.now()}`;
-  return { id: providerOrderId, amount: amount * 100, currency: 'INR' };
+  providerAmountPaise = amount * 100;
+  return { id: providerOrderId, amount: providerAmountPaise, currency: 'INR' };
 };
 razorpay.verifyCheckoutSignature = () => true;
 razorpay.getPayment = async (paymentId) => ({
   id: paymentId,
   order_id: providerOrderId,
-  amount: 70000,
+  amount: providerAmountPaise,
+  currency: 'INR',
   status: paymentId === 'pay_test_failed' ? 'failed' : 'captured',
 });
 razorpay.refundPayment = async () => {
@@ -116,13 +119,13 @@ const assertDashboardMatchesDatabase = async (label) => {
     pendingOrders: orders.filter((order) => activeStatuses.includes(order.status)).length,
     completedOrders: orders.filter(isSaleEligible).length,
     cancelledOrders: orders.filter((order) => order.status === 'cancelled').length,
-    revenue: orders.filter(isSaleEligible).reduce((sum, order) => sum + Number(order.total || 0), 0),
+    revenue: orders.filter((order) => order.status !== 'cancelled' && order.paymentStatus === 'paid').reduce((sum, order) => sum + Number(order.total || 0), 0),
   };
   const actual = result.data.summary;
   for (const key of Object.keys(expected)) assert.equal(Number(actual[key] || 0), expected[key], `${label}: dashboard ${key} does not match database records.`);
-  const completed = await api('/api/orders/admin/completed');
+  const completed = await api(`/api/orders/admin/completed?from=${from}&to=${today}`);
   assert.equal(completed.status, 200);
-  assert.equal(completed.data.count, expected.completedOrders, `${label}: completed list does not match the database rule.`);
+  assert.equal(completed.data.count, orders.filter((order) => order.status === 'completed' || order.deliveryStatus === 'delivered').length, `${label}: completed list does not match completed order statuses.`);
   console.log(`${label}: ${JSON.stringify(expected)}`);
 };
 
@@ -138,6 +141,65 @@ const main = async () => {
   server = app.listen(0);
   await new Promise((resolve) => server.once('listening', resolve));
   baseUrl = `http://127.0.0.1:${server.address().port}`;
+
+  // Cover the customer and staff APIs against this same disposable database.
+  let result = await api('/api/catalog', { token: '' });
+  assert.equal(result.status, 200, `Public catalogue failed: ${result.data.message}`);
+  assert.ok(result.data.products.some((product) => product.id === productSlug), 'The new product should appear in the public catalogue.');
+  result = await api('/api/catalog/admin/products', { token: customerToken });
+  assert.equal(result.status, 403, 'Customers must not access product administration.');
+  result = await api('/api/catalog/admin/products', { token: adminToken });
+  assert.equal(result.status, 200, `Admin product list failed: ${result.data.message}`);
+  result = await api(`/api/catalog/admin/products/${productSlug}/stock`, { method: 'PATCH', body: { stock: 8, lowStockThreshold: 2 } });
+  assert.equal(result.status, 200, `Admin stock update failed: ${result.data.message}`);
+  assert.equal(result.data.product.stock, 8);
+  result = await api('/api/catalog/admin/categories', { method: 'POST', body: { name: 'Isolated Test Category' } });
+  assert.equal(result.status, 201, `Admin category create failed: ${result.data.message}`);
+  const createdCustomerEmail = `admin-created-${Date.now()}@example.test`;
+  result = await api('/api/admin/customers', { method: 'POST', body: { name: 'Temporary Admin Customer', email: createdCustomerEmail, phone: '9876543210', password: 'FlowTest1!' } });
+  assert.equal(result.status, 201, `Admin customer create failed: ${result.data.message}`);
+  result = await api('/api/admin/customers', { token: adminToken });
+  assert.equal(result.status, 200, `Admin customer list failed: ${result.data.message}`);
+  assert.ok(result.data.customers.some((entry) => entry.email === createdCustomerEmail), 'Admin-created customer should be visible.');
+  result = await api('/api/auth/account', { token: customerToken });
+  assert.equal(result.status, 200, `Customer account failed: ${result.data.message}`);
+  result = await api('/api/auth/account/favorites/' + productSlug, { method: 'PUT', token: customerToken });
+  assert.equal(result.status, 200, 'Customer can add a cake to favourites.');
+  assert.equal(result.data.isFavorite, true);
+  result = await api('/api/auth/account/favorites/' + productSlug, { method: 'PUT', token: customerToken });
+  assert.equal(result.status, 200, 'Customer can remove a cake from favourites.');
+  assert.equal(result.data.isFavorite, false);
+  result = await api('/api/inventory/admin/items', { token: '' });
+  assert.equal(result.status, 401, 'Inventory must reject unauthenticated access.');
+  result = await api('/api/inventory/admin/items', { token: customerToken });
+  assert.equal(result.status, 403, 'Inventory must reject customer access.');
+  result = await api('/api/inventory/admin/items', { method: 'POST', body: { name: 'Test flour', category: 'ingredients', unit: 'kg', detail: 'Temporary isolated test item', stock: 7, lowStockThreshold: 2 } });
+  assert.equal(result.status, 201, `Admin inventory create failed: ${result.data.message}`);
+  const inventoryId = result.data.item._id;
+  result = await api(`/api/inventory/admin/items/${inventoryId}`, { method: 'PUT', body: { name: 'Test flour', category: 'ingredients', unit: 'kg', detail: 'Updated isolated test item', stock: 5, lowStockThreshold: 2 } });
+  assert.equal(result.status, 200, 'Admin can update an inventory item.');
+  assert.equal(result.data.item.stock, 5);
+  result = await api(`/api/inventory/admin/items/${inventoryId}`, { method: 'DELETE' });
+  assert.equal(result.status, 200, 'Admin can remove an inventory item.');
+  result = await api('/api/delivery/rates', { token: '' });
+  assert.equal(result.status, 200, `Delivery rates failed: ${result.data.message}`);
+  result = await api('/api/delivery/quote?type=pickup', { token: '' });
+  assert.equal(result.status, 200, 'Pickup quote should be available without a third-party map service.');
+  assert.equal(result.data.fee, 0);
+  result = await api('/api/enquiries', { method: 'POST', token: '', body: { type: 'contact', name: 'Flow Test', email: 'flow-contact@example.test', occasion: 'General enquiry', cakeSize: 'Not specified', details: 'Disposable application flow check.' } });
+  assert.equal(result.status, 201, `Contact enquiry failed: ${result.data.message}`);
+  result = await api('/api/admin/enquiries');
+  assert.equal(result.status, 200, `Admin enquiries failed: ${result.data.message}`);
+  assert.ok(result.data.enquiries.some((enquiry) => enquiry.email === 'flow-contact@example.test'), 'The enquiry should be visible to admin.');
+
+  const promo = await api('/api/commerce/admin/promotions', { method: 'POST', body: { code: 'FLOW10', description: 'Isolated test offer', occasionType: 'other', sendToSubscribers: false, type: 'percent', value: 10, minimumSubtotal: 100, usageLimit: 2, endsAt: dateInFuture(30) } });
+  assert.equal(promo.status, 201, `Admin promo create failed: ${promo.data.message}`);
+  result = await api('/api/commerce/promotions/validate', { method: 'POST', token: customerToken, body: { code: 'flow10', subtotal: 700 } });
+  assert.equal(result.status, 200, `Customer promo validation failed: ${result.data.message}`);
+  assert.equal(result.data.discount, 70);
+  result = await api('/api/commerce/promotions/validate', { method: 'POST', token: customerToken, body: { code: 'flow10', subtotal: 50 } });
+  assert.equal(result.status, 400, 'Promo minimum basket value must be enforced.');
+  console.log('Customer, admin, catalogue, inventory, delivery, enquiry, and promotion APIs: passed');
 
   const pickup = await createOrder('pay-at-pickup', 'pickup');
   assert.equal(pickup.paymentStatus, 'unpaid');
@@ -189,7 +251,7 @@ const main = async () => {
   assert.equal(stored.status, 'placed');
   await assertDashboardMatchesDatabase('online · Failed attempt remains Unpaid');
   const success = await api(`/api/orders/${encodeURIComponent(online.orderNumber)}/payment/verify`, { method: 'POST', token: customerToken, body: { razorpay_order_id: providerOrderId, razorpay_payment_id: 'pay_test_success', razorpay_signature: 'test-signature' } });
-  assert.equal(success.status, 200);
+  assert.equal(success.status, 200, `Verify captured Razorpay test payment failed: ${success.data.message}`);
   stored = await Order.findById(online._id).lean();
   assert.equal(stored.paymentStatus, 'paid');
   assert.equal(stored.status, 'confirmed');
@@ -224,11 +286,19 @@ const main = async () => {
 
 main().then(async () => {
   server?.close();
+  await mongoose.connection.dropDatabase();
   await mongoose.disconnect();
   process.exit(0);
 }).catch(async (error) => {
   console.error(`Order flow test failed: ${error.stack || error.message}`);
   server?.close();
+  try {
+    if (mongoose.connection.readyState === 1 && /^cakes_flow_test_[a-z0-9_]+$/i.test(mongoose.connection.name)) {
+      await mongoose.connection.dropDatabase();
+    }
+  } catch (cleanupError) {
+    console.error(`Isolated test database cleanup failed: ${cleanupError.message}`);
+  }
   try { await mongoose.disconnect(); } catch {}
   process.exit(1);
 });

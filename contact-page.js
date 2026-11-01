@@ -26,6 +26,7 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          type: 'contact',
           name: values.get('name').trim(),
           email: values.get('email').trim(),
           occasion: 'General enquiry',
@@ -37,8 +38,8 @@
       if (!response.ok) throw new Error(result.message || 'Your message could not be sent. Please try again.');
       form.reset();
       setStatus(result.customerEmailSent
-        ? 'Your note is on its way! Check your inbox for a little confirmation. ♡'
-        : 'Thank you! We’ve received your message and will be in touch soon. ♡');
+        ? 'Your message has reached the bakery. A confirmation is on its way to your inbox. ♡'
+        : 'Thank you for reaching out. Your message is with our bakery team, and we’ll reply as soon as we can. ♡');
     } catch (error) {
       setStatus(error instanceof TypeError ? 'We couldn’t reach the bakery just now. Please try again shortly.' : error.message, true);
     } finally {

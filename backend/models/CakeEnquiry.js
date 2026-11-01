@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 
 const cakeEnquirySchema = new mongoose.Schema({
+  type: { type: String, enum: ['custom-cake', 'contact'], default: 'custom-cake', index: true },
   name: { type: String, required: true, trim: true, maxlength: 120 },
   email: { type: String, required: true, trim: true, lowercase: true, maxlength: 254 },
   phone: { type: String, default: '', trim: true, maxlength: 30 },

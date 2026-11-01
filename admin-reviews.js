@@ -190,7 +190,7 @@
       form.scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
-    if (action === 'delete' && !confirm(`Delete ${review.customerName || 'this customer'}’s review? This cannot be undone.`)) return;
+    if (action === 'delete' && !await window.cakesConfirm({ title: 'Delete this review?', message: `${review.customerName || 'This customer'}’s review will be permanently removed.`, confirmText: 'Delete review' })) return;
     button.disabled = true;
     try {
       if (action === 'hide' || action === 'publish') {

@@ -148,6 +148,39 @@ body.admin-mode #admin-category-section .admin-product-search{flex:1;min-width:2
 body.admin-mode #admin-category-section #adminCategories{display:grid;gap:9px}
 body.admin-mode #admin-category-section .admin-category-form{padding:16px;border:1px solid #eaded3;border-radius:12px;background:#fffaf5}
 @media(max-width:1100px){body.admin-mode .admin-overview-middle{grid-template-columns:1fr;grid-template-rows:auto}body.admin-mode .admin-chart-card:first-child,body.admin-mode .admin-chart-card:nth-child(2),body.admin-mode .admin-chart-wide,body.admin-mode .admin-recent-orders{grid-column:1;grid-row:auto}body.admin-mode .admin-chart-grid{display:contents}body.admin-mode .admin-recent-orders{min-height:0}}
+
+/* Give individual sales bars a distinct, legible hover state. */
+body.admin-mode #salesRevenueChart .bar-column i{transition:background .18s ease,box-shadow .18s ease,transform .18s ease}
+body.admin-mode #salesRevenueChart .bar-column:hover i{background:linear-gradient(180deg,#efabc0,#c86f91)!important;box-shadow:0 5px 16px rgba(183,91,126,.32);transform:translateY(-2px) scaleX(1.1)}
+body.admin-mode #salesRevenueChart .bar-column:hover .bar-value{opacity:1;color:#75465a;font-weight:700}
+@media(prefers-reduced-motion:reduce){body.admin-mode #salesRevenueChart .bar-column i{transition:none}}
+body.admin-mode #salesRevenueChart .bar-column i{position:relative;overflow:visible}
+body.admin-mode #salesRevenueChart .bar-column .bar-value{top:7px;bottom:auto;left:50%;z-index:2;display:block;width:max-content;padding:3px 7px;transform:translateX(-50%);border:1px solid rgba(255,255,255,.38);border-radius:999px;background:rgba(74,55,43,.72);box-shadow:0 2px 7px rgba(55,40,30,.18);color:#fff!important;font-size:.62rem;font-weight:700;line-height:1.2;opacity:0;pointer-events:none}
+body.admin-mode #salesRevenueChart .bar-column:hover .bar-value{opacity:1;color:#fff!important}
+
+/* Clear, compact promotion cards for the Offers workspace. */
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-row{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 15px;border:1px solid #e7dfd2;border-radius:14px;background:linear-gradient(120deg,#fffdf9,#f8f7ef);box-shadow:0 4px 12px rgba(66,53,40,.04)}
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-main{display:grid;flex:1;min-width:0;gap:11px}
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-heading{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-heading>div{display:grid;gap:2px;min-width:105px}
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-eyebrow{color:#897c6b;font:700 .56rem "DM Sans",sans-serif;letter-spacing:.13em;text-transform:uppercase}
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-heading strong{color:#40382f;font:700 .96rem "DM Sans",sans-serif;letter-spacing:.045em}
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-discount{display:inline-flex;align-items:center;min-height:26px;padding:4px 10px;border:1px solid #ecd4d0;border-radius:999px;background:#f8e9e5;color:#945f59;font:700 .7rem "DM Sans",sans-serif;white-space:nowrap}
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-state{display:inline-flex;align-items:center;gap:6px;color:#6f7761;font:600 .65rem "DM Sans",sans-serif}
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-state i{width:7px;height:7px;border-radius:50%;background:#829277;box-shadow:0 0 0 3px #e8ede2}
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-state.is-paused{color:#927267}
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-state.is-paused i{background:#bd8c7c;box-shadow:0 0 0 3px #f5e9e2}
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-facts{display:flex;align-items:stretch;gap:7px;flex-wrap:wrap}
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-facts>span{display:grid;gap:3px;min-width:100px;padding:6px 9px;border:1px solid #eee8de;border-radius:9px;background:rgba(255,255,255,.72);color:#4f493f;font:500 .68rem "DM Sans",sans-serif}
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-facts small{color:#8b8175;font:600 .52rem "DM Sans",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-footnote{display:flex;align-items:center;gap:10px;flex-wrap:wrap;color:#796e62;font:400 .66rem/1.4 "DM Sans",sans-serif}
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-email{display:inline-flex;align-items:center;gap:5px;color:#61705a;font-weight:600}
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-toggle{flex:none;min-height:36px;padding:8px 12px;border:1px solid #d9d1c5;border-radius:10px;background:#f5f0e8;color:#66594c;font:600 .66rem "DM Sans",sans-serif;white-space:nowrap;transition:background .16s,border-color .16s,transform .16s}
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-toggle:hover{transform:translateY(-1px);border-color:#c6b8a7;background:#eee7dc}
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-toggle.is-activate{border-color:#cdd8c4;background:#edf2e8;color:#59694f}
+body.admin-mode #admin-offer-section #adminPromos .promo-admin-toggle.is-activate:hover{background:#e1ead9}
+@media(max-width:680px){body.admin-mode #admin-offer-section #adminPromos .promo-admin-row{align-items:flex-start;flex-direction:column}body.admin-mode #admin-offer-section #adminPromos .promo-admin-toggle{align-self:flex-end}}
+@media(max-width:440px){body.admin-mode #admin-offer-section #adminPromos .promo-admin-heading{gap:7px}body.admin-mode #admin-offer-section #adminPromos .promo-admin-facts>span{flex:1;min-width:calc(50% - 7px)}}
 @media(max-width:760px){body.admin-mode .admin-sidebar{position:fixed;height:100dvh;min-height:100dvh;max-height:100dvh;overflow-y:auto}body.admin-mode .admin-wishlist-top-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}body.admin-mode .admin-wishlist-rank-card,body.admin-mode .admin-wishlist-rank-card[data-rank="1"]{min-height:176px;padding:16px 7px 10px}body.admin-mode .admin-wishlist-rank-card img,body.admin-mode .admin-wishlist-rank-card[data-rank="1"] img{width:72px;height:66px;flex-basis:66px}body.admin-mode .admin-overview-middle{display:grid}}
 
 /* Inventory Management workspace inspired by the supplied bakery admin reference. */
@@ -248,7 +281,7 @@ body.admin-mode .inventory-aside-note strong{color:#50433b;font:500 1rem/1.12 "C
 body.admin-mode .inventory-aside-note p{margin:4px 18px 0 0;color:#72675e;font:.67rem/1.35 "Cormorant Garamond",Georgia,serif}
 body.admin-mode .inventory-note-bow{position:absolute;right:12px;top:8px;color:#d59b99;font:2rem Georgia,serif}
 body.admin-mode .inventory-stock-badges{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-body.admin-mode .inventory-dialog{width:min(460px,calc(100vw - 28px));padding:0;border:1px solid #e3c9bf;border-radius:15px;background:#fcf9f2;color:#51483f;box-shadow:0 25px 80px #33271f45}
+body.admin-mode .inventory-dialog{position:fixed;inset:auto;top:50%;left:50%;transform:translate(-50%,-50%);width:min(460px,calc(100vw - 28px));max-width:none;max-height:calc(100dvh - 32px);margin:0;overflow:auto;padding:0;border:1px solid #e3c9bf;border-radius:15px;background:#fcf9f2;color:#51483f;box-shadow:0 25px 80px #33271f45}
 body.admin-mode .inventory-dialog::backdrop{background:#322b26a6;backdrop-filter:blur(3px)}
 body.admin-mode .inventory-dialog form{display:grid;gap:13px;padding:20px}
 body.admin-mode .inventory-dialog form>header{display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:9px;border-bottom:1px solid #ebddd4}
@@ -693,3 +726,45 @@ body.admin-mode .top-cake-detail-note{margin:13px 0;color:#7b7166;font:.65rem/1.
 body.admin-mode .top-cake-details-close{width:100%;min-height:38px;border:1px solid #cbd2bd;border-radius:9px;background:#e9ecdf;color:#4e5a47;font:600 .72rem "DM Sans",sans-serif;cursor:pointer}
 @media(max-width:620px){body.admin-mode .top-cake-table-head,body.admin-mode .top-cake-row{grid-template-columns:26px minmax(110px,1.8fr) minmax(64px,.8fr) minmax(55px,.65fr);gap:7px;padding-inline:8px}body.admin-mode .top-cake-table-head span:nth-child(5),body.admin-mode .top-cake-row span:nth-child(5){display:none}}
 @media(max-width:420px){body.admin-mode .top-cake-detail-hero{grid-template-columns:84px minmax(0,1fr);gap:10px}body.admin-mode .top-cake-detail-hero img{width:84px;height:84px}}
+
+/* Wishlist leaderboard: full-width, readable rows with compact rank tags. */
+body.admin-mode .admin-wishlist-grid{display:block;width:100%;}
+body.admin-mode .admin-wishlist-top,body.admin-mode .admin-wishlist-rest{width:100%;max-width:none;margin:0 0 14px;padding:16px;border:1px solid #e6dbcf;border-radius:13px;background:linear-gradient(135deg,#fffdf8,#f7f3ed);}
+body.admin-mode .admin-wishlist-top>header h4,body.admin-mode .admin-wishlist-rest>h4{margin:0;color:#433a33;font:500 1.28rem/1.15 "Cormorant Garamond",Georgia,serif;}
+body.admin-mode .admin-wishlist-top>header p{margin:3px 0 12px;color:#756d64;font:400 .74rem "DM Sans",sans-serif;}
+body.admin-mode .admin-wishlist-top-grid,body.admin-mode .admin-wishlist-rest-list{display:grid;grid-template-columns:minmax(0,1fr);gap:7px;width:100%;max-width:none;margin:0;}
+body.admin-mode .admin-wishlist-rank-card{position:relative;display:grid;grid-template-columns:54px 62px minmax(0,1fr) auto;align-items:center;justify-content:initial;gap:12px;min-width:0;min-height:78px;padding:9px 13px;border:1px solid #e6dbcf;border-radius:11px;background:#fffdf9;text-align:left;box-shadow:none;}
+body.admin-mode .admin-wishlist-rank-card[data-rank="1"]{min-height:78px;border-color:#e1d2b2;background:linear-gradient(90deg,#fbf5e6,#fffdf9 42%);box-shadow:none;}
+body.admin-mode .admin-wishlist-rank-card[data-rank="2"]{border-color:#dce2d4;background:linear-gradient(90deg,#f0f3eb,#fffdf9 42%);}
+body.admin-mode .admin-wishlist-rank-card[data-rank="3"]{border-color:#ead8d3;background:linear-gradient(90deg,#f8eeeb,#fffdf9 42%);}
+body.admin-mode .admin-wishlist-rank-card .admin-wishlist-rank{position:static;display:grid;width:auto;min-width:48px;height:27px;place-items:center;padding:0 9px;border:1px solid #e8d9b8;border-radius:999px;background:#f3e8cb;color:#78633d;font:600 .63rem "DM Sans",sans-serif;transform:none;}
+body.admin-mode .admin-wishlist-rank-card[data-rank="2"] .admin-wishlist-rank{border-color:#d7dfce;background:#e7ecdf;color:#59664f;}
+body.admin-mode .admin-wishlist-rank-card[data-rank="3"] .admin-wishlist-rank{border-color:#ead3ce;background:#f4e3df;color:#916d68;}
+body.admin-mode .admin-wishlist-rank-card img,body.admin-mode .admin-wishlist-rank-card[data-rank="1"] img{display:block;width:62px;height:56px;min-height:0;flex:none;object-fit:cover;border:1px solid #eee5dc;border-radius:8px;background:#f0ebe3;}
+body.admin-mode .admin-wishlist-rank-card>div{width:auto;min-width:0;align-self:center;}
+body.admin-mode .admin-wishlist-rank-card strong{display:block;overflow:hidden;color:#3f3832;font:500 .98rem/1.15 "Cormorant Garamond",Georgia,serif;text-overflow:ellipsis;white-space:nowrap;}
+body.admin-mode .admin-wishlist-rank-card small{color:#756d64;font:400 .64rem "DM Sans",sans-serif;}
+body.admin-mode .admin-wishlist-rank-card>span:last-child{justify-self:end;padding:6px 10px;border:1px solid #ecdcd5;border-radius:999px;background:#faf0ec;color:#986d69;font:600 .65rem "DM Sans",sans-serif;white-space:nowrap;}
+body.admin-mode .admin-wishlist-rest .admin-wishlist-card{grid-template-columns:62px minmax(0,1fr) auto;min-height:72px;padding:8px 12px;border:1px solid #eee5dc;border-radius:10px;background:#fffdf9;}
+body.admin-mode .admin-wishlist-rest .admin-wishlist-card img{width:62px;height:54px;}
+body.admin-mode .admin-wishlist-rest .admin-wishlist-card>span:last-child{justify-self:end;padding:6px 10px;border:1px solid #ecdcd5;border-radius:999px;background:#faf0ec;color:#986d69;font:600 .65rem "DM Sans",sans-serif;white-space:nowrap;}
+@media(max-width:620px){body.admin-mode .admin-wishlist-top,body.admin-mode .admin-wishlist-rest{padding:12px}body.admin-mode .admin-wishlist-rank-card{grid-template-columns:42px 50px minmax(0,1fr);gap:9px;padding:8px 9px}body.admin-mode .admin-wishlist-rank-card .admin-wishlist-rank,body.admin-mode .admin-wishlist-rank-card img{grid-row:1/3}body.admin-mode .admin-wishlist-rank-card .admin-wishlist-rank{min-width:40px;padding:0 5px;font-size:.57rem}body.admin-mode .admin-wishlist-rank-card img,body.admin-mode .admin-wishlist-rank-card[data-rank="1"] img{width:50px;height:48px}body.admin-mode .admin-wishlist-rank-card>span:last-child{grid-column:3;grid-row:2;justify-self:start;margin-top:2px;padding:4px 8px;font-size:.59rem}body.admin-mode .admin-wishlist-rank-card>div{grid-column:3;grid-row:1}body.admin-mode .admin-wishlist-rest .admin-wishlist-card{grid-template-columns:50px minmax(0,1fr);gap:9px}body.admin-mode .admin-wishlist-rest .admin-wishlist-card img{grid-row:1/3;width:50px;height:48px}body.admin-mode .admin-wishlist-rest .admin-wishlist-card>span:last-child{grid-column:2;justify-self:start;grid-row:2;padding:4px 8px;font-size:.59rem}}
+/* Improve reading contrast across the admin workspace while preserving the pastel UI. */
+body.admin-mode{--admin-muted:#5f5148}
+body.admin-mode .admin-main :is(p,small,time,label,legend,th,.eyebrow,.admin-user-role,.chart-empty,.admin-empty-state p){color:#5f5148!important}
+body.admin-mode .admin-main input::placeholder,body.admin-mode .admin-main textarea::placeholder{color:#71665c!important;opacity:1}
+
+/* Native dialogs can retain their UA top-left inset; pin this one to the viewport center. */
+body.admin-mode dialog.inventory-dialog[open]{position:fixed!important;inset:50% auto auto 50%!important;transform:translate(-50%,-50%)!important;margin:0!important;max-height:calc(100dvh - 32px);overflow:auto}
+body.admin-mode dialog.product-editor-dialog[open]{position:fixed!important;inset:50% auto auto 50%!important;transform:translate(-50%,-50%)!important;width:min(820px,calc(100vw - 32px));max-width:none;max-height:calc(100dvh - 32px);margin:0!important;overflow:auto;padding:0;border:1px solid #e3c9bf;border-radius:18px;background:#fcf9f2;color:#493f37;box-shadow:0 26px 80px #33271f55}
+body.admin-mode .product-editor-dialog::backdrop{background:#322b26a6;backdrop-filter:blur(4px)}
+body.admin-mode .giftcard-code-auto-note{margin:0;padding:10px 12px;border:1px solid #dce3d5;border-radius:9px;background:#f1f4ed;color:#4c5c47;font:400 .72rem/1.45 "DM Sans",sans-serif}
+body.admin-mode .product-editor-heading{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:17px 22px 13px;border-bottom:1px solid #e9ddd1;background:#fcf9f2}
+body.admin-mode .product-editor-heading .eyebrow{margin:0;color:#706457;font:600 .59rem "DM Sans",sans-serif;letter-spacing:.14em}
+body.admin-mode .product-editor-heading h4{margin:3px 0 0;color:#403831;font:500 1.55rem/1.1 "Cormorant Garamond",Georgia,serif}
+body.admin-mode #closeProductEditor{display:grid;width:32px;height:32px;place-items:center;border:1px solid #e4d7cb;border-radius:50%;background:#fffdf8;color:#51483f;font:1.2rem Georgia,serif;cursor:pointer}
+body.admin-mode .product-editor-dialog form.admin-form{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0;padding:16px 22px 22px}
+body.admin-mode .product-editor-dialog .admin-field-wide,body.admin-mode .product-editor-dialog .admin-photo-field,body.admin-mode .product-editor-dialog .admin-choice-field,body.admin-mode .product-editor-dialog .admin-check-row,body.admin-mode .product-editor-dialog .admin-form-actions,body.admin-mode .product-editor-dialog .product-photo-preview{grid-column:1/-1}
+body.admin-mode #productAdminMessage{margin:0 22px 18px}
+body.admin-mode #productAdminNotice{margin:10px 0;padding:10px 14px;border:1px solid #cbd6c4;border-radius:10px;background:#edf2e9;color:#435640;font:500 .78rem "DM Sans",sans-serif}
+@media(max-width:640px){body.admin-mode dialog.product-editor-dialog[open]{width:calc(100vw - 20px);max-height:calc(100dvh - 20px)}body.admin-mode .product-editor-dialog form.admin-form{grid-template-columns:1fr;padding:14px}body.admin-mode .product-editor-dialog .admin-field-wide,body.admin-mode .product-editor-dialog .admin-photo-field,body.admin-mode .product-editor-dialog .admin-choice-field,body.admin-mode .product-editor-dialog .admin-check-row,body.admin-mode .product-editor-dialog .admin-form-actions,body.admin-mode .product-editor-dialog .product-photo-preview{grid-column:1}body.admin-mode .product-editor-heading{padding:14px}body.admin-mode #productAdminMessage{margin:0 14px 14px}}

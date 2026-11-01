@@ -4,6 +4,11 @@ const isSaleEligible = (order) => order?.status === 'completed' && order?.paymen
 
 const saleMatch = (window = {}) => ({ ...window, status: 'completed', paymentStatus: 'paid' });
 const saleEligibleExpression = { $and: [{ $eq: ['$status', 'completed'] }, { $eq: ['$paymentStatus', 'paid'] }] };
+// Dashboard revenue follows money actually received, regardless of whether
+// the bakery has finished preparing or delivering the order. Cancelled and
+// refunded orders are excluded by their payment state/status.
+const paidRevenueMatch = (window = {}) => ({ ...window, status: { $ne: 'cancelled' }, paymentStatus: 'paid' });
+const paidRevenueExpression = { $and: [{ $eq: ['$paymentStatus', 'paid'] }, { $ne: ['$status', 'cancelled'] }] };
 
 // New orders store a per-unit price. Older records may have kept the same
 // snapshot as `price`, or stored an already-calculated line amount instead.
@@ -73,9 +78,9 @@ const salesSummaryPipeline = (window) => [
     pendingOrders: { $sum: { $cond: [{ $in: ['$status', ['placed', 'confirmed', 'preparing', 'ready', 'shipped', 'out-for-delivery']] }, 1, 0] } },
     completedOrders: { $sum: { $cond: [saleEligibleExpression, 1, 0] } },
     cancelledOrders: { $sum: { $cond: [{ $eq: ['$status', 'cancelled'] }, 1, 0] } },
-    revenue: { $sum: { $cond: [saleEligibleExpression, '$total', 0] } },
-    paidOrders: { $sum: { $cond: [saleEligibleExpression, 1, 0] } },
+    revenue: { $sum: { $cond: [paidRevenueExpression, '$total', 0] } },
+    paidOrders: { $sum: { $cond: [paidRevenueExpression, 1, 0] } },
   } },
 ];
 
-module.exports = { isSaleEligible, saleMatch, productSalesPipeline, salesSummaryPipeline };
+module.exports = { isSaleEligible, saleMatch, paidRevenueMatch, productSalesPipeline, salesSummaryPipeline };

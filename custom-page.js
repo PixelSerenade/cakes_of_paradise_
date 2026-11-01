@@ -1,6 +1,22 @@
 (() => {
   const form = document.getElementById('dreamCakeForm');
   const status = document.getElementById('enquiryStatus');
+  const successDialog = document.getElementById('enquirySuccessDialog');
+  const closeSuccessDialog = successDialog?.querySelector('.enquiry-success-close');
+  let lastFocusedElement = null;
+  const dismissSuccessDialog = () => {
+    if (!successDialog || successDialog.hidden) return;
+    successDialog.hidden = true;
+    document.body.classList.remove('enquiry-dialog-open');
+    lastFocusedElement?.focus();
+  };
+  closeSuccessDialog?.addEventListener('click', dismissSuccessDialog);
+  successDialog?.addEventListener('click', (event) => {
+    if (event.target === successDialog) dismissSuccessDialog();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') dismissSuccessDialog();
+  });
   const setStatus = (message, error = false) => { status.textContent = message; status.classList.toggle('error', error); };
   const occasionInput = form.elements.occasion;
   document.querySelectorAll('.occasion-choice').forEach((button) => button.addEventListener('click', () => {
@@ -46,8 +62,10 @@
 
   const syncBagCount = () => {
     const count = window.CakeCart?.count(window.CakeCart.read(window.CakeCart.key())) || 0;
-    document.getElementById('customCartCount').textContent = count;
-    document.querySelector('.bag-link').setAttribute('aria-label', `Shopping bag, ${count} items`);
+    const countBadge = document.getElementById('customCartCount');
+    const bagLink = document.querySelector('.nav-cart-link, .bag-link');
+    if (countBadge) countBadge.textContent = count;
+    if (bagLink) bagLink.setAttribute('aria-label', `Shopping bag, ${count} items`);
   };
   syncBagCount();
   window.addEventListener('storage', syncBagCount);
@@ -83,6 +101,26 @@
       document.getElementById('designCount').textContent = '0'; document.getElementById('notesCount').textContent = '0';
       document.getElementById('referencePreview').hidden = true; document.getElementById('imageStatus').textContent = ''; referenceImage = '';
       setStatus('Your enquiry is on its way. We’ll be in touch soon ♡');
+      const successMessage = document.getElementById('enquirySuccessMessage');
+      if (successMessage) {
+        const bakeryNotified = result.emailSent === true;
+        const customerCopied = result.customerEmailSent === true;
+        if (bakeryNotified && customerCopied) {
+          successMessage.textContent = 'Your custom cake enquiry has been sent to the Cakes of Paradise team. A separate confirmation copy was sent to your email, and the bakery can reply directly to the address you provided.';
+        } else if (bakeryNotified) {
+          successMessage.textContent = 'Your custom cake enquiry has been sent to the Cakes of Paradise team. We could not send the confirmation copy to your email, but the bakery can reply directly to the address you provided.';
+        } else if (customerCopied) {
+          successMessage.textContent = 'A confirmation copy was sent to your email, but the bakery notification could not be delivered. Please contact Cakes of Paradise directly to make sure the team receives your request.';
+        } else {
+          successMessage.textContent = 'Your enquiry was saved, but neither email could be delivered just now. Please contact Cakes of Paradise directly so the team can follow up.';
+        }
+      }
+      if (successDialog) {
+        lastFocusedElement = document.activeElement;
+        successDialog.hidden = false;
+        document.body.classList.add('enquiry-dialog-open');
+        closeSuccessDialog?.focus();
+      }
     } catch (error) {
       setStatus(error.message || 'We couldn’t send your enquiry. Please try again.', true);
     } finally { submit.disabled = false; }

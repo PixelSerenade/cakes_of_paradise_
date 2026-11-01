@@ -5,7 +5,7 @@
   <script src="preferences.js?v=20261101-real"></script><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Gift Cards | Cakes of Paradise</title>
   <link rel="stylesheet" href="site-navigation.css?v=20261101-real"><link rel="stylesheet" href="shared-navigation.css?v=20261101-real"><link rel="stylesheet" href="shared-footer.css?v=20261101-real"><link rel="stylesheet" href="gift-cards.css?v=20261102-ai-hero">
-  <script src="api-config.js?v=20261101-real"></script><script src="https://checkout.razorpay.com/v1/checkout.js" defer></script><script src="gift-cards.js?v=20261101-real" defer></script><script src="shared-navigation.js?v=20261101-real" defer></script><script src="site-navigation.js?v=20261101-real" defer></script><script src="shared-footer.js?v=20261101-real" defer></script>
+  <script src="api-config.js?v=20261101-real"></script><script src="https://checkout.razorpay.com/v1/checkout.js" defer></script><script src="gift-cards.js?v=20261102-clear-gift-form" defer></script><script src="shared-navigation.js?v=20261101-real" defer></script><script src="site-navigation.js?v=20261101-real" defer></script><script src="shared-footer.js?v=20261101-real" defer></script>
   <link rel="stylesheet" href="preferences.css?v=20261101-real">
 </head>
 <body class="gift-page">
@@ -26,12 +26,12 @@
         <label>Your message for them <small>(optional)</small><textarea name="message" maxlength="200" rows="3" placeholder="Write a little note to make their day…"></textarea><span class="gift-count">0 / 200</span></label>
         <fieldset class="gift-payment-methods">
           <legend>Choose how to pay</legend>
-          <label class="gift-payment-option"><input type="radio" name="paymentMethod" value="upi" checked><span><strong>UPI</strong><small>Pay securely with UPI</small></span></label>
+          <label class="gift-payment-option"><input type="radio" name="paymentMethod" value="razorpay" checked><span><strong>Razorpay</strong><small>Secure checkout · UPI, cards, and other available methods</small></span></label>
           <label class="gift-payment-option" id="giftWalletOption"><input type="radio" name="paymentMethod" value="wallet"><span><strong>Gift wallet</strong><small id="giftWalletHint">Sign in to pay from your gift wallet</small></span></label>
         </fieldset>
         <p class="gift-error" id="giftFormMessage" role="status" aria-live="polite"></p>
         <button class="gift-submit" type="submit" disabled><span aria-hidden="true">♡</span> Continue to secure payment · <strong>Choose a gift card</strong></button>
-        <p class="gift-terms" id="giftPaymentTerms">UPI or your available gift wallet balance. Your gift card will be emailed after payment is confirmed.</p>
+        <p class="gift-terms" id="giftPaymentTerms">Pay securely through Razorpay or your gift wallet. After payment is confirmed, a unique gift card code is generated automatically and emailed to your recipient. No code entry is needed.</p>
       </form>
     </section>
   </main>

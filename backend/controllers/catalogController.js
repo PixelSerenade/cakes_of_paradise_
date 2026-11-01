@@ -47,13 +47,14 @@ const listProducts = async (req, res) => {
     filter.category = CANONICAL_CATEGORIES[category.toLowerCase()] || category;
   }
   if (DIETARY_TAGS.includes(dietary)) filter.dietaryTags = dietary;
-  const priceRanges = { under1000: [0, 999.99], '1000-1500': [1000, 1500], '1500-2500': [1500, 2500], above2500: [2500.01, Number.MAX_SAFE_INTEGER] };
+  const priceRanges = { under1000: [0, 999.99], '1000-1500': [1000, 1499.99], '1500-2500': [1500, 2500], above2500: [2500.01, Number.MAX_SAFE_INTEGER] };
   if (priceRanges[price]) {
     const [min, max] = priceRanges[price];
-    filter.$expr = { $and: [{ $gte: [{ $ifNull: [{ $arrayElemAt: ['$sizes.price', 0] }, 0] }, min] }, { $lte: [{ $ifNull: [{ $arrayElemAt: ['$sizes.price', 0] }, 0] }, max] }] };
+    // A cake is in a price band when at least one purchasable size is in it.
+    // Using $arrayElemAt only checks the first size and misses valid options.
+    filter.sizes = { $elemMatch: { price: { $gte: min, $lte: max } } };
   }
-  if (flavor) filter.flavors = new RegExp(flavor.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
-  if (size) filter['sizes.name'] = size;
+  if (flavor) filter.flavors = new RegExp(`^${flavor.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i');
   if (search) {
     const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     filter.$or = [
@@ -73,10 +74,11 @@ const listProducts = async (req, res) => {
   let salesByProduct = new Map();
   let estimatedSalesByProduct = new Map();
   if (sort === 'popular') {
-    const [matchingProducts, sales] = await Promise.all([
+    let [matchingProducts, sales] = await Promise.all([
       Product.find(filter).lean(),
       Order.aggregate(productSalesPipeline()),
     ]);
+    if (size) matchingProducts = matchingProducts.filter((product) => expandCakeSizes(product).some((option) => option.name === size));
     unitsSoldByProduct = new Map(sales.map((sale) => [sale._id, sale.units]));
     salesByProduct = new Map(sales.map((sale) => [sale._id, sale.sales]));
     estimatedSalesByProduct = new Map(sales.map((sale) => [sale._id, sale.salesIsEstimated]));
@@ -84,6 +86,17 @@ const listProducts = async (req, res) => {
       (unitsSoldByProduct.get(b.slug) || 0) - (unitsSoldByProduct.get(a.slug) || 0) ||
       Number(b.seasonal) - Number(a.seasonal) || a.name.localeCompare(b.name)
     );
+    totalCount = matchingProducts.length;
+    products = matchingProducts.slice(skip, skip + limit);
+  } else if (size) {
+    const matchingProducts = (await Product.find(filter).lean())
+      .filter((product) => expandCakeSizes(product).some((option) => option.name === size));
+    matchingProducts.sort((a, b) => {
+      if (sort === 'price-low') return Number(a.sizes?.[0]?.price || 0) - Number(b.sizes?.[0]?.price || 0);
+      if (sort === 'price-high') return Number(b.sizes?.[0]?.price || 0) - Number(a.sizes?.[0]?.price || 0);
+      if (sort === 'name') return a.name.localeCompare(b.name);
+      return Number(b.seasonal) - Number(a.seasonal) || a.name.localeCompare(b.name);
+    });
     totalCount = matchingProducts.length;
     products = matchingProducts.slice(skip, skip + limit);
   } else {
@@ -98,13 +111,20 @@ const listProducts = async (req, res) => {
     { $group: { _id: '$productId', average: { $avg: '$rating' }, count: { $sum: 1 } } },
   ]);
   const byProduct = new Map(summaries.map((item) => [item._id, item]));
-  const [productCategories, savedCategories] = await Promise.all([
+  const facetFilter = { available: true };
+  const [productCategories, savedCategories, availableFlavors, sizeProducts] = await Promise.all([
     Product.distinct('category', { available: true }),
     Category.find().sort({ name: 1 }).select('name').lean(),
+    Product.distinct('flavors', facetFilter),
+    Product.find(facetFilter).select('sizes category').lean(),
   ]);
+  const availableSizes = sizeProducts.flatMap((product) => expandCakeSizes(product).map((item) => item.name));
   const categories = [...new Map([...productCategories, ...savedCategories.map((category) => category.name)].map((name) => [name.toLocaleLowerCase(), name])).values()];
+  res.set('Cache-Control', 'no-store');
   return res.json({
     categories: ['All', ...categories.sort()],
+    flavors: [...new Set(availableFlavors.filter((value) => typeof value === 'string' && value.trim()))].sort((a, b) => a.localeCompare(b)),
+    sizes: [...new Set(availableSizes.filter((value) => typeof value === 'string' && value.trim()))].sort((a, b) => a.localeCompare(b, undefined, { numeric: true })),
     dietaryTags: DIETARY_TAGS,
     total: totalCount,
     page,
@@ -158,8 +178,10 @@ const listReviews = async (req, res) => {
     userReview = await Review.findOne({ productId, user: userId, source: 'customer' });
     const hasOrder = await Order.exists({
       user: userId,
-      status: { $in: ['delivered', 'completed', 'confirmed', 'paid'] },
-      'items.productId': productId
+      paymentStatus: 'paid',
+      status: { $ne: 'cancelled' },
+      $or: [{ deliveryStatus: 'delivered' }, { status: 'completed' }],
+      'items.productId': productId,
     });
     canReview = Boolean(hasOrder);
   }
@@ -177,11 +199,13 @@ const createReview = async (req, res) => {
   }
   const order = await Order.findOne({
     user: req.user._id,
-    status: { $in: ['delivered', 'completed', 'confirmed', 'paid'] },
-    'items.productId': productId
+    paymentStatus: 'paid',
+    status: { $ne: 'cancelled' },
+    $or: [{ deliveryStatus: 'delivered' }, { status: 'completed' }],
+    'items.productId': productId,
   });
   if (!order) {
-    return res.status(403).json({ message: 'You can review this cake after placing an order containing it.' });
+    return res.status(403).json({ message: 'You can review this cake after its order has been paid and delivered.' });
   }
 
   let review = await Review.findOne({ productId, user: req.user._id, source: 'customer' });

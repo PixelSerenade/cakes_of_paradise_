@@ -9,8 +9,8 @@ const sendEnquiryNotification = async (enquiry) => {
       await sendEmailMessage({
         to: recipient,
         replyTo: enquiry.email,
-        subject: `Custom cake enquiry from ${enquiry.name}`,
-        text: `Enquiry ${String(enquiry._id).slice(-10)}\nName: ${enquiry.name}\nEmail: ${enquiry.email}\nPhone: ${enquiry.phone || 'Not provided'}\nOccasion: ${enquiry.occasion}\nCake size: ${enquiry.cakeSize}\n\n${enquiry.details || 'No additional note'}`,
+        subject: `${enquiry.type === 'contact' ? 'Website contact message' : 'Custom cake enquiry'} from ${enquiry.name}`,
+        text: `Enquiry ${String(enquiry._id).slice(-10)}\nName: ${enquiry.name}\nEmail: ${enquiry.email}\nPhone: ${enquiry.phone || 'Not provided'}${enquiry.type === 'contact' ? '' : `\nOccasion: ${enquiry.occasion}\nCake size: ${enquiry.cakeSize}`}\n\n${enquiry.details || 'No additional note'}`,
       });
       sent = true;
     } catch (error) { console.error(`Bakery enquiry notification failed (${error.code || error.name || 'provider error'}).`); }

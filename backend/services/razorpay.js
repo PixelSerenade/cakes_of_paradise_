@@ -1,13 +1,11 @@
 const crypto = require('crypto');
 
 const isConfigured = () => Boolean(
-  process.env.RAZORPAY_KEY_ID?.startsWith('rzp_test_') && process.env.RAZORPAY_KEY_SECRET &&
+  /^(rzp_test_|rzp_live_)/.test(process.env.RAZORPAY_KEY_ID || '') && process.env.RAZORPAY_KEY_SECRET &&
   !process.env.RAZORPAY_KEY_ID.includes('replace') && !process.env.RAZORPAY_KEY_SECRET.includes('replace'),
 );
 
-const unavailableReason = () => process.env.RAZORPAY_KEY_ID && !process.env.RAZORPAY_KEY_ID.startsWith('rzp_test_')
-  ? 'Online payments are restricted to Razorpay test keys. Replace the live key with an rzp_test_ key before checkout.'
-  : 'Razorpay test credentials are not configured.';
+const unavailableReason = () => 'Valid Razorpay API credentials are not configured.';
 
 const razorpayRequest = async (endpoint, body) => {
   const response = await fetch(`https://api.razorpay.com/v1/${endpoint}`, {
@@ -24,8 +22,14 @@ const razorpayRequest = async (endpoint, body) => {
   return data;
 };
 
+const toPaise = (amountInRupees) => {
+  const amount = Number(amountInRupees);
+  if (!Number.isFinite(amount) || amount < 0) throw new Error('Payment amount is invalid.');
+  return Math.round(amount * 100);
+};
+
 const createOrder = (amountInRupees, receipt, customer) => razorpayRequest('orders', {
-  amount: amountInRupees * 100,
+  amount: toPaise(amountInRupees),
   currency: 'INR',
   receipt,
   notes: { customer_email: customer.email },
@@ -49,6 +53,12 @@ const getPayment = async (paymentId) => {
   const data = await response.json();
   if (!response.ok) throw new Error(data.error?.description || 'Could not verify payment status.');
   return data;
+};
+
+const capturePayment = (paymentId, amountInPaise) => {
+  const amount = Number(amountInPaise);
+  if (!Number.isSafeInteger(amount) || amount <= 0) throw new Error('Payment capture amount is invalid.');
+  return razorpayRequest(`payments/${encodeURIComponent(paymentId)}/capture`, { amount, currency: 'INR' });
 };
 
 const refundPayment = async (paymentId, amountInRupees) => razorpayRequest(`payments/${encodeURIComponent(paymentId)}/refund`, {
@@ -84,4 +94,4 @@ const verifyWebhookSignature = (rawBody, signature) => {
   return expectedBuffer.length === receivedBuffer.length && crypto.timingSafeEqual(expectedBuffer, receivedBuffer);
 };
 
-module.exports = { isConfigured, unavailableReason, createOrder, verifyCheckoutSignature, getPayment, getPaymentsForOrder, refundPayment, getRefund, verifyWebhookSignature };
+module.exports = { isConfigured, unavailableReason, createOrder, verifyCheckoutSignature, getPayment, capturePayment, getPaymentsForOrder, refundPayment, getRefund, verifyWebhookSignature, toPaise };

@@ -52,16 +52,45 @@
   let discountCode = '';
   let giftBalance = 0;
   let giftCode = '';
+  let orderSuccessRedirectTimer = 0;
+  let failedPaymentOrder = null;
+  let failedPaymentInfo = null;
 
   const setMessage = (text, isError = false) => {
     message.textContent = text;
     message.classList.toggle('is-error', isError);
   };
   function showOrderSuccess(order, note = '') {
-    sessionStorage.setItem('lastOrderConfirmation', JSON.stringify({ ...order, confirmationNote: note }));
-    window.location.assign('order-confirmation.html');
+    document.getElementById('paymentFailureDialog').hidden = true;
+    sessionStorage.setItem('lastOrderConfirmation', JSON.stringify({ orderNumber: order?.orderNumber || '', confirmationNote: note }));
+    const orderNumber = String(order?.orderNumber || '');
+    const successLink = successDialog.querySelector('.success-actions a[href="orders.html"]');
+    document.getElementById('orderSuccessTitle').textContent = 'Order placed successfully!';
+    document.getElementById('orderSuccessDetail').textContent = note || 'Your order has been received by Cakes of Paradise and is ready to follow.';
+    document.getElementById('orderSuccessNumber').textContent = orderNumber ? `ORDER NUMBER · ${orderNumber}` : '';
+    successDialog.querySelector('.success-status').innerHTML = '<span aria-hidden="true">✓</span> ORDER PLACED';
+    successDialog.querySelector('.success-next-step').textContent = 'Taking you to your order history so you can follow every update.';
+    if (successLink) successLink.href = 'orders.html?placed=1';
+    successDialog.hidden = false;
+    document.getElementById('orderSuccessTitle').focus({ preventScroll: true });
+    window.clearTimeout(orderSuccessRedirectTimer);
+    orderSuccessRedirectTimer = window.setTimeout(() => window.location.replace('orders.html?placed=1'), 3600);
+  }
+  function showPaymentFailure(order, payment, reason, allowOffline = true) {
+    failedPaymentOrder = order;
+    failedPaymentInfo = payment;
+    const dialog = document.getElementById('paymentFailureDialog');
+    document.getElementById('paymentFailureMessage').textContent = `${reason || 'The online payment did not complete.'} We have not marked this order as paid.`;
+    document.getElementById('paymentFailureOrder').textContent = order?.orderNumber ? `Order ${order.orderNumber} is saved and can be paid for securely again.` : '';
+    const offlineButton = document.getElementById('offlinePaymentButton');
+    const pickup = order?.customer?.deliveryType === 'pickup';
+    offlineButton.textContent = pickup ? 'Pay at pickup' : 'Pay on delivery';
+    offlineButton.hidden = !allowOffline;
+    dialog.hidden = false;
+    document.getElementById('retryFailedPayment').focus({ preventScroll: true });
   }
   const successDialog = document.getElementById('orderSuccess');
+  successDialog.querySelectorAll('.success-actions a').forEach((link) => link.addEventListener('click', () => window.clearTimeout(orderSuccessRedirectTimer)));
   successDialog.addEventListener('keydown', (event) => {
     if (event.key !== 'Tab' || successDialog.hidden) return;
     const focusable = [...successDialog.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])')]
@@ -82,6 +111,25 @@
       first.focus();
     }
   });
+  const paymentFailureDialog = document.getElementById('paymentFailureDialog');
+  document.getElementById('closePaymentFailure').addEventListener('click', () => { paymentFailureDialog.hidden = true; });
+  paymentFailureDialog.addEventListener('click', (event) => { if (event.target === paymentFailureDialog) paymentFailureDialog.hidden = true; });
+  paymentFailureDialog.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') paymentFailureDialog.hidden = true;
+  });
+  const stockLimitDialog = document.getElementById('stockLimitDialog');
+  const showStockLimit = (text) => {
+    document.getElementById('stockLimitMessage').textContent = text;
+    stockLimitDialog.hidden = false;
+    document.getElementById('adjustStockButton').focus({ preventScroll: true });
+  };
+  document.getElementById('closeStockLimit').addEventListener('click', () => { stockLimitDialog.hidden = true; });
+  document.getElementById('adjustStockButton').addEventListener('click', () => {
+    stockLimitDialog.hidden = true;
+    linesNode.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+  stockLimitDialog.addEventListener('click', (event) => { if (event.target === stockLimitDialog) stockLimitDialog.hidden = true; });
+  stockLimitDialog.addEventListener('keydown', (event) => { if (event.key === 'Escape') stockLimitDialog.hidden = true; });
   async function api(path, options = {}) {
     const headers = { ...(options.headers || {}) };
     if (options.body) headers['Content-Type'] = 'application/json';
@@ -146,6 +194,14 @@
     walletInput.value = String(walletUsed);
     document.getElementById('checkoutWallet').textContent = `−${money(walletUsed)}`;
     document.getElementById('checkoutTotal').textContent = money(total());
+    const walletBalanceNode = document.getElementById('checkoutWalletBalance');
+    const pointsBalanceNode = document.getElementById('checkoutPointsBalance');
+    const pointsValueNode = document.getElementById('checkoutPointsValue');
+    const availableWallet = Number(account?.user?.giftWalletBalance || 0);
+    const availablePoints = Number(account?.user?.loyaltyPoints || 0);
+    if (walletBalanceNode) walletBalanceNode.textContent = money(availableWallet);
+    if (pointsBalanceNode) pointsBalanceNode.textContent = availablePoints.toLocaleString('en-IN');
+    if (pointsValueNode) pointsValueNode.textContent = `Worth ${money(availablePoints / 100)} · 100 points = ₹1`;
     document.getElementById('emptyCartShop').hidden = Boolean(cart.length);
     if (!cart.length) {
       linesNode.innerHTML = '<p class="empty-account">Your cart is empty. Browse the catalogue and add a cake to get started.</p>';
@@ -154,7 +210,9 @@
     }
     linesNode.innerHTML = cart.map((line, index) => {
       const product = products.find((item) => item.id === line.productId);
-      return `<article class="checkout-cart-line"><img src="${escapeHtml(freshPhotoUrl(product?.image || line.image || ''))}" alt="${escapeHtml(line.name)}"><div class="checkout-cart-line-details"><h3>${escapeHtml(line.name)}</h3><p>${escapeHtml(line.flavor)} · ${escapeHtml(line.size)}</p>${line.cakeMessage ? `<small class="cart-cake-message">Cake message: “${escapeHtml(line.cakeMessage)}”</small>` : ''}</div><div class="cart-page-line-actions"><button type="button" data-cart-action="decrease" data-index="${index}" aria-label="Remove one ${escapeHtml(line.name)}">−</button><output>${line.quantity}</output><button type="button" data-cart-action="increase" data-index="${index}" aria-label="Add one ${escapeHtml(line.name)}">+</button></div><strong class="cart-page-line-price">${money(line.price * line.quantity)}</strong><button type="button" class="remove-cart-item" data-cart-action="remove" data-index="${index}" aria-label="Remove ${escapeHtml(line.name)} from order">×</button></article>`;
+      const productQuantity = cart.reduce((sum, item) => sum + (item.productId === line.productId ? Number(item.quantity || 0) : 0), 0);
+      const atStockLimit = product && productQuantity >= Number(product.stock ?? 20);
+      return `<article class="checkout-cart-line"><img src="${escapeHtml(freshPhotoUrl(product?.image || line.image || ''))}" alt="${escapeHtml(line.name)}"><div class="checkout-cart-line-details"><h3>${escapeHtml(line.name)}</h3><p>${escapeHtml(line.flavor)} · ${escapeHtml(line.size)}${product && Number.isFinite(Number(product.stock)) ? ` · ${product.stock} available` : ''}</p>${line.cakeMessage ? `<small class="cart-cake-message">Cake message: “${escapeHtml(line.cakeMessage)}”</small>` : ''}</div><div class="cart-page-line-actions"><button type="button" data-cart-action="decrease" data-index="${index}" aria-label="Remove one ${escapeHtml(line.name)}">−</button><output>${line.quantity}</output><button type="button" data-cart-action="increase" data-index="${index}" aria-label="Add one ${escapeHtml(line.name)}" ${atStockLimit ? 'disabled' : ''}>+</button></div><strong class="cart-page-line-price">${money(line.price * line.quantity)}</strong><button type="button" class="remove-cart-item" data-cart-action="remove" data-index="${index}" aria-label="Remove ${escapeHtml(line.name)} from order">×</button></article>`;
     }).join('');
   }
   function setDeliveryMode() {
@@ -187,33 +245,40 @@
     deliveryOption.disabled = pickup;
     if (select.selectedOptions[0]?.disabled) select.value = pickup ? 'pay-at-pickup' : 'pay-on-delivery';
   }
+  async function fetchDeliveryQuote(sequence, { area, city, postalCode }) {
+    try {
+      const params = new URLSearchParams({ type: 'delivery', area: area.trim(), city: city.trim(), postalCode: postalCode.trim() });
+      const quote = await api(`/delivery/quote?${params}`);
+      if (sequence !== deliverySequence) return false;
+      deliveryFee = quote.fee;
+      deliveryValid = true;
+      document.getElementById('deliveryQuoteMessage').textContent = `${quote.distanceKm ? `Estimated driving distance ${quote.distanceKm} km · ` : ''}${deliveryFee ? `Delivery fee ${money(deliveryFee)}` : 'Free delivery'}${quote.distanceBand ? ` (${quote.distanceBand} band)` : ''}`;
+      return true;
+    } catch (error) {
+      if (sequence !== deliverySequence) return false;
+      document.getElementById('deliveryQuoteMessage').textContent = error.message;
+      return false;
+    } finally {
+      if (sequence === deliverySequence) renderCart();
+    }
+  }
   function quoteDelivery() {
     const sequence = ++deliverySequence;
     clearTimeout(deliveryTimer);
     deliveryValid = false;
     deliveryFee = 0;
-    const { area, city, postalCode } = form.elements;
-    const pin = postalCode.value.trim();
-    if (form.elements.deliveryType.value !== 'delivery' || !/^\d{6}$/.test(pin) || !area.value.trim() || !city.value.trim()) {
+    const details = {
+      area: form.elements.area.value.trim(),
+      city: form.elements.city.value.trim(),
+      postalCode: form.elements.postalCode.value.trim(),
+    };
+    if (form.elements.deliveryType.value !== 'delivery' || !/^\d{6}$/.test(details.postalCode) || !details.area || !details.city) {
       document.getElementById('deliveryQuoteMessage').textContent = 'Enter your area, city, and 6-digit PIN code to calculate delivery.';
       renderCart();
       return;
     }
     document.getElementById('deliveryQuoteMessage').textContent = 'Calculating approximate driving distance and delivery fee…';
-    deliveryTimer = setTimeout(async () => {
-      try {
-        const params = new URLSearchParams({ type: 'delivery', area: area.value.trim(), city: city.value.trim(), postalCode: pin });
-        const quote = await api(`/delivery/quote?${params}`);
-        if (sequence !== deliverySequence) return;
-        deliveryFee = quote.fee;
-        deliveryValid = true;
-        document.getElementById('deliveryQuoteMessage').textContent = `${quote.distanceKm ? `Estimated driving distance ${quote.distanceKm} km · ` : ''}${deliveryFee ? `Delivery fee ${money(deliveryFee)}` : 'Free delivery'}${quote.distanceBand ? ` (${quote.distanceBand} band)` : ''}`;
-      } catch (error) {
-        if (sequence !== deliverySequence) return;
-        document.getElementById('deliveryQuoteMessage').textContent = error.message;
-      }
-      renderCart();
-    }, 400);
+    deliveryTimer = setTimeout(() => fetchDeliveryQuote(sequence, details), 400);
     renderCart();
   }
   function applyAddress(address) {
@@ -232,7 +297,8 @@
       form.elements.phone.value = account.user.phone || '';
       document.getElementById('loyaltyPointsToRedeem').max = account.user.loyaltyPoints || 0;
       document.getElementById('giftWalletToRedeem').max = account.user.giftWalletBalance || 0;
-      document.getElementById('giftWalletAvailable').textContent = `${money(account.user.giftWalletBalance || 0)} available`;
+      document.getElementById('giftWalletAvailable').textContent = `${money(account.user.giftWalletBalance || 0)} available to use`;
+      renderCart();
       try {
         const pendingAddress = JSON.parse(sessionStorage.getItem('checkoutAddress') || 'null');
         if (pendingAddress && typeof pendingAddress === 'object') applyAddress(pendingAddress);
@@ -262,6 +328,12 @@
     const orderNumber = order.orderNumber;
     await loadRazorpay();
     const currentUser = user() || {};
+    let completed = false;
+    const orderCompleted = (note = '') => {
+      if (completed) return;
+      completed = true;
+      showOrderSuccess(order, note);
+    };
     const checkout = new window.Razorpay({
       key: payment.keyId, amount: payment.amount, currency: payment.currency,
       name: 'Cakes of Paradise', description: `Cake order ${orderNumber}`, order_id: payment.orderId,
@@ -269,20 +341,59 @@
       handler: async (response) => {
         try {
           await api(`/orders/${encodeURIComponent(orderNumber)}/payment/verify`, { method: 'POST', body: JSON.stringify(response) });
-          showOrderSuccess(order);
-        } catch (error) { setMessage(`${error.message} Your order ${orderNumber} remains available in Your orders.`, true); }
+          orderCompleted('Payment confirmed. Your order is listed below.');
+        } catch (error) { showPaymentFailure(order, payment, `${error.message} If you see a debit in your bank, please contact the bakery before trying another payment.`, false); }
       },
-      modal: { ondismiss: () => setMessage(`Checkout closed. You can finish payment for ${orderNumber} from Your orders.`) },
+      modal: { ondismiss: () => { if (!completed) { completed = true; showPaymentFailure(order, payment, 'The payment window was closed before payment was completed.'); } } },
     });
-    checkout.on('payment.failed', (response) => setMessage(response.error?.description || 'Payment failed. You can retry from Your orders.', true));
+    checkout.on('payment.failed', (response) => { if (!completed) { completed = true; showPaymentFailure(order, payment, response.error?.description || 'Razorpay declined or could not complete this payment.'); } });
     checkout.open();
   }
+
+  document.getElementById('retryFailedPayment').addEventListener('click', async (event) => {
+    const button = event.currentTarget;
+    if (!failedPaymentOrder || !failedPaymentInfo) return;
+    button.disabled = true;
+    try {
+      paymentFailureDialog.hidden = true;
+      const result = await api(`/orders/${encodeURIComponent(failedPaymentOrder.orderNumber)}/payment/retry`, { method: 'POST' });
+      failedPaymentInfo = result.payment;
+      await startPayment(failedPaymentInfo, failedPaymentOrder);
+    } catch (error) {
+      showPaymentFailure(failedPaymentOrder, failedPaymentInfo, error.message);
+    } finally { button.disabled = false; }
+  });
+  document.getElementById('offlinePaymentButton').addEventListener('click', async (event) => {
+    const button = event.currentTarget;
+    if (!failedPaymentOrder) return;
+    button.disabled = true;
+    try {
+      const paymentMethod = failedPaymentOrder.customer?.deliveryType === 'pickup' ? 'pay-at-pickup' : 'pay-on-delivery';
+      const result = await api(`/orders/${encodeURIComponent(failedPaymentOrder.orderNumber)}/payment/method`, { method: 'POST', body: JSON.stringify({ paymentMethod }) });
+      paymentFailureDialog.hidden = true;
+      showOrderSuccess(result.order, result.message);
+    } catch (error) {
+      const message = /route not found/i.test(error.message)
+        ? 'This payment option is temporarily unavailable. Your order is still saved as unpaid. Please try again shortly or view your order details.'
+        : error.message;
+      document.getElementById('paymentFailureMessage').textContent = message;
+    } finally { button.disabled = false; }
+  });
   linesNode.addEventListener('click', (event) => {
     const button = event.target.closest('[data-cart-action]');
     if (!button) return;
     const index = Number(button.dataset.index);
     if (!cart[index]) return;
-    if (button.dataset.cartAction === 'increase') cart[index].quantity = Math.min(10, cart[index].quantity + 1);
+    if (button.dataset.cartAction === 'increase') {
+      const line = cart[index];
+      const product = products.find((item) => item.id === line.productId);
+      const inBag = cart.reduce((sum, item) => sum + (item.productId === line.productId ? Number(item.quantity || 0) : 0), 0);
+      if (product && inBag >= Number(product.stock ?? 20)) {
+        setMessage(`Only ${product.stock} ${product.name} available. Reduce the quantity before adding more.`, true);
+        return;
+      }
+      line.quantity = Math.min(10, line.quantity + 1);
+    }
     if (button.dataset.cartAction === 'decrease') cart[index].quantity -= 1;
     const line = cart[index];
     const removingLine = button.dataset.cartAction === 'remove' || (button.dataset.cartAction === 'decrease' && Number(line.quantity) <= 1);
@@ -292,12 +403,29 @@
   });
   form.elements.deliveryType.addEventListener('change', setDeliveryMode);
   for (const name of ['area', 'city', 'postalCode']) form.elements[name].addEventListener('input', quoteDelivery);
+  const promoInput = document.getElementById('promoCode');
+  const promoNotice = document.getElementById('promoAppliedNotice');
+  const promoNoticeText = document.getElementById('promoAppliedText');
+  promoInput.addEventListener('input', () => {
+    if (discountCode) {
+      discount = 0;
+      discountCode = '';
+      promoNotice.hidden = true;
+      promoNoticeText.textContent = '';
+      document.getElementById('benefitMessage').textContent = 'Apply the edited code to use its offer.';
+      renderCart();
+    }
+  });
   document.getElementById('applyPromo').addEventListener('click', async () => {
+    promoNotice.hidden = true;
+    promoNoticeText.textContent = '';
     try {
-      const result = await api('/commerce/promotions/validate', { method: 'POST', body: JSON.stringify({ code: document.getElementById('promoCode').value, subtotal: subtotal() }) });
+      const result = await api('/commerce/promotions/validate', { method: 'POST', body: JSON.stringify({ code: promoInput.value, subtotal: subtotal() }) });
       discount = result.discount;
-      discountCode = document.getElementById('promoCode').value.trim();
-      document.getElementById('benefitMessage').textContent = result.referral ? result.message : `${result.code} applied · ${money(discount)} off`;
+      discountCode = promoInput.value.trim();
+      promoNoticeText.textContent = result.referral ? result.message : `${result.code || discountCode} applied successfully · you saved ${money(discount)}.`;
+      promoNotice.hidden = false;
+      document.getElementById('benefitMessage').textContent = '';
     } catch (error) { discount = 0; discountCode = ''; document.getElementById('benefitMessage').textContent = error.message; }
     renderCart();
   });
@@ -314,16 +442,48 @@
   });
   document.getElementById('loyaltyPointsToRedeem').addEventListener('input', renderCart);
   document.getElementById('giftWalletToRedeem').addEventListener('input', renderCart);
+  form.addEventListener('invalid', (event) => {
+    if (form.querySelector(':invalid') !== event.target) return;
+    setMessage('Please complete the highlighted required delivery details before continuing.', true);
+    event.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, true);
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
     if (!token()) { setMessage('Please sign in before placing your order.'); sessionStorage.setItem('returnTo', 'checkout.html#checkout'); window.location.href = 'login.html'; return; }
     if (!cart.length) { setMessage('Your cart is empty.', true); return; }
-    if (form.elements.deliveryType.value === 'delivery' && !deliveryValid) { setMessage('Enter your delivery area and PIN code and wait for the delivery estimate.', true); return; }
     const button = document.getElementById('placeOrderButton');
     const fields = new FormData(form);
     button.disabled = true;
-    button.textContent = 'Placing your order…';
+    button.textContent = 'Checking stock & delivery…';
     try {
+      // Recheck current inventory before delivery quoting or starting any payment flow.
+      const latestCatalog = await api('/catalog', { cache: 'no-store' });
+      products = latestCatalog.products || [];
+      renderCart();
+      const requestedByProduct = new Map();
+      cart.forEach((line) => requestedByProduct.set(line.productId, (requestedByProduct.get(line.productId) || 0) + Number(line.quantity || 0)));
+      for (const [productId, requestedQuantity] of requestedByProduct) {
+        const product = products.find((item) => item.id === productId);
+        if (product && requestedQuantity > Number(product.stock ?? 20)) {
+          const stock = Math.max(0, Number(product.stock ?? 20));
+          showStockLimit(`Only ${stock} ${product.name} ${stock === 1 ? 'is' : 'are'} available. Your bag has ${requestedQuantity}. Reduce the quantity using − before continuing.`);
+          return;
+        }
+      }
+      if (fields.get('deliveryType') === 'delivery' && !deliveryValid) {
+        clearTimeout(deliveryTimer);
+        const sequence = ++deliverySequence;
+        deliveryValid = false;
+        deliveryFee = 0;
+        document.getElementById('deliveryQuoteMessage').textContent = 'Calculating approximate driving distance and delivery fee…';
+        const quoteReady = await fetchDeliveryQuote(sequence, {
+          area: String(fields.get('area') || ''),
+          city: String(fields.get('city') || ''),
+          postalCode: String(fields.get('postalCode') || ''),
+        });
+        if (!quoteReady) throw new Error(document.getElementById('deliveryQuoteMessage').textContent || 'We could not estimate delivery for that address. Please choose bakery pickup or check your area and PIN code.');
+      }
+      button.textContent = 'Placing your order…';
       const data = await api('/orders', { method: 'POST', body: JSON.stringify({
         items: cart.map(({ productId, size, flavor, cakeMessage, quantity }) => ({ productId, size, flavor, cakeMessage, quantity })),
         paymentMethod: fields.get('paymentMethod'), promoCode: discountCode, giftCardCode: giftCode,
@@ -345,10 +505,13 @@
       form.reset();
       document.getElementById('cartCheckoutSection').hidden = true;
       if (data.payment) {
-        try { await startPayment(data.payment, data.order.orderNumber); }
-        catch (error) { setMessage(`${error.message} Order ${data.order.orderNumber} is saved. Visit Your orders to retry payment.`, true); }
+        try { await startPayment(data.payment, data.order); }
+        catch (error) { showPaymentFailure(data.order, data.payment, error.message); }
       } else showOrderSuccess(data.order, addressNotice);
-    } catch (error) { setMessage(error.message, true); }
+    } catch (error) {
+      if (/only .* available|in stock|inventory/i.test(error.message)) showStockLimit(error.message);
+      else setMessage(error.message, true);
+    }
     finally { button.disabled = false; button.innerHTML = 'Continue to payment <span aria-hidden="true">→</span>'; }
   });
   document.getElementById('cartSignOut').addEventListener('click', () => {

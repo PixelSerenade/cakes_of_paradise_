@@ -8,8 +8,8 @@ module.exports = (order) => {
     ['Estimated Delivery', niceDate(order.estimatedDelivery || order.customer?.deliveryDate)],
   ];
   return {
-    subject: `Your cake is on its way! Order ${order.orderNumber} ♡`,
-    text: `Hello, ${order.customer?.name || 'sweet friend'}!\n\nYour order ${order.orderNumber} has been shipped and is on its way.\nTracking number: ${trackingNumber}\nCarrier: ${order.shippingCarrier || 'Cakes of Paradise delivery'}\nEstimated delivery: ${niceDate(order.estimatedDelivery || order.customer?.deliveryDate)}\n\nWe hope it brings a little extra sweetness to your day!`,
+    subject: `Cakes of Paradise · Your cake is on its way · ${order.orderNumber} ♡`,
+    text: `Hello, ${order.customer?.name || 'sweet friend'}!\n\nYour order ${order.orderNumber} has been shipped and is on its way.\nTracking number: ${trackingNumber}\nCarrier: ${order.shippingCarrier || 'Cakes of Paradise delivery'}\nEstimated delivery: ${niceDate(order.estimatedDelivery || order.customer?.deliveryDate)}\n\nWe hope it brings a little extra sweetness to your day!\n\nWith love,\nCakes of Paradise`,
     html: layout({
       preheader: `Good news: order ${order.orderNumber} is on its way.`,
       title: 'Your order is on the way!',

@@ -3,7 +3,7 @@ const Review = require('../models/Review');
 const User = require('../models/User');
 const Product = require('../models/Product');
 const CakeEnquiry = require('../models/CakeEnquiry');
-const { saleMatch, productSalesPipeline, salesSummaryPipeline } = require('../utils/orderMetrics');
+const { paidRevenueMatch, productSalesPipeline, salesSummaryPipeline } = require('../utils/orderMetrics');
 
 exports.getSalesInsights = async (req, res) => {
   const now = new Date();
@@ -28,7 +28,7 @@ exports.getSalesInsights = async (req, res) => {
     comparisonWindow = { createdAt: { $gte: compareStart, $lte: compareEnd } };
   }
 
-  const paidCompletedWindow = saleMatch(orderWindow);
+  const paidRevenueWindow = paidRevenueMatch(orderWindow);
   const [summary, topCakes, comparisonSummary, comparisonTopCakes, upcoming, feedback, recentReviews, revenueByDay, orderStatuses, customerCount, productCount, newEnquiryCount, wishlistItems, topWishlisted] = await Promise.all([
     Order.aggregate(salesSummaryPipeline(orderWindow)),
     Order.aggregate([...productSalesPipeline(topCakesWindow || {}), { $limit: 8 }]),
@@ -37,7 +37,7 @@ exports.getSalesInsights = async (req, res) => {
     Order.find({ status: { $nin: ['completed', 'cancelled'] }, 'customer.deliveryDate': { $gte: new Date(), $lte: new Date(Date.now() + 14 * 86400000) } }).sort({ 'customer.deliveryDate': 1 }).limit(12).select('orderNumber customer.name customer.deliveryDate customer.deliveryTime status paymentStatus'),
     Review.aggregate([{ $group: { _id: null, average: { $avg: '$rating' }, count: { $sum: 1 } } }]),
     Review.find().sort({ createdAt: -1 }).limit(5).select('customerName rating comment productId createdAt'),
-    Order.aggregate([{ $match: paidCompletedWindow }, { $group: { _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt', timezone: 'Asia/Kolkata' } }, revenue: { $sum: '$total' }, orders: { $sum: 1 } } }, { $sort: { _id: 1 } }]),
+    Order.aggregate([{ $match: paidRevenueWindow }, { $group: { _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt', timezone: 'Asia/Kolkata' } }, revenue: { $sum: '$total' }, orders: { $sum: 1 } } }, { $sort: { _id: 1 } }]),
     Order.aggregate([{ $match: orderWindow }, { $group: { _id: '$status', count: { $sum: 1 } } }, { $sort: { count: -1 } }]),
     User.countDocuments({ role: 'user' }),
     Product.countDocuments({}),

@@ -4,7 +4,7 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f6f1e8">
   <script src="preferences.js?v=20261101-real"></script><title>Design Your Dream Cake | Cakes of Paradise</title>
-  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&amp;family=Caveat:wght@400;500&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&amp;family=Caveat:wght@400;500&amp;display=swap"></noscript><link rel="stylesheet" href="custom-page.css?v=20261101-real"><link rel="stylesheet" href="site-navigation.css?v=20261101-real"><link rel="stylesheet" href="shared-navigation.css?v=20261101-real"><link rel="stylesheet" href="site-footer.css?v=20261101-real">
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&amp;family=Caveat:wght@400;500&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&amp;family=Caveat:wght@400;500&amp;display=swap"></noscript><link rel="stylesheet" href="custom-page.css?v=20261101-enquiry-fix3"><link rel="stylesheet" href="site-navigation.css?v=20261101-real"><link rel="stylesheet" href="shared-navigation.css?v=20261101-real"><link rel="stylesheet" href="site-footer.css?v=20261101-real">
   <link rel="stylesheet" href="shared-footer.css?v=20261101-real">
   <link rel="stylesheet" href="preferences.css?v=20261101-real">
 </head>
@@ -29,7 +29,7 @@
       <span class="hero-bow" aria-hidden="true"><svg viewBox="0 0 90 64"><path d="M43 30C28 5 7 3 7 20c0 11 17 16 36 12M47 30C62 5 83 3 83 20c0 11-17 16-36 12M44 29 35 62l11-9 9 9-9-33M43 30h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
     </section>
     <div class="custom-content">
-      <form class="enquiry-card" id="dreamCakeForm" novalidate>
+      <form class="enquiry-card" id="dreamCakeForm" method="post" action="/api/enquiries" novalidate>
         <div class="form-heading"><div><h2>Custom Cake Enquiry ♡</h2><p>Fill in the details below and we’ll get back to you with a personalised quote.</p></div><span class="hand-note">No idea is too big<br>or too small ♡</span></div>
         <section class="form-step"><span class="step-number">1</span><div class="step-body"><h3>Occasion</h3><p class="step-hint">What’s the cake for?</p><div class="occasion-options" role="group" aria-label="Choose an occasion"><button type="button" class="occasion-choice selected" data-occasion="Birthday" aria-pressed="true">Birthday</button><button type="button" class="occasion-choice" data-occasion="Anniversary" aria-pressed="false">Anniversary</button><button type="button" class="occasion-choice" data-occasion="Wedding" aria-pressed="false">Wedding</button><button type="button" class="occasion-choice" data-occasion="Baby Shower" aria-pressed="false">Baby shower</button><button type="button" class="occasion-choice" data-occasion="Graduation" aria-pressed="false">Graduation</button><button type="button" class="occasion-choice" data-occasion="Other" aria-pressed="false">Other</button></div><input type="hidden" name="occasion" value="Birthday"></div></section>
         <section class="form-step"><span class="step-number">2</span><div class="step-body"><h3>Cake Details</h3><div class="select-grid"><label>Flavour *<select name="flavour" required><option value="">Select flavour</option><option>Vanilla</option><option>Chocolate</option><option>Red Velvet</option><option>Strawberry</option><option>Butterscotch</option><option>Other / discuss with me</option></select></label><label>Cake size *<select name="cakeSize" required><option value="">Select size</option><option>6 inches · serves 4–6</option><option>8 inches · serves 8–10</option><option>10 inches · serves 12–16</option><option>12 inches · serves 20–24</option><option>Custom size · discuss with me</option></select></label><label>Shape<select name="shape"><option>Round</option><option>Heart</option><option>Square</option><option>Two tier</option><option>Custom shape</option></select></label></div></div></section>
@@ -50,13 +50,23 @@
       </aside>
     </div>
   </main>
+  <div class="enquiry-success-overlay" id="enquirySuccessDialog" role="dialog" aria-modal="true" aria-labelledby="enquirySuccessTitle" aria-describedby="enquirySuccessMessage" hidden>
+    <section class="enquiry-success-dialog">
+      <div class="enquiry-success-mark" aria-hidden="true">✓</div>
+      <p class="enquiry-success-eyebrow">A little sweetness is on its way</p>
+      <h2 id="enquirySuccessTitle">Enquiry sent successfully</h2>
+      <p id="enquirySuccessMessage">Thank you for sharing your cake idea with us. Our bakery team will be in touch soon.</p>
+      <button class="enquiry-success-close" type="button">Lovely, thank you</button>
+      <span class="enquiry-success-sparkle" aria-hidden="true">♡</span>
+    </section>
+  </div>
   <footer class="site-footer" id="siteFooter">
     <a class="footer-brand" href="index.html" aria-label="Cakes of Paradise home"><span>Cakes of Paradise</span><small>CAKES · SWEET MOMENTS</small></a>
     <p class="footer-note">Handcrafted cakes, made fresh with love in Surathkal.</p>
     <p class="footer-copyright">© 2026 Cakes of Paradise. All rights reserved.</p>
     <span class="footer-sparkle" aria-hidden="true">✧</span>
   </footer>
-  <script src="api-config.js?v=20261101-real"></script><script src="cart-storage.js?v=20261101-real"></script><script src="shared-navigation.js?v=20261101-real"></script><script src="site-navigation.js?v=20261101-real"></script><script src="custom-page.js?v=20261101-real"></script>
+  <script src="api-config.js?v=20261101-real"></script><script src="cart-storage.js?v=20261101-real"></script><script src="shared-navigation.js?v=20261101-real"></script><script src="site-navigation.js?v=20261101-real"></script><script src="custom-page.js?v=20261101-enquiry-fix3"></script>
   <script src="shared-footer.js?v=20261101-real" defer></script>
 </body>
 </html>

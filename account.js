@@ -12,6 +12,10 @@
     element.textContent = message;
     element.classList.toggle('is-error', isError);
   };
+  const renderGiftWallet = (data) => {
+    document.getElementById('giftWalletBalance').textContent = money(data.balance || 0);
+    document.getElementById('giftCardHistory').innerHTML = data.transactions?.length ? data.transactions.map((item) => `<article class="account-row"><span><strong>${escapeHtml(item.type)} · ${item.type === 'spent' ? '−' : '+'}${money(item.amount)}</strong><small>${escapeHtml(item.note || 'Gift wallet activity')} · balance ${money(item.balanceAfter)} · ${new Date(item.createdAt).toLocaleDateString('en-IN')}</small></span></article>`).join('') : '<p class="empty-account">Your gift wallet activity will appear here.</p>';
+  };
   const freshPhotoUrl = (value) => {
     const url = String(value || '');
     if (!/^\/?(?:public\/)?images\//.test(url)) return url;
@@ -88,8 +92,7 @@
       const rewardPoints = Number(customer.loyaltyPoints || 0);
       const rewardValue = (rewardPoints / 100).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
       document.getElementById('loyaltyBalance').textContent = `${rewardPoints.toLocaleString('en-IN')} points · ₹${rewardValue} value`;
-      document.getElementById('giftWalletBalance').textContent = money(giftWallet.balance || 0);
-      document.getElementById('giftCardHistory').innerHTML = giftWallet.transactions.length ? giftWallet.transactions.map((item) => `<article class="account-row"><span><strong>${escapeHtml(item.type)} · ${item.type === 'spent' ? '−' : '+'}${money(item.amount)}</strong><small>${escapeHtml(item.note || 'Gift wallet activity')} · balance ${money(item.balanceAfter)} · ${new Date(item.createdAt).toLocaleDateString('en-IN')}</small></span></article>`).join('') : '<p class="empty-account">Your gift wallet activity will appear here.</p>';
+      renderGiftWallet(giftWallet);
       document.getElementById('referralCode').textContent = customer.referralCode || '—';
       document.getElementById('referralSummary').textContent = `You both earn bonus points when your friend completes their first paid order.`;
       document.getElementById('referralTerms').textContent = `Share your code with a friend. After their first paid order is completed, they receive ${account.referralPolicy.referralFriendPoints} bonus points and you receive ${account.referralPolicy.referralOwnerPoints} points.`;
@@ -173,19 +176,66 @@
     } catch (error) { showMessage('occasionMessage', error.message, true); }
   });
 
+  let accountOrdersForDialog = [];
+  const orderDate = (value, options = { day: 'numeric', month: 'short', year: 'numeric' }) => {
+    const date = new Date(value);
+    return Number.isNaN(date.getTime()) ? 'To be confirmed' : date.toLocaleDateString('en-IN', options);
+  };
+  const formatTime = (value) => {
+    if (!/^\d{2}:\d{2}$/.test(String(value || ''))) return '';
+    const [hourText, minute] = value.split(':'); const hour = Number(hourText);
+    return `${hour % 12 || 12}:${minute} ${hour >= 12 ? 'PM' : 'AM'}`;
+  };
   function renderOrders(orders) {
-    const formatTime = (value) => {
-      if (!/^\d{2}:\d{2}$/.test(String(value || ''))) return '';
-      const [hourText, minute] = value.split(':'); const hour = Number(hourText);
-      return `${hour % 12 || 12}:${minute} ${hour >= 12 ? 'PM' : 'AM'}`;
-    };
-    document.getElementById('pastOrders').innerHTML = orders.length ? orders.map((order) => {
-      const items = (order.items || []).map((item) => `${Number(item.quantity)} × ${escapeHtml(item.name)} (${escapeHtml(item.flavor)}, ${escapeHtml(item.size)})`).join(' · ');
-      const timeline = (order.tracking || []).map((event) => `<li class="${event.status === order.status ? 'current' : ''}">${escapeHtml(event.status.replaceAll('-', ' '))}</li>`).join('');
-      const requestedTime = formatTime(order.customer?.deliveryTime);
-      return `<article class="account-order"><div class="account-order-top"><div><h3>${escapeHtml(order.orderNumber)} · ${money(order.total)}</h3><time>${new Date(order.createdAt).toLocaleDateString('en-IN')} · ${order.customer?.deliveryType === 'pickup' ? 'Bakery pickup' : 'Delivery'} ${new Date(order.customer?.deliveryDate).toLocaleDateString('en-IN')}${requestedTime ? ` · requested by ${requestedTime}` : ''}</time></div><span class="account-status">${escapeHtml(order.status.replaceAll('-', ' '))}</span></div><p>${items}</p>${order.customer?.address ? `<p>${escapeHtml(order.customer.address)}, ${escapeHtml(order.customer.area)}, ${escapeHtml(order.customer.city)}</p>` : ''}${timeline ? `<ol>${timeline}</ol>` : ''}</article>`;
+    accountOrdersForDialog = [...orders].sort((a, b) => {
+      const left = Date.parse(a.createdAt || '') || 0;
+      const right = Date.parse(b.createdAt || '') || 0;
+      return (right - left) || String(b._id || '').localeCompare(String(a._id || ''));
+    });
+    document.getElementById('pastOrders').innerHTML = accountOrdersForDialog.length ? accountOrdersForDialog.map((order, index) => {
+      const items = order.items || [];
+      const firstCake = items[0]?.name || 'Cake order';
+      const additionalItems = items.length > 1 ? ` + ${items.length - 1} more` : '';
+      const totalQuantity = items.reduce((sum, item) => sum + Math.max(0, Number(item.quantity) || 0), 0);
+      const fulfilment = order.customer?.deliveryType === 'pickup' ? 'Bakery pickup' : 'Delivery';
+      const state = String(order.status || 'placed').replaceAll('-', ' ');
+      return `<button class="account-order-row" type="button" data-account-order-index="${index}" aria-haspopup="dialog"><span class="account-order-row-mark" aria-hidden="true">${String(index + 1).padStart(2, '0')}</span><span class="account-order-row-main"><strong>${escapeHtml(firstCake)}${additionalItems}</strong><small>${escapeHtml(order.orderNumber)} · ${orderDate(order.createdAt, { day: 'numeric', month: 'short' })} · ${totalQuantity} item${totalQuantity === 1 ? '' : 's'} · ${fulfilment}</small></span><span class="account-order-row-total"><strong>${money(order.total)}</strong><span class="account-status">${escapeHtml(state)}</span></span><span class="account-order-row-arrow" aria-hidden="true">→</span></button>`;
     }).join('') : '<p class="empty-account">Your orders will appear here after checkout.</p>';
   }
+
+  const orderDialog = document.getElementById('accountOrderDialog');
+  const orderDialogContent = document.getElementById('accountOrderDialogContent');
+  function openAccountOrder(order) {
+    const customer = order.customer || {};
+    const items = (order.items || []).map((item) => {
+      const quantity = Math.max(1, Number(item.quantity) || 1);
+      const amount = Number(item.lineTotal ?? item.total ?? (Number(item.unitPrice ?? item.price ?? 0) * quantity));
+      return `<article class="account-order-detail-item">${item.image ? `<img src="${escapeHtml(freshPhotoUrl(item.image))}" alt="${escapeHtml(item.name || 'Cake')}" loading="lazy">` : ''}<div><strong>${escapeHtml(item.name || 'Cake')}</strong><span>${quantity} × ${escapeHtml(item.size || 'Standard')} · ${escapeHtml(item.flavor || 'Bakery selection')}</span>${item.cakeMessage ? `<small>Cake message: “${escapeHtml(item.cakeMessage)}”</small>` : ''}</div><b>${money(amount)}</b></article>`;
+    }).join('');
+    const tracking = (order.tracking || []).map((entry) => `<li class="${entry.status === order.status ? 'current' : ''}"><span></span><div><strong>${escapeHtml(String(entry.status || entry.to || 'Update').replaceAll('-', ' '))}</strong>${entry.note ? `<small>${escapeHtml(entry.note)}</small>` : ''}<time>${escapeHtml(new Date(entry.at).toLocaleString('en-IN'))}</time></div></li>`).join('');
+    const deliveryDay = orderDate(customer.deliveryDate);
+    const requestedTime = formatTime(customer.deliveryTime);
+    const fulfilmentDetails = customer.deliveryType === 'pickup'
+      ? 'Pick up at Cakes of Paradise bakery · Surathkal, Mangaluru'
+      : [customer.address, customer.area, customer.city, customer.postalCode].filter(Boolean).join(', ') || 'Delivery address on file';
+    const method = ({ razorpay: 'Razorpay online payment', 'pay-at-pickup': 'Pay at pickup', 'pay-on-delivery': 'Pay on delivery', 'pay-at-store': 'Pay at bakery', 'gift-card': 'Gift card' })[order.paymentMethod] || String(order.paymentMethod || 'Not specified').replaceAll('-', ' ');
+    const paymentState = String(order.paymentStatus || 'pending').replaceAll('-', ' ');
+    const breakdown = [
+      ['Items subtotal', order.subtotal], ['Delivery', order.deliveryFee], ['Discount', order.discountAmount ?? order.discount],
+    ].filter(([, amount]) => amount != null && Number(amount) !== 0).map(([label, amount]) => `<p><span>${label}</span><strong>${money(amount)}</strong></p>`).join('');
+    document.getElementById('accountOrderDialogTitle').textContent = `Order ${order.orderNumber || ''}`;
+    orderDialogContent.innerHTML = `<div class="account-order-detail-summary"><span class="account-status">${escapeHtml(String(order.status || 'placed').replaceAll('-', ' '))}</span><span>Placed ${orderDate(order.createdAt)}</span><strong>${money(order.total)}</strong></div><section class="account-order-detail-section"><h3>Your cakes</h3><div class="account-order-detail-items">${items || '<p>Order items are not available.</p>'}</div>${breakdown}<p class="account-order-grand-total"><span>Total paid / due</span><strong>${money(order.total)}</strong></p></section><section class="account-order-detail-section"><h3>${customer.deliveryType === 'pickup' ? 'Pickup details' : 'Delivery details'}</h3><p><span>${customer.deliveryType === 'pickup' ? 'Collect on' : 'Deliver on'}</span><strong>${deliveryDay}${requestedTime ? ` · ${requestedTime}` : ''}</strong></p><p><span>Address</span><strong>${escapeHtml(fulfilmentDetails)}</strong></p>${customer.name ? `<p><span>Recipient</span><strong>${escapeHtml(customer.name)}${customer.phone ? ` · ${escapeHtml(customer.phone)}` : ''}</strong></p>` : ''}${customer.notes ? `<p><span>Note for the bakery</span><strong>${escapeHtml(customer.notes)}</strong></p>` : ''}</section><section class="account-order-detail-section"><h3>Payment</h3><p><span>Method</span><strong>${escapeHtml(method)}</strong></p><p><span>Status</span><strong class="account-payment-state">${escapeHtml(paymentState)}</strong></p></section>${tracking ? `<section class="account-order-detail-section"><h3>Order updates</h3><ol class="account-order-detail-timeline">${tracking}</ol></section>` : ''}`;
+    if (typeof orderDialog.showModal === 'function') orderDialog.showModal();
+    else orderDialog.setAttribute('open', '');
+  }
+  document.getElementById('pastOrders').addEventListener('click', (event) => {
+    const row = event.target.closest('[data-account-order-index]');
+    if (!row) return;
+    const order = accountOrdersForDialog[Number(row.dataset.accountOrderIndex)];
+    if (order) openAccountOrder(order);
+  });
+  document.getElementById('closeAccountOrderDialog').addEventListener('click', () => orderDialog.close());
+  orderDialog.addEventListener('click', (event) => { if (event.target === orderDialog) orderDialog.close(); });
 
   document.getElementById('profileForm').addEventListener('submit', async (event) => {
     event.preventDefault();
@@ -269,11 +319,10 @@
       const result = await response.json();
       if (!response.ok) throw new Error(result.message || 'Could not redeem this gift card.');
       showMessage('giftCardMessage', result.message);
-      document.getElementById('giftWalletBalance').textContent = money(result.balance);
       const wallet = await fetch(`${window.CAKES_API_BASE || '/api'}/commerce/gift-wallet`, { headers: { Authorization: `Bearer ${token()}` } });
       const walletData = await wallet.json();
       if (!wallet.ok) throw new Error(walletData.message || 'The card was redeemed, but the wallet activity could not be refreshed. Reload your account to see the new balance.');
-      document.getElementById('giftCardHistory').innerHTML = walletData.transactions.length ? walletData.transactions.map((item) => `<article class="account-row"><span><strong>${escapeHtml(item.type)} · ${item.type === 'spent' ? '−' : '+'}${money(item.amount)}</strong><small>${escapeHtml(item.note || 'Gift wallet activity')} · balance ${money(item.balanceAfter)} · ${new Date(item.createdAt).toLocaleDateString('en-IN')}</small></span></article>`).join('') : '<p class="empty-account">Your gift wallet activity will appear here.</p>';
+      renderGiftWallet(walletData);
     } catch (error) { showMessage('giftCardMessage', error.message, true); }
   });
 

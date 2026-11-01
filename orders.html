@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap"></noscript>
   <link rel="stylesheet" href="theme.css?v=20261101-real">
-  <link rel="stylesheet" href="store.css?v=20261101-real">
+  <link rel="stylesheet" href="store.css?v=20261102-delivery-reviews">
   <link rel="stylesheet" href="account.css?v=20261101-real">
   <link rel="stylesheet" href="ui-polish.css?v=20261101-real">
   <link rel="stylesheet" href="paradise-theme.css?v=20261101-real">
@@ -18,18 +18,26 @@
   <link rel="stylesheet" href="site-navigation.css?v=20261101-real">
   <link rel="stylesheet" href="shared-navigation.css?v=20261101-real">
   <link rel="stylesheet" href="preferences.css?v=20261101-real">
+  <link rel="stylesheet" href="cart-redesign.css?v=20261102-cancel-order-action">
 </head>
-<body class="account-page orders-page">
+<body class="account-page cart-page orders-page">
   <header class="account-topbar">
     <a class="account-brand" href="index.html"><img class="brand-logo" src="logo.jpg" alt=""><span>Cakes of Paradise<small>Handcrafted in Surathkal</small></span></a>
     <nav aria-label="Orders navigation"><a href="index.html#shop">Shop cakes</a><a href="account.html">My account</a><a href="settings.html">Settings</a><a href="index.html">Home</a><button id="ordersSignOut" type="button">Sign out</button></nav>
   </header>
-  <main class="account-shell orders-shell">
-    <section class="account-welcome"><div class="account-avatar" aria-hidden="true">♡</div><div><span class="account-kicker">YOUR CAKES OF PARADISE ORDERS</span><h1>Your orders</h1><p>Follow every cake from order confirmation to delivery or pickup.</p></div><a class="account-shop-link" href="index.html#shop">Browse cakes <span aria-hidden="true">→</span></a></section>
+  <section class="cart-editorial-hero orders-editorial-hero" aria-label="Your order journey">
+    <div class="cart-hero-copy"><div class="cart-breadcrumb"><a href="index.html">Home</a><span aria-hidden="true">›</span><span>Your orders</span></div><p class="cart-kicker">A LITTLE SOMETHING LOVELY</p><h1>Your Orders</h1><p class="cart-hero-script">Every cake, thoughtfully tracked <span aria-hidden="true">♡</span></p><p class="cart-hero-description">Follow each celebration from confirmation to delivery or pickup.</p><a class="orders-browse-link" href="shop.html">Browse cakes <span aria-hidden="true">→</span></a></div>
+    <div class="cart-hero-visual"><img id="cartHeroImage" src="/public/images/hero-generated/blue-celebration.webp?v=20261102-ai-hero" alt="AI illustrated celebration cake in soft blue tones" loading="eager"><div class="cart-hero-caption"><span class="cart-caption-mark" aria-hidden="true">✧</span><span class="cart-caption-copy"><strong>Made with care</strong><small>Fresh from our kitchen</small></span></div><button class="cart-hero-arrow previous" type="button" id="cartHeroPrevious" aria-label="Previous cake photo">←</button><button class="cart-hero-arrow next" type="button" id="cartHeroNext" aria-label="Next cake photo">→</button><div class="cart-hero-dots" id="cartHeroDots" aria-label="Choose a cake photo"></div></div>
+  </section>
+  <main class="cart-page-shell orders-page-shell">
+    <div class="orders-placed-banner" id="ordersPlacedBanner" role="status" aria-live="polite" hidden><span class="orders-placed-mark" aria-hidden="true">✓</span><div><strong>Order received with love</strong><p id="ordersPlacedCopy">Your order is saved and ready to follow here.</p></div><button id="dismissPlacedBanner" type="button" aria-label="Dismiss order confirmation">×</button></div>
     <p id="ordersMessage" class="account-message" role="status" aria-live="polite"></p>
     <p id="cancelPolicyHint" class="orders-policy account-muted">Cancel at least one day before delivery, while your order remains within the bakery’s cancellation window.</p>
-    <section class="account-card orders-card"><div class="account-card-heading"><div><span class="account-kicker">ORDER TRACKING</span><h2>Order history</h2></div><div class="orders-toolbar"><label class="orders-filter">Status<select id="orderStatusFilter" aria-label="Filter orders by status"><option value="all">All orders</option><option value="placed">Pending</option><option value="confirmed">Confirmed</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option><option value="other">In progress</option></select></label><button id="refreshOrders" class="account-button secondary" type="button">Refresh</button></div></div><div id="customerOrders" class="order-list" aria-live="polite"><p class="empty-account">Loading your orders…</p></div></section>
+    <section class="cart-page-card account-card orders-card"><div class="account-card-heading"><div><span class="account-kicker">ORDER TRACKING</span><h2>Your cake orders</h2><p>See what you ordered, check payment, and follow every update.</p></div><div class="orders-toolbar"><label class="orders-filter">Status<select id="orderStatusFilter" aria-label="Filter orders by status"><option value="all">All orders</option><option value="placed">Pending</option><option value="confirmed">Confirmed</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option><option value="other">In progress</option></select></label><button id="refreshOrders" class="account-button secondary" type="button"><span aria-hidden="true">↻</span> Refresh</button></div></div><div id="customerOrders" class="order-list" aria-live="polite"><p class="empty-account">Loading your orders…</p></div></section>
   </main>
+  <dialog class="orders-detail-dialog" id="ordersDetailDialog" aria-labelledby="ordersDetailTitle">
+    <section class="orders-detail-card"><header><div><span class="account-kicker">YOUR CELEBRATION DETAILS</span><h2 id="ordersDetailTitle">Order details</h2></div><button type="button" id="closeOrdersDetail" aria-label="Close order details">×</button></header><div id="ordersDetailContent"></div></section>
+  </dialog>
   
 <footer class="site-footer" id="siteFooter">
   <div class="footer-wrap">
@@ -83,7 +91,9 @@
 </footer>
 
 <script src="api-config.js?v=20261101-real" defer></script>
-  <script src="orders.js?v=20261101-real" defer></script>
+  <script src="confirm-dialog.js?v=20261102-branded" defer></script>
+  <script src="orders.js?v=20261102-delivery-status" defer></script>
+  <script src="cart-banner.js?v=20261102-orders" defer></script>
 <script src="motion.js?v=20261101-real" defer></script>
   <script src="shared-footer.js?v=20261101-real" defer></script>
   <script src="shared-navigation.js?v=20261101-real" defer></script>

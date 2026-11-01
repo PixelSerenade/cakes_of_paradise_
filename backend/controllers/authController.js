@@ -315,14 +315,15 @@ const updateProfile = async (req, res) => {
 const requestPasswordReset = async (req, res) => {
   const email = typeof req.body.email === 'string' ? req.body.email.trim().toLowerCase() : '';
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,63}$/.test(email)) return res.status(400).json({ message: 'Enter a valid email address.' });
+  const user = await User.findOne({ email, role: 'user' }).select('+passwordResetOtpHash +passwordResetOtpExpiresAt +passwordResetOtpSentAt +passwordResetAttempts');
+  if (!user) return res.status(404).json({ code: 'ACCOUNT_NOT_FOUND', message: 'There is no account registered with this email address. Create an account to join us.' });
+
   const { isConfigured } = require('../services/emailService');
   if (!isConfigured()) {
     return res.status(503).json({ message: 'Email verification is temporarily unavailable. Please contact the bakery for help.' });
   }
 
-  const user = await User.findOne({ email }).select('+passwordResetOtpHash +passwordResetOtpExpiresAt +passwordResetOtpSentAt +passwordResetAttempts');
   const generic = 'If an account uses that email, a verification code has been sent.';
-  if (!user) return res.json({ message: generic });
   const now = Date.now();
   if (user.passwordResetOtpSentAt && now - user.passwordResetOtpSentAt.getTime() < 45_000) return res.json({ message: generic });
 
@@ -354,7 +355,7 @@ const verifyPasswordResetOtp = async (req, res) => {
   const email = typeof req.body.email === 'string' ? req.body.email.trim().toLowerCase() : '';
   const code = typeof req.body.code === 'string' ? req.body.code.trim() : '';
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,63}$/.test(email) || !/^\d{6}$/.test(code)) return res.status(400).json({ message: 'Enter the email address and six-digit code.' });
-  const user = await User.findOne({ email }).select('+passwordResetOtpHash +passwordResetOtpExpiresAt +passwordResetAttempts');
+  const user = await User.findOne({ email, role: 'user' }).select('+passwordResetOtpHash +passwordResetOtpExpiresAt +passwordResetAttempts');
   if (!user || !user.passwordResetOtpHash || !user.passwordResetOtpExpiresAt || user.passwordResetOtpExpiresAt <= new Date()) return res.status(400).json({ message: 'That code is invalid or expired. Request a new one and try again.' });
   if (user.passwordResetAttempts >= 5) return res.status(429).json({ message: 'Too many incorrect attempts. Request a new code to continue.' });
   if (!safeEqual(resetDigest(code), user.passwordResetOtpHash)) {
@@ -378,7 +379,7 @@ const resetPassword = async (req, res) => {
   if (!token || token.length > 128) return res.status(400).json({ message: 'Verify your email code before choosing a new password.' });
   if (!isValidPassword(password)) return res.status(400).json({ message: passwordPolicyMessage.replace(/^Password/, 'New password') });
   const tokenHash = resetDigest(token);
-  const user = await User.findOne({ passwordResetTokenHash: tokenHash, passwordResetTokenExpiresAt: { $gt: new Date() } }).select('+passwordResetTokenHash +passwordResetTokenExpiresAt');
+  const user = await User.findOne({ role: 'user', passwordResetTokenHash: tokenHash, passwordResetTokenExpiresAt: { $gt: new Date() } }).select('+passwordResetTokenHash +passwordResetTokenExpiresAt');
   if (!user) return res.status(400).json({ message: 'This password reset has expired. Request a new verification code.' });
   user.password = await bcrypt.hash(password, 10);
   user.passwordResetTokenHash = '';

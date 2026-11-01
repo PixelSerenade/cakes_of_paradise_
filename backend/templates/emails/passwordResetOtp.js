@@ -43,7 +43,7 @@ module.exports = (user, code) => {
           <tr><td align="center" class="email-pad" style="padding:20px 28px 16px">
             <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tbody><tr>
               <td width="25%" align="left" style="color:#d69491;font-size:26px">୨୧</td>
-              <td align="center"><div style="color:#4f4038;font:italic 48px/.95 Georgia,'Times New Roman',serif;letter-spacing:-2px">crème<span style="color:#d8908d">.</span></div><div style="padding-top:8px;color:#77685e;font:10px/1.4 Arial,sans-serif;letter-spacing:3px">CAKES FOR SWEETER DAYS</div></td>
+              <td align="center"><div style="color:#4f4038;font:italic 36px/.95 Georgia,'Times New Roman',serif;letter-spacing:-.5px">Cakes of Paradise<span style="color:#d8908d"> ♡</span></div><div style="padding-top:8px;color:#77685e;font:10px/1.4 Arial,sans-serif;letter-spacing:3px">CAKES · SWEET MOMENTS</div></td>
               <td width="25%" align="right" style="color:#c6958c;font:italic 14px/1.4 Georgia,'Times New Roman',serif">Sweet<br>moments ♡</td>
             </tr></tbody></table>
           </td></tr>
@@ -69,7 +69,7 @@ module.exports = (user, code) => {
           <tr><td class="email-pad" style="padding:17px 38px 12px">
             <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tbody><tr>
               <td align="left" valign="middle" style="width:32px;color:#d69b96;font-size:30px">♡</td>
-              <td align="left" style="color:#83766b;font:italic 14px/1.5 Georgia,'Times New Roman',serif">Still here for all your sweet moments.<br><span style="color:#5e5147">With love, Team crème</span></td>
+              <td align="left" style="color:#83766b;font:italic 14px/1.5 Georgia,'Times New Roman',serif">Still here for all your sweet moments.<br><span style="color:#5e5147">With love, Team Cakes of Paradise</span></td>
               <td align="right" valign="bottom" style="color:#d99d98;font-size:27px">✧ &nbsp; ୨୧</td>
             </tr></tbody></table>
           </td></tr>

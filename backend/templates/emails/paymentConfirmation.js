@@ -10,8 +10,8 @@ module.exports = (order) => {
     ['Paid On', niceDate(order.paidAt || new Date())],
   ];
   return {
-    subject: `Payment received for order ${order.orderNumber} ♡`,
-    text: `Hello, ${order.customer?.name || 'sweet friend'}!\n\nYour payment for order ${order.orderNumber} was successful.\nPayment ID: ${paymentId}\nAmount: ${money(order.total)}\nPayment method: ${method}\n\nYour order is confirmed and will be prepared soon.`,
+    subject: `Cakes of Paradise · Payment received for order ${order.orderNumber} ♡`,
+    text: `Hello, ${order.customer?.name || 'sweet friend'}!\n\nYour payment for order ${order.orderNumber} was successful.\nPayment ID: ${paymentId}\nAmount: ${money(order.total)}\nPayment method: ${method}\n\nYour order is confirmed and will be prepared soon.\n\nWith love,\nCakes of Paradise`,
     html: layout({
       preheader: `Payment received for order ${order.orderNumber}.`,
       title: 'Payment successful!',

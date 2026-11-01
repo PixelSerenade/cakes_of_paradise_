@@ -15,6 +15,10 @@
   const progress = document.querySelector('.forgot-progress');
   const resendButton = document.getElementById('resendResetCodeBtn');
   const countdown = document.getElementById('resetCountdown');
+  const accountMissingDialog = document.getElementById('forgotAccountMissingDialog');
+  const createAccountLink = document.getElementById('forgotCreateAccountLink');
+  const closeAccountMissingButton = document.getElementById('forgotAccountMissingClose');
+  const useAnotherEmailButton = document.getElementById('forgotAccountMissingCloseText');
   const steps = [emailForm, otpForm, passwordForm, doneStep];
   let resetToken = '';
   let resendInterval = null;
@@ -67,7 +71,11 @@
       throw new Error('We couldn’t reach the bakery just now. Please try again in a moment.');
     }
     const data = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(data.message || 'We could not complete that step. Please try again.');
+    if (!response.ok) {
+      const error = new Error(data.message || 'We could not complete that step. Please try again.');
+      error.code = data.code || '';
+      throw error;
+    }
     return data;
   };
 
@@ -109,7 +117,14 @@
     if (!isResend && !emailForm.reportValidity()) return;
     const email = emailInput.value.trim();
     await runButton(button, isResend ? 'Sending a fresh code…' : 'Sending a little note…', async () => {
-      await request('forgot-password', { email });
+      try {
+        await request('forgot-password', { email });
+      } catch (error) {
+        if (error.code !== 'ACCOUNT_NOT_FOUND') throw error;
+        if (createAccountLink) createAccountLink.href = `login.html?tab=register&email=${encodeURIComponent(email)}`;
+        if (accountMissingDialog && !accountMissingDialog.open) accountMissingDialog.showModal();
+        return;
+      }
       resetToken = '';
       document.getElementById('resetEmailDisplay').textContent = email;
       clearOtp();
@@ -119,6 +134,12 @@
     });
   };
 
+  closeAccountMissingButton?.addEventListener('click', () => accountMissingDialog?.close());
+  useAnotherEmailButton?.addEventListener('click', () => accountMissingDialog?.close());
+  accountMissingDialog?.addEventListener('close', () => emailInput.focus({ preventScroll: true }));
+  accountMissingDialog?.addEventListener('click', (event) => {
+    if (event.target === accountMissingDialog) accountMissingDialog.close();
+  });
   emailForm.addEventListener('submit', (event) => {
     event.preventDefault();
     sendCode(document.getElementById('sendResetCodeBtn'));

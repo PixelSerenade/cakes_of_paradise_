@@ -17,6 +17,9 @@ const GiftCardOffer = require('../models/GiftCardOffer');
 const giftEmailTemplates = ['sweet-moments', 'cake-love', 'birthday-bliss', 'just-because', 'with-love', 'special-treat'];
 
 const codeHash = (code) => crypto.createHash('sha256').update(String(code).trim().toUpperCase()).digest('hex');
+// Codes are issued per card (never per design/offer) and only after payment is confirmed.
+// The model's unique codeHash index is the final guard against duplicates.
+const generateGiftCardCode = () => `CAKE-${crypto.randomBytes(16).toString('hex').toUpperCase()}`;
 const giftCodeEncryptionKey = () => crypto.createHash('sha256').update(String(process.env.JWT_SECRET || '')).digest();
 const encryptGiftCode = (code) => {
   const iv = crypto.randomBytes(12);
@@ -66,12 +69,62 @@ const deliverGiftCardPurchase = async (purchase, card) => {
   await purchase.save();
   return true;
 };
+const queueGiftCardEmail = (purchaseId) => {
+  setImmediate(async () => {
+    let purchase;
+    try {
+      // Claim this email job once so a duplicate payment callback cannot send duplicates.
+      purchase = await GiftCardPurchase.findOneAndUpdate(
+        { _id: purchaseId, status: 'paid', emailDeliveryStatus: 'queued' },
+        { $set: { emailDeliveryStatus: 'sending' } },
+        { new: true },
+      ).select('+deliveryCodeEncrypted');
+      if (!purchase) return;
+      const code = decryptGiftCode(purchase.deliveryCodeEncrypted);
+      const result = await emailPurchasedGiftCard(purchase, code);
+      if (!result.sent) throw new Error('Mail provider did not accept the gift email.');
+      await GiftCardPurchase.updateOne(
+        { _id: purchase._id, emailDeliveryStatus: 'sending' },
+        { $set: { status: 'fulfilled', emailDeliveryStatus: 'sent', deliveryCodeEncrypted: '' } },
+      );
+    } catch (error) {
+      console.error(`Gift card email delivery failed for purchase ${purchaseId}: ${error.message}`);
+      if (purchase) await GiftCardPurchase.updateOne(
+        { _id: purchase._id, emailDeliveryStatus: 'sending' },
+        { $set: { emailDeliveryStatus: 'failed' } },
+      ).catch((updateError) => console.error(`Could not record gift email failure for purchase ${purchaseId}: ${updateError.message}`));
+    }
+  });
+};
 const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const calculateDiscount = (promo, subtotal) => {
-  if (!promo.active || promo.startsAt > new Date() || (promo.endsAt && promo.endsAt < new Date()) ||
-      (promo.usageLimit && promo.usedCount >= promo.usageLimit) || subtotal < promo.minimumSubtotal) return 0;
+  const startsInFuture = promo.startsAt && new Date(promo.startsAt) > new Date();
+  // In the admin offer form, email scheduling controls delivery only. The offer is usable as soon as it is created.
+  if (promo.active === false || (startsInFuture && !promo.sendToSubscribers) || (promo.endsAt && new Date(promo.endsAt) < new Date()) ||
+      (Number(promo.usageLimit) > 0 && Number(promo.usedCount || 0) >= Number(promo.usageLimit)) || subtotal < Number(promo.minimumSubtotal || 0)) return 0;
   const amount = promo.type === 'percent' ? subtotal * promo.value / 100 : promo.value;
-  return Math.min(subtotal, promo.maximumDiscount ? Math.min(amount, promo.maximumDiscount) : amount);
+  const cap = Number(promo.maximumDiscount || 0);
+  return Math.max(0, Math.min(subtotal, cap > 0 ? Math.min(amount, cap) : amount));
+};
+
+const findPromoByCode = async (code) => {
+  const normalized = String(code || '').trim().toUpperCase();
+  if (!normalized) return null;
+  const exact = await PromoCode.findOne({ code: normalized });
+  if (exact) return exact;
+  // Older promo documents may predate the schema's uppercase setter.
+  const escaped = normalized.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return PromoCode.findOne({ code: { $regex: `^${escaped}$`, $options: 'i' } });
+};
+
+const promoUnavailableReason = (promo, subtotal, now = new Date()) => {
+  if (!promo || promo.active === false) return 'That discount code is not active. Check the code with the bakery.';
+  if (promo.startsAt && new Date(promo.startsAt) > now && !promo.sendToSubscribers) return `That offer starts on ${new Date(promo.startsAt).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })}.`;
+  if (promo.endsAt && new Date(promo.endsAt) < now) return 'That discount code has expired.';
+  if (Number(promo.usageLimit) > 0 && Number(promo.usedCount || 0) >= Number(promo.usageLimit)) return 'That discount code has reached its use limit.';
+  const minimum = Number(promo.minimumSubtotal || 0);
+  if (subtotal < minimum) return `Add at least ₹${minimum.toLocaleString('en-IN')} in cakes to use this code.`;
+  return 'That discount code could not be applied. Please try again.';
 };
 
 exports.validatePromo = async (req, res) => {
@@ -86,10 +139,10 @@ exports.validatePromo = async (req, res) => {
     const rewards = getReferralRewards(policy);
     return res.json({ code, discount: 0, total: subtotal, referral: true, message: `Referral linked. You will receive ${rewards.customerPoints} bonus points and your friend ${rewards.referrerPoints} points after your first paid order is completed.` });
   }
-  const promo = await PromoCode.findOne({ code });
+  const promo = await findPromoByCode(code);
   if (promo?.user && String(promo.user) !== String(req.user?._id)) return res.status(404).json({ message: 'That code is invalid, expired, or does not apply to this basket.' });
   const discount = promo ? calculateDiscount(promo, subtotal) : 0;
-  if (!discount) return res.status(404).json({ message: 'That code is invalid, expired, or does not apply to this basket.' });
+  if (!discount) return res.status(400).json({ message: promoUnavailableReason(promo, subtotal) });
   return res.json({ code, discount, total: subtotal - discount });
 };
 
@@ -138,7 +191,7 @@ exports.createPromo = async (req, res) => {
     }
     const minimumSubtotal = Math.max(0, Number(req.body.minimumSubtotal) || 0);
     const maximumDiscount = Math.max(0, Number(req.body.maximumDiscount) || 0);
-    const promotion = await PromoCode.create({ code, description, occasionType, sendToSubscribers, type, value, minimumSubtotal, maximumDiscount, startsAt: sendAt || new Date(), endsAt, usageLimit: Math.max(0, Number(req.body.usageLimit) || 0) });
+    const promotion = await PromoCode.create({ code, description, occasionType, sendToSubscribers, type, value, minimumSubtotal, maximumDiscount, startsAt: new Date(), endsAt, usageLimit: Math.max(0, Number(req.body.usageLimit) || 0) });
     if (sendToSubscribers) {
       try {
         await PromoCampaign.create({ eventName: description, code, promoCode: promotion._id, discountPercent: value, minimumSubtotal, maximumDiscount, sendAt, endsAt });
@@ -256,7 +309,7 @@ exports.createGiftCardPurchase = async (req, res) => {
   if (!razorpay.isConfigured()) return res.status(503).json({ message: razorpay.unavailableReason() });
   if (!require('../services/emailService').isConfigured()) return res.status(503).json({ message: 'Gift card email delivery is not configured yet. Please contact the bakery.' });
   const receipt = `GC-${Date.now()}-${crypto.randomBytes(3).toString('hex').toUpperCase()}`;
-  const purchase = await GiftCardPurchase.create({ offer: offer._id, offerName, recipientEmail, recipientName, message, design, emailTemplate: offer.emailTemplate || design, value, receipt, paymentMethod: 'upi' });
+  const purchase = await GiftCardPurchase.create({ offer: offer._id, offerName, recipientEmail, recipientName, message, design, emailTemplate: offer.emailTemplate || design, value, receipt, paymentMethod: 'razorpay' });
   try {
     const payment = await razorpay.createOrder(value, receipt.slice(0, 40), { email: recipientEmail });
     purchase.paymentOrderId = payment.id;
@@ -286,7 +339,7 @@ exports.createGiftCardWalletPurchase = async (req, res) => {
       const user = await User.findOneAndUpdate({ _id: req.user._id, giftWalletBalance: { $gte: offer.price } }, { $inc: { giftWalletBalance: -offer.price } }, { new: true, session }).select('giftWalletBalance');
       if (!user) throw Object.assign(new Error('Your gift wallet balance is too low for this card. Choose UPI or add funds to your wallet.'), { status: 409 });
       [purchase] = await GiftCardPurchase.create([{ offer: offer._id, offerName: offer.name, recipientEmail, recipientName, message, design: offer.design, emailTemplate: offer.emailTemplate || offer.design, value: offer.price, receipt, paymentMethod: 'gift-wallet', user: req.user._id, status: 'paid' }], { session });
-      const code = `CAKE-${crypto.randomBytes(8).toString('hex').toUpperCase()}`;
+      const code = generateGiftCardCode();
       [card] = await GiftCard.create([{ purchaseRef: String(purchase._id), codeHash: codeHash(code), codeLast4: code.slice(-4), value: offer.price, balance: offer.price, recipientName, recipientEmail, message, design: offer.design, emailTemplate: offer.emailTemplate || offer.design, offerName: offer.name, expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) }], { session });
       await GiftCardTransaction.create([{ giftCard: card._id, type: 'issued', amount: offer.price, balanceAfter: offer.price, note: 'Customer gift card purchase using gift wallet' }], { session });
       await GiftWalletTransaction.create([{ user: req.user._id, giftCard: card._id, type: 'spent', amount: offer.price, balanceAfter: user.giftWalletBalance, note: `Gift card purchase: ${offer.name}` }], { session });
@@ -327,18 +380,31 @@ exports.verifyGiftCardPurchase = async (req, res) => {
   if (!purchase || purchase.paymentOrderId !== orderId) return res.status(404).json({ message: 'Gift card purchase was not found.' });
   if (!razorpay.isConfigured()) return res.status(503).json({ message: razorpay.unavailableReason() });
   if (purchase.status === 'fulfilled' && purchase.giftCard) return res.json({ message: 'Your gift card has been emailed.', recipientEmail: purchase.recipientEmail });
-  const payment = await razorpay.getPayment(paymentId);
-  if (payment.order_id !== orderId || payment.amount !== purchase.value * 100 || payment.status !== 'captured') return res.status(409).json({ message: 'Payment is not captured yet. Please wait a moment and try again.' });
-  if (purchase.paymentMethod !== 'upi' || payment.method !== 'upi') {
+  let payment;
+  try { payment = await razorpay.getPayment(paymentId); }
+  catch (error) { return res.status(502).json({ paymentPending: true, message: `Could not verify payment with Razorpay yet: ${error.message}` }); }
+  if (payment.order_id !== orderId || payment.amount !== purchase.value * 100 || payment.currency !== 'INR') return res.status(409).json({ message: 'The payment details do not match this gift card. Please contact the bakery before retrying.' });
+  if (payment.status === 'authorized') {
     try {
-      await razorpay.refundPayment(paymentId, purchase.value);
-      return res.status(409).json({ paymentRejected: true, message: 'Gift cards can only be paid with UPI or account balance. A refund has been initiated for this payment.' });
+      await razorpay.capturePayment(paymentId, payment.amount);
+      payment = await razorpay.getPayment(paymentId);
     } catch (error) {
-      console.error(`Could not refund non-UPI gift card payment ${paymentId}: ${error.message}`);
-      return res.status(503).json({ paymentRejected: true, message: 'This payment method is not accepted for gift cards. Please contact the bakery with your payment reference to arrange a refund.' });
+      // Razorpay may finish capture while the capture request is returning an error.
+      try { payment = await razorpay.getPayment(paymentId); }
+      catch { return res.status(502).json({ paymentPending: true, message: 'Payment is authorized but not confirmed yet. Check payment again in a moment; the gift card will not be issued until capture succeeds.' }); }
+      if (payment.status !== 'captured') {
+        console.error(`Razorpay capture failed for gift card purchase ${purchase._id}: ${error.message}`);
+        return res.status(502).json({ paymentPending: true, message: 'Payment is authorized but could not be captured yet. Check again shortly; the gift card will not be issued until capture succeeds.' });
+      }
     }
   }
+  if (payment.status === 'failed') return res.status(402).json({ paymentFailed: true, message: 'Razorpay reports that this payment failed. No gift card was issued.' });
+  if (payment.status !== 'captured') return res.status(409).json({ paymentPending: true, message: 'Razorpay has not confirmed a captured payment yet. Check again in a moment; no gift card has been issued.' });
+  // The Razorpay order can be paid with any method enabled for the merchant account.
+  // Older pending purchases are stored as "upi", so accept those while they finish.
+  if (!['razorpay', 'upi'].includes(purchase.paymentMethod)) return res.status(409).json({ message: 'This gift card purchase is not awaiting a Razorpay payment.' });
   purchase.paymentId = paymentId;
+  purchase.paymentProviderMethod = String(payment.method || '');
   purchase.status = 'paid';
   await purchase.save();
   const session = await mongoose.startSession();
@@ -350,34 +416,34 @@ exports.verifyGiftCardPurchase = async (req, res) => {
       if (!purchase) throw new Error('Gift card purchase was not found.');
       card = await GiftCard.findOne({ purchaseRef: String(purchase._id) }).session(session);
       if (!card) {
-        code = `CAKE-${crypto.randomBytes(8).toString('hex').toUpperCase()}`;
+        code = generateGiftCardCode();
         [card] = await GiftCard.create([{ purchaseRef: String(purchase._id), codeHash: codeHash(code), codeLast4: code.slice(-4), value: purchase.value, balance: purchase.value, recipientName: purchase.recipientName, recipientEmail: purchase.recipientEmail, message: purchase.message, design: purchase.design, emailTemplate: purchase.emailTemplate, offerName: purchase.offerName, expiresAt: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000) }], { session });
         await GiftCardTransaction.create([{ giftCard: card._id, type: 'issued', amount: purchase.value, balanceAfter: purchase.value, note: 'Customer gift card purchase' }], { session });
         purchase.giftCard = card._id;
         purchase.deliveryCodeEncrypted = encryptGiftCode(code);
+        purchase.emailDeliveryStatus = 'queued';
         await purchase.save({ session });
       } else {
         if (!purchase.deliveryCodeEncrypted) throw Object.assign(new Error('Your gift card was issued, but its delivery code could not be recovered. Please contact the bakery with your payment ID.'), { status: 503 });
         try { code = decryptGiftCode(purchase.deliveryCodeEncrypted); }
         catch { throw Object.assign(new Error('Your gift card is ready, but its secure delivery code could not be recovered. Please contact the bakery with your payment ID.'), { status: 503 }); }
+        if (['pending', 'failed'].includes(purchase.emailDeliveryStatus)) {
+          purchase.emailDeliveryStatus = 'queued';
+          await purchase.save({ session });
+        }
       }
     });
   } catch (error) {
     if (error.status === 503) return res.status(503).json({ message: error.message });
     throw error;
   } finally { await session.endSession(); }
-  const delivery = await emailPurchasedGiftCard(purchase, code);
-  if (!delivery.sent) return res.status(503).json({ message: 'Payment was captured, but the gift card email could not be sent. Please contact the bakery with your payment ID.' });
-  purchase.giftCard = card._id;
-  purchase.status = 'fulfilled';
-  purchase.deliveryCodeEncrypted = '';
-  await purchase.save();
-  return res.json({ message: 'Gift card purchased and emailed successfully.', recipientEmail: purchase.recipientEmail });
+  queueGiftCardEmail(purchase._id);
+  return res.json({ message: 'Payment confirmed. Your gift card is purchased and the email is being sent to its recipient.', recipientEmail: purchase.recipientEmail, emailQueued: true });
 };
 exports.issueGiftCard = async (req, res) => {
   const value = Number(req.body.value !== undefined ? req.body.value : req.body.initialBalance);
   if (!Number.isSafeInteger(value) || value < 100 || value > 100000) return res.status(400).json({ message: 'Gift card value must be between ₹100 and ₹100,000.' });
-  const code = `CAKE-${crypto.randomBytes(8).toString('hex').toUpperCase()}`;
+  const code = generateGiftCardCode();
   const allowedDesigns = ['sweet-moments', 'cake-love', 'birthday-bliss', 'just-because', 'with-love', 'special-treat'];
   const design = allowedDesigns.includes(req.body.design) ? req.body.design : 'sweet-moments';
   const emailTemplate = giftEmailTemplates.includes(req.body.emailTemplate) ? req.body.emailTemplate : design;
@@ -468,7 +534,7 @@ exports.listGiftCardActivity = async (req, res) => {
 };
 exports.resolveCheckoutBenefits = async (promoCode, giftCode, subtotal, deliveryFee = 0, loyaltyDiscount = 0, userId = null) => {
   const enteredCode = String(promoCode || '').trim().toUpperCase();
-  const promo = enteredCode ? await PromoCode.findOne({ code: enteredCode }) : null;
+  const promo = enteredCode ? await findPromoByCode(enteredCode) : null;
   if (promo?.user && String(promo.user) !== String(userId || '')) throw new Error('That offer code belongs to a different account. Sign in to the account that received it.');
   let code = enteredCode;
   let referrer = !promo && code ? await User.findOne({ referralCode: code }).select('_id') : null;
@@ -484,7 +550,7 @@ exports.resolveCheckoutBenefits = async (promoCode, giftCode, subtotal, delivery
   if (code && !promo && !referrer) throw new Error('Referral code is invalid or expired.');
   if (referrer && (!userId || String(referrer._id) === String(userId) || await Order.exists({ user: userId }) || await ReferralClaim.exists({ referee: userId, status: { $in: ['pending', 'rewarded'] } }))) throw new Error('Referral codes are for a friend’s first order only.');
   const discount = promo ? calculateDiscount(promo, subtotal) : 0;
-  if (enteredCode && !discount && !referrer) throw new Error('Discount code does not apply to this order.');
+  if (enteredCode && !discount && !referrer) throw new Error(promoUnavailableReason(promo, subtotal));
   let giftCard = null;
   if (giftCode) {
     giftCard = await GiftCard.findOne({ codeHash: codeHash(giftCode), active: true });

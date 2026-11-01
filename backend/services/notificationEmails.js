@@ -6,6 +6,7 @@ const orderConfirmationTemplate = require('../templates/emails/orderConfirmation
 const paymentConfirmationTemplate = require('../templates/emails/paymentConfirmation');
 const orderShippedTemplate = require('../templates/emails/orderShipped');
 const enquiryTemplate = require('../templates/emails/customCakeEnquiry');
+const contactMessageTemplate = require('../templates/emails/contactMessage');
 
 const logDeliveryError = (event, error) => console.error(`${event} email delivery failed (${error?.code || error?.name || 'provider error'}).`);
 
@@ -62,6 +63,6 @@ const sendNewsletterWelcome = async (email, unsubscribeToken) => {
 const sendOrderConfirmation = (order) => sendOrderEvent(order, 'orderConfirmation', orderConfirmationTemplate);
 const sendPaymentConfirmation = (order) => sendOrderEvent(order, 'paymentConfirmation', paymentConfirmationTemplate);
 const sendOrderShipped = (order) => sendOrderEvent(order, 'orderShipped', orderShippedTemplate);
-const sendEnquiryConfirmation = (enquiry) => sendTemplate(enquiry.email, enquiryTemplate(enquiry));
+const sendEnquiryConfirmation = (enquiry) => sendTemplate(enquiry.email, enquiry.type === 'contact' ? contactMessageTemplate(enquiry) : enquiryTemplate(enquiry));
 
 module.exports = { sendRegisteredWelcome, sendNewsletterWelcome, sendOrderConfirmation, sendPaymentConfirmation, sendOrderShipped, sendEnquiryConfirmation };

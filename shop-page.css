@@ -340,7 +340,7 @@ body.shop-page .collection-sidebar>.select-category-btn[data-category="Photo Cak
 
 /* A calm, consistent toolbar for searching and sorting the collection. */
 body.shop-page .shop-toolbar{
-  display:grid;grid-template-columns:minmax(240px,1fr) minmax(190px,230px) auto;align-items:end;gap:12px;
+  display:grid;grid-template-columns:minmax(220px,1.5fr) minmax(150px,.8fr) minmax(170px,.9fr) auto;align-items:end;gap:12px;
   margin:0 auto 18px;padding:13px;border:1px solid #e9dfd3;border-radius:18px;
   background:linear-gradient(135deg,#fffaf5,#f6f1e8);box-shadow:0 8px 24px #5946380b;
 }
@@ -381,3 +381,5 @@ body.shop-page #productGrid>.shop-product-card .shop-product-options summary{pad
 body.shop-page #productGrid>.shop-product-card .shop-product-options select{min-height:34px;border:1px solid #e3d8cb;border-radius:9px;background:#fffdf9}
 @media(max-width:760px){body.shop-page .shop-toolbar{grid-template-columns:minmax(0,1fr) minmax(140px,.8fr);gap:9px;padding:11px;border-radius:15px}body.shop-page .shop-toolbar .shop-search{grid-column:1/-1}body.shop-page .shop-toolbar .wishlist-filter{grid-column:1/-1}}
 @media(max-width:480px){body.shop-page .shop-toolbar{grid-template-columns:1fr}body.shop-page .shop-toolbar .shop-search,body.shop-page .shop-toolbar .wishlist-filter{grid-column:1}body.shop-page #productGrid>.shop-product-card .product-content{padding:10px}body.shop-page #productGrid>.shop-product-card .product-content h3{font-size:1.1rem}body.shop-page #productGrid>.shop-product-card .product-description{font-size:.82rem!important}}
+/* Keep the browser's dropdown chevron visible so selects read as controls. */
+body.shop-page .shop-toolbar select{appearance:auto;-webkit-appearance:menulist;background-image:none;padding-right:12px}

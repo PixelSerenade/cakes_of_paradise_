@@ -29,8 +29,24 @@
 .review-entry strong{color:var(--dark-brown)}
 .review-entry p{margin:4px 0 0;white-space:pre-wrap;overflow-wrap:anywhere}
 .review-form{display:grid;gap:8px;margin-top:10px}
+.review-form[hidden]{display:none!important}
 .review-form button,.store-secondary{border:1px solid #FCECEF;border-radius:999px;background:#fff;color:var(--dark-brown);padding:8px 13px;font:600 .78rem Poppins,sans-serif;cursor:pointer}
 .review-form button:hover,.store-secondary:hover{background:#FCECEF}
+.modal-reviews-section{margin-top:24px;padding:18px 20px;border:1px solid #eadfd2;border-radius:16px;background:linear-gradient(135deg,#fffaf5,#f4f5ed)}
+.modal-reviews-section>header{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;padding-bottom:12px;border-bottom:1px solid #e8ded2}
+.modal-reviews-section .eyebrow{color:#7d8974;font-size:.62rem;letter-spacing:.14em}
+.modal-reviews-section h3{margin:3px 0 0;color:#382c25;font:500 1.55rem Georgia,serif}
+.modal-reviews-section>header p{max-width:320px;margin:0;color:#65574c;font-size:.75rem;text-align:right}
+.modal-reviews-section .review-list{max-height:220px;overflow:auto;padding-right:4px}
+.modal-reviews-section .review-entry{border:1px solid #ece2d7;background:#fffdfa;color:#45392f}
+.modal-reviews-section .review-entry strong{color:#49382e}
+.modal-reviews-section .review-entry small{display:block;margin-top:5px;color:#77695e}
+.modal-reviews-section .review-form{grid-template-columns:1fr 2fr auto;align-items:end;padding-top:12px;border-top:1px solid #e8ded2}
+.modal-reviews-section .review-form label{display:grid;gap:5px;color:#51453b;font-size:.73rem;font-weight:600}
+.modal-reviews-section .review-form select,.modal-reviews-section .review-form textarea{width:100%;min-height:40px;padding:9px 11px;border:1px solid #ded4c9;border-radius:9px;background:#fffdfa;color:#3f342c;font:inherit}
+.modal-reviews-section .review-form textarea{min-height:42px;resize:vertical}
+.modal-reviews-section .review-form button{min-height:40px;background:#72806b;color:white;border-color:#72806b;white-space:nowrap}
+.modal-reviews-section .review-form .store-message{grid-column:1/-1;margin:0;font-size:.75rem}
 .cart-panel{position:sticky;top:100px;padding:20px}
 .cart-heading,.store-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px}
 .cart-heading .eyebrow,.store-panel-heading .eyebrow{font-size:.68rem;margin:0 0 5px}
@@ -184,7 +200,7 @@ body.admin-mode #navLinks a{font-size:.82rem}
 .admin-order-activity .order-timeline{margin:0}
 .admin-order-activity .order-timeline li{flex:1 1 150px;min-width:0;padding:9px 11px;border:1px solid #FCECEF;border-radius:11px;background:#FFF8F5;color:#7A5856;font-size:.68rem}
 .admin-order-activity .order-timeline time{color:#7A5856;font-size:.62rem}
-.admin-order-card .order-admin-controls{display:grid;grid-template-columns:minmax(145px,.7fr) minmax(190px,1fr) auto auto;align-items:end;gap:10px;margin:0;padding-top:14px;border-top:1px solid #FCECEF}
+.admin-order-card .order-admin-controls{display:grid;grid-template-columns:repeat(4,minmax(125px,1fr)) auto auto;align-items:end;gap:10px;margin:0;padding-top:14px;border-top:1px solid #FCECEF}
 .admin-order-card .order-admin-controls label{min-width:0;color:#7A5856;font-size:.67rem}
 .admin-order-card .order-admin-controls select,.admin-order-card .order-admin-controls input{min-width:0;min-height:40px;border:1px solid #FCECEF;border-radius:10px;background:#fff;color:#4A2C2A;padding:9px 10px;font:inherit}
 .admin-order-card .order-admin-controls button{min-height:40px;border:0;border-radius:10px;background:linear-gradient(120deg,#E0587D,#E0587D);color:#fff;padding:9px 14px;font:600 .7rem Poppins,sans-serif;white-space:nowrap;cursor:pointer}
@@ -264,7 +280,7 @@ body.admin-mode #navLinks a{font-size:.82rem}
 /* Admin workspace: rose palette, shared page shell, responsive controls */
 body.admin-mode {
   --admin-ink: #572C3C;
-  --admin-muted: #815C6C;
+  --admin-muted: #5F5148;
   --admin-accent: var(--primary-pink);
   --admin-accent-strong: var(--primary-pink-deep);
   --admin-border: #F0D9DE;
@@ -410,3 +426,59 @@ body.admin-mode #admin-product-section .admin-product-toolbar .admin-compact-but
 .enquiry-admin-contact span{padding:0 4px;color:#b5a999}
 .enquiry-reference-link{display:inline-flex;align-items:center;gap:10px;margin-top:10px;padding:7px 10px 7px 7px;border:1px solid #e5ddd1;border-radius:10px;color:#59684e;font-size:.74rem;background:#faf7f0}
 .enquiry-reference-link img{width:62px;height:52px;object-fit:cover;border-radius:7px}
+
+/* Admin enquiry inbox: concise, scannable request cards with clear metadata. */
+#admin-enquiry-section .admin-section-heading{align-items:center}
+#admin-enquiry-section .admin-section-heading>div p{max-width:620px}
+#adminEnquiries{display:grid;gap:12px;margin-top:18px}
+#adminEnquiries>.chart-empty{margin:0;padding:28px;border:1px dashed #d9d4c7;border-radius:16px;background:linear-gradient(135deg,#fffaf5,#f2f4ec);color:#5d574d;text-align:center}
+.enquiry-admin-card{position:relative;display:block!important;padding:17px 19px!important;overflow:hidden;border:1px solid #e8dfd1!important;border-radius:16px!important;background:linear-gradient(115deg,#fffdfa 0%,#fbf8f1 100%)!important;box-shadow:0 7px 20px rgba(74,61,47,.045);transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}
+.enquiry-admin-card::before{position:absolute;inset:0 auto 0 0;width:4px;background:#c8d2bf;content:""}
+.enquiry-admin-card:hover{transform:translateY(-1px);border-color:#d7c9b8!important;box-shadow:0 10px 24px rgba(74,61,47,.08)}
+.enquiry-admin-main{width:100%;min-width:0}
+.enquiry-admin-topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.enquiry-admin-tags{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.enquiry-type-tag,.enquiry-reference-tag{display:inline-flex;align-items:center;min-height:24px;padding:4px 9px;border:1px solid #dfe5d9;border-radius:999px;background:#edf1e8;color:#58664f;font-size:.65rem;font-weight:700;letter-spacing:.035em}
+.enquiry-type-tag.is-contact{border-color:#ead9d1;background:#f8ebe5;color:#926657}
+.enquiry-reference-tag{border-color:#e8dfc9;background:#f6f0df;color:#806b3d}
+.enquiry-admin-date{flex:none;color:#82786c;font-size:.69rem;font-variant-numeric:tabular-nums}
+.enquiry-admin-content{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.enquiry-admin-identity{min-width:0}
+.enquiry-admin-identity h4{margin:0;color:#352e28;font-family:inherit;font-size:.98rem;font-weight:700;line-height:1.3}
+.enquiry-admin-contact{display:flex;flex-wrap:wrap;gap:6px 15px;margin:5px 0 0;font-size:.76rem;line-height:1.45}
+.enquiry-admin-contact a{color:#596d53;text-decoration:none;text-underline-offset:3px}
+.enquiry-admin-contact a:hover{text-decoration:underline}
+.enquiry-admin-specs{display:flex;gap:8px;flex:none}
+.enquiry-admin-specs>span{display:grid;gap:3px;min-width:118px;padding:7px 10px;border:1px solid #ece5d9;border-radius:10px;background:rgba(255,255,255,.62);color:#4b443c;font-size:.74rem}
+.enquiry-admin-specs small{color:#84796c;font-size:.59rem;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+.enquiry-status-pill{padding:4px 9px;background:#f2eee6;color:#716657;font-weight:700}
+.enquiry-status-pill.is-new{background:#e6eee5;color:#48644d}
+.enquiry-status-pill.is-contacted{background:#e8edf4;color:#52647a}
+.enquiry-status-pill.is-closed{background:#eee9e7;color:#776966}
+.enquiry-email-pill.is-not_configured{background:#f4eddf;color:#7d6842}
+.enquiry-email-pill.is-failed{background:#f8e6e2;color:#9b5146}
+.enquiry-admin-details{margin:12px 0 0;padding:10px 12px;border-left:2px solid #d9c8b8;border-radius:0 9px 9px 0;background:#f5f1e9;color:#554c43;font-size:.78rem;line-height:1.55;white-space:pre-line;overflow-wrap:anywhere}
+.enquiry-admin-details.is-empty{padding:0;border:0;background:transparent;color:#938a7e;font-size:.72rem;font-style:italic}
+.enquiry-reference-link{margin-top:11px;padding:6px 11px 6px 6px;border-color:#e4dccf;background:#fffdf8;color:#58674f}
+.enquiry-reference-link img{width:58px;height:48px}
+.enquiry-reference-link b{margin-left:5px;font-size:.9rem}
+@media(max-width:760px){.enquiry-admin-topline,.enquiry-admin-content{align-items:flex-start;flex-direction:column}.enquiry-admin-date{order:-1}.enquiry-admin-specs{width:100%;flex-wrap:wrap}.enquiry-admin-specs>span{flex:1;min-width:110px}}
+@media(max-width:480px){.enquiry-admin-card{padding:14px!important}.enquiry-admin-specs>span{min-width:100%}.enquiry-admin-topline{gap:7px}}
+
+/* Branded replacement for browser-native confirm prompts. */
+.cakes-confirm-dialog{position:fixed;inset:auto;top:50%;left:50%;width:min(440px,calc(100vw - 32px));max-width:none;max-height:calc(100dvh - 32px);margin:0;padding:0;transform:translate(-50%,-50%);border:1px solid #e6d4c5;border-radius:24px;background:transparent;color:#493c34;box-shadow:0 24px 70px rgba(50,38,29,.25);overflow:visible}
+.cakes-confirm-dialog::backdrop{background:rgba(52,44,37,.48);backdrop-filter:blur(5px)}
+.cakes-confirm-card{position:relative;padding:32px 30px 25px;border:5px solid #fffaf2;border-radius:23px;background:radial-gradient(ellipse at 0 0,#f9e8e3 0,transparent 45%),radial-gradient(ellipse at 100% 100%,#e9eee2 0,transparent 48%),#fffaf2;text-align:center}
+.cakes-confirm-close{position:absolute;top:12px;right:13px;width:32px;height:32px;border:1px solid #ead9cc;border-radius:50%;background:#fffdf9;color:#76675b;font-size:21px;line-height:1;cursor:pointer}
+.cakes-confirm-flourish{display:block;margin-bottom:7px;color:#cc8e88;font-size:27px;line-height:1}
+.cakes-confirm-eyebrow{margin:0 0 7px;color:#8b796c;font:700 .61rem/1.4 'DM Sans',Arial,sans-serif;letter-spacing:.17em}
+.cakes-confirm-card h2{margin:0;color:#433830;font:500 clamp(1.55rem,5vw,1.9rem)/1.15 'Cormorant Garamond',Georgia,serif}
+.cakes-confirm-card>p:not(.cakes-confirm-eyebrow){margin:12px auto 23px;max-width:345px;color:#66594f;font: .88rem/1.65 'DM Sans',Arial,sans-serif}
+.cakes-confirm-card footer{display:flex;justify-content:center;gap:10px}
+.cakes-confirm-card footer button{min-height:43px;padding:0 20px;border:1px solid #dfcfc0;border-radius:999px;font:600 .77rem 'DM Sans',Arial,sans-serif;cursor:pointer;transition:transform .16s ease,box-shadow .16s ease}
+.cakes-confirm-cancel{background:#fffdf9;color:#695b50}
+.cakes-confirm-accept{border-color:#77836e!important;background:#77836e;color:#fffaf2;box-shadow:0 5px 13px rgba(88,103,78,.19)}
+.cakes-confirm-card footer button:hover{transform:translateY(-1px);box-shadow:0 6px 15px rgba(76,61,48,.13)}
+.cakes-confirm-card footer button:focus-visible,.cakes-confirm-close:focus-visible{outline:3px solid #c88b84;outline-offset:3px}
+@media(max-width:480px){.cakes-confirm-card{padding:30px 20px 21px}.cakes-confirm-card footer button{flex:1;padding:0 12px}}
+@media(max-width:760px){.modal-reviews-section{padding:15px}.modal-reviews-section>header{align-items:flex-start;flex-direction:column}.modal-reviews-section>header p{text-align:left}.modal-reviews-section .review-form{grid-template-columns:1fr}.modal-reviews-section .review-form .store-message{grid-column:auto}}

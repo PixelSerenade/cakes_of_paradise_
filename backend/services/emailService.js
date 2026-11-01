@@ -1,4 +1,5 @@
 const nodemailer = require('nodemailer');
+const fs = require('fs/promises');
 
 const validEmail = (value) => typeof value === 'string' && value.length <= 254 && /^[^\s@]+@[^\s@]+\.[^\s@]{2,63}$/.test(value);
 const configuredValue = (value) => Boolean(value && !/replace|your[-_ ]/i.test(value));
@@ -9,9 +10,11 @@ const getMailConfig = () => {
   const pass = process.env.BREVO_SMTP_KEY || process.env.SMTP_PASS;
   const gmailUser = process.env.GMAIL_USER;
   const gmailPass = process.env.GMAIL_APP_PASSWORD;
-  const from = (configuredValue(process.env.EMAIL_FROM) && process.env.EMAIL_FROM) ||
+  const configuredFrom = (configuredValue(process.env.EMAIL_FROM) && process.env.EMAIL_FROM) ||
     (configuredValue(process.env.ORDER_EMAIL_FROM) && process.env.ORDER_EMAIL_FROM) ||
-    (gmailUser ? `Cakes of Paradise <${gmailUser}>` : (user ? `Cakes of Paradise <${user}>` : ''));
+    (gmailUser ? gmailUser : (user || ''));
+  const fromAddress = String(configuredFrom).match(/<([^<>]+)>/)?.[1]?.trim() || String(configuredFrom).trim();
+  const from = validEmail(fromAddress) ? `Cakes of Paradise <${fromAddress}>` : '';
 
   if (configuredValue(host) && configuredValue(user) && configuredValue(pass)) {
     const port = Number(process.env.BREVO_SMTP_PORT || process.env.SMTP_PORT || 587);
@@ -50,21 +53,33 @@ const getMailConfig = () => {
 
 const isConfigured = () => Boolean(getMailConfig());
 
-const sendEmailMessage = async ({ to, subject, text = '', html = '', replyTo, headers }) => {
+const sendEmailMessage = async ({ to, subject, text = '', html = '', replyTo, headers, attachments = [] }) => {
   if (!validEmail(to)) throw new Error('A valid recipient email address is required.');
   if (typeof subject !== 'string' || !subject.trim() || subject.length > 180) throw new Error('A valid email subject is required.');
   const mail = getMailConfig();
   if (!mail) return { sent: false, configured: false };
 
   if (mail.kind === 'smtp') {
-    await mail.transport.sendMail({ from: mail.from, to, subject, text, html, ...(replyTo ? { replyTo } : {}), ...(headers ? { headers } : {}) });
+    await mail.transport.sendMail({ from: mail.from, to, subject, text, html, ...(replyTo ? { replyTo } : {}), ...(headers ? { headers } : {}), ...(attachments.length ? { attachments } : {}) });
     return { sent: true, configured: true };
   }
+
+  const resendAttachments = await Promise.all(attachments.map(async (attachment) => {
+    const content = attachment.content || (attachment.path ? await fs.readFile(attachment.path) : null);
+    if (!content) throw new Error('An email attachment is missing its content.');
+    const contentId = attachment.content_id || attachment.cid;
+    return {
+      filename: attachment.filename,
+      content: Buffer.isBuffer(content) ? content.toString('base64') : content,
+      ...(attachment.contentType || attachment.content_type ? { content_type: attachment.contentType || attachment.content_type } : {}),
+      ...(contentId ? { content_id: contentId } : {}),
+    };
+  }));
 
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${mail.apiKey}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ from: mail.from, to: [to], subject, text, html, ...(replyTo ? { reply_to: replyTo } : {}), ...(headers ? { headers } : {}) }),
+    body: JSON.stringify({ from: mail.from, to: [to], subject, text, html, ...(replyTo ? { reply_to: replyTo } : {}), ...(headers ? { headers } : {}), ...(resendAttachments.length ? { attachments: resendAttachments } : {}) }),
     signal: AbortSignal.timeout(15_000),
   });
   if (!response.ok) throw new Error(`Email provider rejected the message (${response.status}).`);

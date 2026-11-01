@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="cart.css?v=20261101-real">
   <link rel="stylesheet" href="ui-polish.css?v=20261101-real">
   <link rel="stylesheet" href="paradise-theme.css?v=20261101-real">
-  <link rel="stylesheet" href="cart-redesign.css?v=20261101-real">
+  <link rel="stylesheet" href="cart-redesign.css?v=20261102-reward-balances">
   <link rel="stylesheet" href="shared-footer.css?v=20261101-real">
   <link rel="stylesheet" href="site-navigation.css?v=20261101-real">
   <link rel="stylesheet" href="shared-navigation.css?v=20261101-real">
@@ -70,7 +70,12 @@
           <div id="cartLines" class="cart-page-lines checkout-cart-lines" aria-live="polite"><p class="empty-account">Loading your order…</p></div>
           <div class="cart-price-breakdown"><div><span>Subtotal</span><strong id="checkoutSubtotal">₹0</strong></div><div><span>Delivery charges</span><strong id="checkoutDelivery">To be calculated</strong></div><div><span>Discount</span><strong id="checkoutDiscount">−₹0</strong></div><div><span>Gift card</span><strong id="checkoutGift">−₹0</strong></div><div><span>Reward points</span><strong id="checkoutPoints">−₹0</strong></div><div><span>Gift wallet</span><strong id="checkoutWallet">−₹0</strong></div><div class="cart-grand-total"><span>Total amount</span><strong id="checkoutTotal">₹0</strong></div></div>
           <div class="checkout-benefits"><h3>Offers &amp; rewards</h3>
+            <section class="checkout-reward-balances" aria-label="Your available balances">
+              <div class="checkout-balance-tile checkout-wallet-tile"><span class="checkout-balance-icon" aria-hidden="true">₹</span><span><small>Gift wallet balance</small><strong id="checkoutWalletBalance">₹0</strong></span></div>
+              <div class="checkout-balance-tile checkout-points-tile"><span class="checkout-balance-icon" aria-hidden="true">✧</span><span><small>Reward points balance</small><strong><span id="checkoutPointsBalance">0</span> points</strong><em id="checkoutPointsValue">Worth ₹0 · 100 points = ₹1</em></span></div>
+            </section>
             <label class="cart-form-field">Discount or friend referral code <span class="optional-label">(optional)</span><div class="cart-inline-field"><input id="promoCode" maxlength="24" placeholder="Enter a code, e.g. DIWALI10" autocomplete="off"><button id="applyPromo" type="button" class="account-button secondary">Apply</button></div></label>
+            <div id="promoAppliedNotice" class="promo-applied-notice" role="status" aria-live="polite" hidden><span class="promo-applied-check" aria-hidden="true">✓</span><span id="promoAppliedText"></span></div>
             <label class="cart-form-field">Gift card<div class="cart-inline-field"><input id="giftCardCode" maxlength="40" placeholder="Enter gift card code"><button id="applyGiftCard" type="button" class="account-button secondary">Check</button></div></label>
             <div id="giftCardHistory" class="cart-gift-history"></div>
             <label class="cart-form-field">Redeem reward points <span class="optional-label">(100 points = ₹1 · redeem in 100-point steps)</span><input id="loyaltyPointsToRedeem" name="loyaltyPoints" type="number" min="0" step="100" value="0"></label>
@@ -115,6 +120,31 @@
         <div class="success-actions"><a class="btn btn-primary" href="orders.html">Track this order <span aria-hidden="true">→</span></a><a class="success-secondary" href="index.html#shop">Back to the shop</a></div>
         <small>Thank you for letting us be part of your celebration.</small>
       </div>
+    </div>
+  </section>
+  <section id="paymentFailureDialog" class="checkout-feedback-overlay" role="dialog" aria-modal="true" aria-labelledby="paymentFailureTitle" aria-describedby="paymentFailureMessage" hidden>
+    <div class="checkout-feedback-card">
+      <button class="checkout-feedback-close" id="closePaymentFailure" type="button" aria-label="Close payment options">×</button>
+      <span class="checkout-feedback-icon" aria-hidden="true">!</span>
+      <span class="checkout-feedback-eyebrow">PAYMENT NOT RECEIVED</span>
+      <h2 id="paymentFailureTitle">Your payment didn’t go through</h2>
+      <p id="paymentFailureMessage">We haven’t received payment for this order. Your order is saved and still unpaid.</p>
+      <p class="checkout-feedback-order" id="paymentFailureOrder"></p>
+      <div class="checkout-feedback-actions">
+        <button class="checkout-feedback-retry" id="retryFailedPayment" type="button">Try payment again</button>
+        <button class="checkout-feedback-offline" id="offlinePaymentButton" type="button">Pay on delivery</button>
+        <a href="orders.html">View order details</a>
+      </div>
+    </div>
+  </section>
+  <section id="stockLimitDialog" class="checkout-feedback-overlay" role="dialog" aria-modal="true" aria-labelledby="stockLimitTitle" aria-describedby="stockLimitMessage" hidden>
+    <div class="checkout-feedback-card">
+      <button class="checkout-feedback-close" id="closeStockLimit" type="button" aria-label="Close stock notice">×</button>
+      <span class="checkout-feedback-icon" aria-hidden="true">!</span>
+      <span class="checkout-feedback-eyebrow">A LITTLE STOCK UPDATE</span>
+      <h2 id="stockLimitTitle">Please adjust your bag</h2>
+      <p id="stockLimitMessage">The quantity in your bag is higher than what is currently available.</p>
+      <div class="checkout-feedback-actions"><button class="checkout-feedback-retry" id="adjustStockButton" type="button">Review my bag</button></div>
     </div>
   </section>
   
@@ -172,7 +202,7 @@
 <script src="api-config.js?v=20261101-real" defer></script>
 <script src="cart-storage.js?v=20261101-real" defer></script>
 <script src="cart-banner.js?v=20261102-ai-hero" defer></script>
-<script src="cart.js?v=20261101-real" defer></script>
+<script src="cart.js?v=20261102-reward-balances" defer></script>
 <script src="motion.js?v=20261101-real" defer></script>
   <script src="shared-footer.js?v=20261101-real" defer></script>
   <script src="shared-navigation.js?v=20261101-real" defer></script>

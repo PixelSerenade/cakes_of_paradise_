@@ -482,7 +482,12 @@
     }
   }
 
-  if (new URLSearchParams(window.location.search).get('tab') === 'register') switchTab('register');
+  const authQuery = new URLSearchParams(window.location.search);
+  if (authQuery.get('tab') === 'register') switchTab('register');
+  const registrationEmail = authQuery.get('email');
+  if (registrationEmail && document.getElementById('registerEmail')) {
+    document.getElementById('registerEmail').value = registrationEmail;
+  }
 
   // Handle User Registration
   async function handleRegister(e) {

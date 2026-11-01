@@ -14,6 +14,8 @@
   const money = (value) => `₹${Number(value || 0).toLocaleString('en-IN')}`;
   const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
   let cart = [];
+  let productStock = new Map();
+  const quantityForProduct = (productId) => cart.reduce((sum, item) => sum + (item.productId === productId ? Number(item.quantity || 0) : 0), 0);
   try {
     const saved = JSON.parse(localStorage.getItem(window.CakeCart?.key() || 'cakeBasket') || '[]');
     cart = Array.isArray(saved) ? saved.filter((line) => line && typeof line.productId === 'string' && Number.isInteger(Number(line.quantity)) && Number(line.quantity) > 0) : [];
@@ -57,7 +59,11 @@
     if (badge) badge.textContent = String(count);
     setHidden('cartSignOut', !localStorage.getItem('token'));
     if (checkoutButton) checkoutButton.textContent = localStorage.getItem('token') ? 'Continue to checkout' : 'Login to checkout';
-    linesNode.innerHTML = cart.length ? cart.map((line, index) => `<article class="cart-page-line"><div class="cart-line-product"><img src="${escapeHtml(freshPhotoUrl(line.image || ''))}" alt="${escapeHtml(line.name || 'Cake')}"></div><div class="cart-line-details"><h3>${escapeHtml(line.name || 'Cake')}</h3><p>${escapeHtml(line.flavor || '')} · ${escapeHtml(line.size || '')}</p>${line.cakeMessage ? `<small class="cart-cake-message">Cake message: “${escapeHtml(line.cakeMessage)}”</small>` : ''}<button type="button" class="cart-save-later" data-cart-action="save" data-index="${index}">♡ &nbsp; Save for later</button></div><div class="cart-line-unit-price"><span>Unit price</span><strong>${money(Number(line.price || 0))}</strong></div><div class="cart-line-quantity"><span>Quantity</span><div class="cart-page-line-actions"><button type="button" data-cart-action="decrease" data-index="${index}" aria-label="Remove one ${escapeHtml(line.name || 'cake')}">−</button><output>${Number(line.quantity)}</output><button type="button" data-cart-action="increase" data-index="${index}" aria-label="Add one ${escapeHtml(line.name || 'cake')}">+</button></div></div><strong class="cart-page-line-price">${money(Number(line.price || 0) * Number(line.quantity || 0))}</strong><button type="button" class="remove-cart-item" data-cart-action="remove" data-index="${index}" aria-label="Remove ${escapeHtml(line.name || 'cake')} from cart">×</button></article>`).join('') : '<p class="empty-account">Your cart is empty. Browse the catalogue and add a cake to get started.</p>';
+    linesNode.innerHTML = cart.length ? cart.map((line, index) => {
+      const stock = productStock.get(line.productId);
+      const atStockLimit = Number.isFinite(stock) && quantityForProduct(line.productId) >= stock;
+      return `<article class="cart-page-line"><div class="cart-line-product"><img src="${escapeHtml(freshPhotoUrl(line.image || ''))}" alt="${escapeHtml(line.name || 'Cake')}"></div><div class="cart-line-details"><h3>${escapeHtml(line.name || 'Cake')}</h3><p>${escapeHtml(line.flavor || '')} · ${escapeHtml(line.size || '')}${Number.isFinite(stock) ? ` · ${stock} available` : ''}</p>${line.cakeMessage ? `<small class="cart-cake-message">Cake message: “${escapeHtml(line.cakeMessage)}”</small>` : ''}<button type="button" class="cart-save-later" data-cart-action="save" data-index="${index}">♡ &nbsp; Save for later</button></div><div class="cart-line-unit-price"><span>Unit price</span><strong>${money(Number(line.price || 0))}</strong></div><div class="cart-line-quantity"><span>Quantity</span><div class="cart-page-line-actions"><button type="button" data-cart-action="decrease" data-index="${index}" aria-label="Remove one ${escapeHtml(line.name || 'cake')}">−</button><output>${Number(line.quantity)}</output><button type="button" data-cart-action="increase" data-index="${index}" aria-label="Add one ${escapeHtml(line.name || 'cake')}" ${atStockLimit ? 'disabled' : ''}>+</button></div></div><strong class="cart-page-line-price">${money(Number(line.price || 0) * Number(line.quantity || 0))}</strong><button type="button" class="remove-cart-item" data-cart-action="remove" data-index="${index}" aria-label="Remove ${escapeHtml(line.name || 'cake')} from cart">×</button></article>`;
+    }).join('') : '<p class="empty-account">Your cart is empty. Browse the catalogue and add a cake to get started.</p>';
   }
 
   linesNode.addEventListener('click', async (event) => {
@@ -98,7 +104,16 @@
       }
       return;
     }
-    if (button.dataset.cartAction === 'increase') line.quantity = Math.min(10, Number(line.quantity) + 1);
+    if (button.dataset.cartAction === 'increase') {
+      const stock = productStock.get(line.productId);
+      if (Number.isFinite(stock) && quantityForProduct(line.productId) >= stock) {
+        const notice = document.getElementById('cartPageMessage');
+        notice.textContent = `Only ${stock} ${line.name || 'cake'} available. Reduce another size or flavour in your bag before adding more.`;
+        notice.classList.add('is-error');
+        return;
+      }
+      line.quantity = Math.min(10, Number(line.quantity) + 1);
+    }
     if (button.dataset.cartAction === 'decrease') line.quantity = Number(line.quantity) - 1;
     const removingLine = button.dataset.cartAction === 'remove' || (button.dataset.cartAction === 'decrease' && Number(line.quantity) <= 1);
     if (button.dataset.cartAction === 'remove' || line.quantity < 1) cart.splice(index, 1);
@@ -129,6 +144,7 @@
     const data = await response.json();
     if (!response.ok) throw new Error(data.message || `Request failed (${response.status}).`);
     const products = data.products || [];
+    productStock = new Map(products.map((product) => [product.id, Number(product.stock)]));
     if (localStorage.getItem('token') && window.CakeCart?.loadAccountCart) {
       cart = await window.CakeCart.loadAccountCart();
     }

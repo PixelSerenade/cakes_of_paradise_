@@ -21,6 +21,7 @@
       return Array.isArray(saved) ? saved.filter((line) => line && typeof line.productId === 'string' && typeof line.name === 'string' && Number.isFinite(Number(line.price)) && Number.isInteger(Number(line.quantity))) : [];
     } catch { return []; }
   })();
+  const cartQuantityFor = (productId) => cart.reduce((sum, item) => sum + (item.productId === productId ? Number(item.quantity || 0) : 0), 0);
   let productData = [];
   let featuredProductData = [];
   let latestSalesInsights = null;
@@ -37,6 +38,9 @@
   let catalogPageSize = 12;
   let catalogPage = 1;
   let catalogRequestId = 0;
+  let catalogRetryCount = 0;
+  let catalogRetryTimer = null;
+  let catalogEmptyRetryCount = 0;
   let catalogTotalPages = 1;
   let catalogTotalItems = 0;
   let inventoryData = [];
@@ -121,9 +125,11 @@
     let data = {};
     try { data = await response.json(); } catch { /* handled below */ }
     if (!response.ok) {
-      if (response.status === 401) throw new Error('Please sign in before using this feature.');
-      if (response.status === 403) throw new Error(data.message || 'This account cannot perform that action.');
-      throw new Error(data.message || `Request failed (${response.status}).`);
+      const error = new Error(response.status === 401
+        ? 'Please sign in before using this feature.'
+        : data.message || (response.status === 403 ? 'This account cannot perform that action.' : `Request failed (${response.status}).`));
+      error.status = response.status;
+      throw error;
     }
     return data;
   }
@@ -388,7 +394,7 @@
             <h3>${escapeHtml(product.name)}</h3>
             <span class="featured-cake-rating">${product.reviewCount ? `★ ${Number(product.reviewAverage).toFixed(1)} (${product.reviewCount})` : 'No reviews yet'}</span>
             <strong class="price-tag">${money(product.sizes?.[0]?.price)}</strong>
-            <button class="btn btn-primary" type="button" data-featured-add="${escapeHtml(product.id)}" ${product.stock <= 0 ? 'disabled' : ''}>${product.stock <= 0 ? 'Out of stock' : `${bagIconMarkup}<span>Add to bag</span>`}</button>
+            <button class="btn btn-primary" type="button" data-featured-add="${escapeHtml(product.id)}" aria-label="${product.stock <= 0 ? `Check availability for ${escapeHtml(product.name)}` : `Add ${escapeHtml(product.name)} to bag`}">${product.stock <= 0 ? 'Out of stock' : `${bagIconMarkup}<span>Add to bag</span>`}</button>
           </div>
       </article>`;
       }).join('') || '<p class="empty-category-card">Bestsellers will appear here after completed orders.</p>';
@@ -504,7 +510,7 @@
     const categoryVal = document.getElementById('catalogCategory').value;
     const sortVal = document.getElementById('catalogSort').value;
     const dietaryVal = document.getElementById('catalogDietary').value;
-    const priceVal = document.getElementById('catalogPriceRange')?.value || '';
+    const priceVal = document.getElementById('catalogPrice')?.value || '';
     const flavorVal = document.getElementById('catalogFlavor')?.value || '';
     const sizeVal = document.getElementById('catalogSize')?.value || '';
     const wishlistOnly = document.getElementById('wishlistOnlyToggle')?.getAttribute('aria-pressed') === 'true';
@@ -533,13 +539,38 @@
       productGrid.innerHTML = '<p class="empty-cart">Finding something sweet…</p>';
     }
     try {
-      const data = await api(`/catalog?${params}`);
+      const data = await api(`/catalog?${params}`, { cache: 'no-store' });
       if (requestId !== catalogRequestId) return;
+      catalogRetryCount = 0;
+      clearTimeout(catalogRetryTimer);
       const nextProducts = data.products || [];
+      const isUnfilteredAllCakes = categoryVal === 'All' && !searchVal && !dietaryVal && !priceVal && !flavorVal && !sizeVal && !wishlistOnly;
+      if (isUnfilteredAllCakes && !nextProducts.length && Number(data.total || 0) === 0 && catalogEmptyRetryCount < 3) {
+        // During a cold backend/database start, the first catalogue response
+        // can briefly be empty. Keep the initial All cakes view loading and
+        // retry automatically instead of requiring a category click.
+        const delay = 500 * (catalogEmptyRetryCount + 1);
+        catalogEmptyRetryCount += 1;
+        productGrid.innerHTML = '<p class="empty-cart">Loading all cakes…</p>';
+        catalogRetryTimer = window.setTimeout(() => loadCatalog(1), delay);
+        return;
+      }
+      if (nextProducts.length || !isUnfilteredAllCakes) catalogEmptyRetryCount = 0;
       productData = append ? [...productData, ...nextProducts] : nextProducts;
       catalogTotalPages = data.pages || 1;
       catalogTotalItems = data.total ?? productData.length;
       catalogPage = page;
+
+      const syncFacetOptions = (id, values, allLabel) => {
+        const select = document.getElementById(id);
+        if (!select || !Array.isArray(values)) return;
+        const current = select.value;
+        const options = [...new Set(values.filter((value) => typeof value === 'string' && value.trim()))];
+        select.innerHTML = `<option value="">${allLabel}</option>${options.map((value) => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join('')}`;
+        select.value = options.includes(current) ? current : '';
+      };
+      syncFacetOptions('catalogFlavor', data.flavors, 'All flavours');
+      syncFacetOptions('catalogSize', data.sizes, 'All sizes');
 
       // Re-validate cart against current prices & availability
       for (let index = cart.length - 1; index >= 0; index -= 1) {
@@ -578,8 +609,14 @@
         }
       } else {
         productGrid.innerHTML = '<div class="empty-category-card"><span class="empty-icon">⚠️</span><h3>Unable to load cakes</h3><p>' + escapeHtml(error.message) + '</p><button type="button" class="btn btn-outline" onclick="location.reload()">Retry</button></div>';
+        if ((!error.status || error.status >= 500) && catalogRetryCount < 3) {
+          const delay = 700 * (2 ** catalogRetryCount);
+          catalogRetryCount += 1;
+          catalogRetryTimer = window.setTimeout(() => loadCatalog(1), delay);
+          setMessage('catalogMessage', `Reconnecting to the cake catalogue… retry ${catalogRetryCount} of 3.`);
+        }
       }
-      setMessage('catalogMessage', `Catalogue error: ${error.message}`, true);
+      if (catalogRetryCount >= 3 || error.status) setMessage('catalogMessage', `Catalogue error: ${error.message}`, true);
     }
   }
 
@@ -665,7 +702,7 @@
               <label>Flavour<select class="product-flavor">${product.flavors.map((flavor) => `<option value="${escapeHtml(flavor)}">${escapeHtml(flavor)}</option>`).join('')}</select></label>
               <label>Size<select class="product-size">${product.sizes.map((size) => `<option value="${escapeHtml(size.name)}" data-price="${size.price}">${escapeHtml(size.name)} · ${money(size.price)}</option>`).join('')}</select></label>
             </details>
-            <div class="product-buy-row"><strong class="product-price">${money(product.sizes[0].price)}</strong><button class="btn btn-primary" type="button" data-action="add" data-product="${escapeHtml(product.id)}" ${isOutOfStock ? 'disabled' : ''}>${isOutOfStock ? 'Out of stock' : `${bagIconMarkup}<span>Add to bag</span>`}</button></div>
+            <div class="product-buy-row"><strong class="product-price">${money(product.sizes[0].price)}</strong><button class="btn btn-primary" type="button" data-action="add" data-product="${escapeHtml(product.id)}" aria-label="${isOutOfStock ? `Check availability for ${escapeHtml(product.name)}` : `Add ${escapeHtml(product.name)} to bag`}">${isOutOfStock ? 'Out of stock' : `${bagIconMarkup}<span>Add to bag</span>`}</button></div>
           </div>
         </article>`;
 
@@ -690,7 +727,7 @@
             <div class="product-buy-row">
               <strong class="product-price">${money(product.sizes[0].price)}</strong>
               <button class="favorite-toggle" type="button" data-action="favorite" data-product="${escapeHtml(product.id)}" aria-pressed="${isFavorite ? 'true' : 'false'}">${isFavorite ? '♥ Saved' : '♡ Save'}</button>
-              <button class="btn btn-primary" type="button" data-action="add" data-product="${escapeHtml(product.id)}" ${isOutOfStock ? 'disabled' : ''}>${isOutOfStock ? 'Out of stock' : `${bagIconMarkup}<span>Add to bag</span>`}</button>
+              <button class="btn btn-primary" type="button" data-action="add" data-product="${escapeHtml(product.id)}" aria-label="${isOutOfStock ? `Check availability for ${escapeHtml(product.name)}` : `Add ${escapeHtml(product.name)} to bag`}">${isOutOfStock ? 'Out of stock' : `${bagIconMarkup}<span>Add to bag</span>`}</button>
             </div>
             <button class="product-reviews-link" type="button" data-action="open-modal" data-product="${escapeHtml(product.id)}" style="margin-top:auto; margin-bottom:12px;">
               ${product.reviewCount ? `★ ${Number(product.reviewAverage).toFixed(1)} · Reviews (${product.reviewCount}) →` : 'Write a review / Details →'}
@@ -755,6 +792,10 @@
     showCartToast('Could not add to cart', message || 'Please check selections and try again.', true);
   }
 
+  function showUnavailableToast(productName) {
+    showCartToast('Currently unavailable', `${productName || 'This cake'} is sold out right now. Please check back soon.`, true);
+  }
+
   function showWishlistSuccess(productName = 'Your cake', action = 'added') {
     let toast = document.getElementById('wishlistSuccessToast');
     if (!toast) {
@@ -813,6 +854,36 @@
     }
   }
 
+  async function loadModalReviews(productId) {
+    const list = document.getElementById('modalReviewList');
+    const form = document.getElementById('modalReviewForm');
+    const hint = document.getElementById('modalReviewEligibility');
+    if (!list || !form || !hint) return;
+    list.innerHTML = '<p class="empty-cart">Loading customer reviews…</p>';
+    form.hidden = true;
+    hint.textContent = getToken() ? 'Review access is checked against your paid, delivered orders.' : 'Sign in after your cake has been delivered to leave a review.';
+    try {
+      const data = await api(`/catalog/${encodeURIComponent(productId)}/reviews`);
+      list.innerHTML = data.reviews.length ? data.reviews.map((review) => `
+        <article class="review-entry"><strong>${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)} (${review.rating} / 5) · ${escapeHtml(review.customerName)}</strong><p>${escapeHtml(review.comment)}</p><small>${new Date(review.createdAt).toLocaleDateString('en-IN')}</small></article>`).join('') : '<p class="empty-cart">Be the first to review this cake.</p>';
+      form.dataset.product = productId;
+      if (data.canReview) {
+        form.hidden = false;
+        hint.textContent = data.userReview ? 'You can update your review for this delivered cake.' : 'Thank you for ordering! Share how you enjoyed this cake.';
+        if (data.userReview) {
+          form.elements.rating.value = String(data.userReview.rating);
+          form.elements.comment.value = data.userReview.comment || '';
+          form.querySelector('button[type="submit"]').textContent = 'Update my review';
+        } else {
+          form.reset();
+          form.querySelector('button[type="submit"]').textContent = 'Share my review';
+        }
+      }
+    } catch (error) {
+      list.innerHTML = `<p class="empty-cart">${escapeHtml(error.message)}</p>`;
+    }
+  }
+
   function orderCard(order, isAdmin = false) {
     const formatTime = (value) => {
       if (!/^\d{2}:\d{2}$/.test(String(value || ''))) return '';
@@ -822,8 +893,8 @@
     const indiaToday = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
     const deliveryDay = new Date(order.customer.deliveryDate).toISOString().slice(0, 10);
     const timeline = (order.tracking || []).map((event) => {
-      const kind = event.type === 'payment' ? 'Payment' : event.type === 'refund' ? 'Refund' : 'Order status';
-      const change = event.from && event.to ? `${event.type === 'payment' || event.type === 'refund' ? paymentStatusLabel(event.from) : orderStatusLabel(event.from)} → ${event.type === 'payment' || event.type === 'refund' ? paymentStatusLabel(event.to) : orderStatusLabel(event.to)}` : orderStatusLabel(event.status || order.status);
+      const kind = event.type === 'payment' ? 'Payment' : event.type === 'refund' ? 'Refund' : event.type === 'delivery' ? 'Delivery' : 'Order status';
+      const change = event.from && event.to ? `${event.type === 'payment' || event.type === 'refund' ? paymentStatusLabel(event.from) : event.type === 'delivery' ? event.from.replaceAll('-', ' ') : orderStatusLabel(event.from)} → ${event.type === 'payment' || event.type === 'refund' ? paymentStatusLabel(event.to) : event.type === 'delivery' ? event.to.replaceAll('-', ' ') : orderStatusLabel(event.to)}` : orderStatusLabel(event.status || order.status);
       return `<li><strong>${kind}: ${escapeHtml(change)}</strong>${event.note ? ` · ${escapeHtml(event.note)}` : ''}<small>By ${escapeHtml(event.changedBy || 'system')}</small><time>${new Date(event.at).toLocaleString('en-IN')}</time></li>`;
     }).join('');
     const items = order.items.map((item) => `${item.quantity} × ${escapeHtml(item.name)} (${escapeHtml(item.flavor)}, ${escapeHtml(item.size)})${item.cakeMessage ? ` · Cake message: “${escapeHtml(item.cakeMessage)}”` : ''}`).join(' · ');
@@ -834,20 +905,21 @@
       const refundLabel = order.paymentMethod !== 'razorpay' ? 'Record refund sent' : order.refundStatus === 'pending' ? 'Check refund status' : order.refundStatus === 'failed' ? 'Retry refund' : 'Start refund';
       const refundControl = isAdmin && canRefund ? `<button type="button" data-order-action="refund" data-order="${escapeHtml(order.orderNumber)}">${refundLabel}</button>` : '';
     const adminControls = isAdmin ? `
-      <div class="order-admin-controls"><label>Update status<select data-next-status="${escapeHtml(order.orderNumber)}">${adminOrderStatuses.map((status) => `<option value="${status}" ${((status === 'placed' && ['placed', 'pending'].includes(order.status)) || status === order.status) ? 'selected' : ''}>${orderStatusLabel(status)}</option>`).join('')}</select></label><label>Customer update<input type="text" maxlength="240" data-status-note="${escapeHtml(order.orderNumber)}" placeholder="Optional note"></label><div class="order-shipping-controls"><label>Tracking number<input type="text" maxlength="100" data-tracking-number="${escapeHtml(order.orderNumber)}" value="${escapeHtml(order.trackingNumber || '')}" placeholder="Optional"></label><label>Carrier<input type="text" maxlength="100" data-shipping-carrier="${escapeHtml(order.orderNumber)}" value="${escapeHtml(order.shippingCarrier || '')}" placeholder="Bakery delivery"></label><label>Estimated delivery<input type="date" data-estimated-delivery="${escapeHtml(order.orderNumber)}" value="${order.estimatedDelivery ? new Date(order.estimatedDelivery).toISOString().slice(0, 10) : ''}"></label></div><button type="button" data-order-action="status" data-order="${escapeHtml(order.orderNumber)}">Save update</button>${isOfflinePayment(order.paymentMethod) && isOrderUnpaid(order.paymentStatus) && order.status !== 'cancelled' ? `<button type="button" data-order-action="paid" data-order="${escapeHtml(order.orderNumber)}">Record payment received</button>` : ''}${refundControl}</div>` : '';
+      <div class="order-admin-controls"><label>Update status<select data-next-status="${escapeHtml(order.orderNumber)}">${adminOrderStatuses.map((status) => `<option value="${status}" ${((status === 'placed' && ['placed', 'pending'].includes(order.status)) || status === order.status) ? 'selected' : ''}>${orderStatusLabel(status)}</option>`).join('')}</select></label><label>Delivery status<select data-next-delivery-status="${escapeHtml(order.orderNumber)}"><option value="not-delivered" ${(order.deliveryStatus || 'not-delivered') === 'not-delivered' ? 'selected' : ''}>Not delivered</option><option value="delivered" ${order.deliveryStatus === 'delivered' ? 'selected' : ''}>Delivered</option></select></label><label>Customer update<input type="text" maxlength="240" data-status-note="${escapeHtml(order.orderNumber)}" placeholder="Optional note"></label><div class="order-shipping-controls"><label>Tracking number<input type="text" maxlength="100" data-tracking-number="${escapeHtml(order.orderNumber)}" value="${escapeHtml(order.trackingNumber || '')}" placeholder="Optional"></label><label>Carrier<input type="text" maxlength="100" data-shipping-carrier="${escapeHtml(order.orderNumber)}" value="${escapeHtml(order.shippingCarrier || '')}" placeholder="Bakery delivery"></label><label>Estimated delivery<input type="date" data-estimated-delivery="${escapeHtml(order.orderNumber)}" value="${order.estimatedDelivery ? new Date(order.estimatedDelivery).toISOString().slice(0, 10) : ''}"></label></div><button type="button" data-order-action="status" data-order="${escapeHtml(order.orderNumber)}">Save update</button>${isOfflinePayment(order.paymentMethod) && isOrderUnpaid(order.paymentStatus) && order.status !== 'cancelled' ? `<button type="button" data-order-action="paid" data-order="${escapeHtml(order.orderNumber)}">Record payment received</button>` : ''}${refundControl}</div>` : '';
     const cancelControl = !isAdmin && indiaToday < deliveryDay && statuses.indexOf(order.status) <= statuses.indexOf(cancellationCutoff) && order.status !== 'cancelled' ? `<button class="retry-payment" type="button" data-order-action="cancel" data-order="${escapeHtml(order.orderNumber)}">Cancel order</button>` : '';
     const fulfillment = order.customer.deliveryType === 'pickup' ? 'Bakery pickup · free' : `Delivery fee: ${Number(order.deliveryFee || 0) ? money(order.deliveryFee) : 'Free'}${order.deliveryDistanceBand ? ` · ${escapeHtml(order.deliveryDistanceBand)}` : ''}${order.customer.area ? ` · ${escapeHtml(order.customer.area)}, ${escapeHtml(order.customer.city)}` : ''}`;
     const orderedDate = new Date(order.createdAt).toLocaleDateString('en-IN');
     const deliveryDate = new Date(order.customer.deliveryDate).toLocaleDateString('en-IN');
     const requestedTime = formatTime(order.customer.deliveryTime);
-    const badges = `<div class="order-badges"><span class="order-badge">${escapeHtml(orderStatusLabel(order.status))}</span><span class="order-badge">${escapeHtml(paymentStatusLabel(order.paymentStatus))} · ${escapeHtml(paymentMethodLabel(order.paymentMethod))}</span>${order.refundStatus && order.refundStatus !== 'none' ? `<span class="order-badge">refund ${escapeHtml(order.refundStatus)}</span>` : ''}</div>`;
+    const deliveryLabel = order.deliveryStatus === 'delivered' || order.status === 'completed' ? 'Delivered' : 'Not delivered';
+    const badges = `<div class="order-badges"><span class="order-badge">${escapeHtml(orderStatusLabel(order.status))}</span><span class="order-badge">${escapeHtml(deliveryLabel)}</span><span class="order-badge">${escapeHtml(paymentStatusLabel(order.paymentStatus))} · ${escapeHtml(paymentMethodLabel(order.paymentMethod))}</span>${order.refundStatus && order.refundStatus !== 'none' ? `<span class="order-badge">refund ${escapeHtml(order.refundStatus)}</span>` : ''}</div>`;
     if (isAdmin) {
       const adminItems = order.items.map((item) => `<li><span>${escapeHtml(item.name)} <small>${escapeHtml(item.flavor)} · ${escapeHtml(item.size)}${item.cakeMessage ? ` · Cake message: “${escapeHtml(item.cakeMessage)}”` : ''}</small></span><strong>× ${item.quantity}</strong><b>${money(item.unitPrice * item.quantity)}</b></li>`).join('');
       const destination = order.customer.deliveryType === 'pickup' ? 'Collect from the bakery' : escapeHtml(order.customer.address || 'Address not provided');
-      return `<article class="order-card admin-order-card" data-payment-method="${escapeHtml(order.paymentMethod)}" data-payment-status="${escapeHtml(order.paymentStatus)}"><header class="order-card-top"><div class="admin-order-title"><span class="eyebrow">ORDER ${escapeHtml(order.orderNumber)}</span><h4>${money(order.total)}</h4><p>Placed ${orderedDate} <span>·</span> ${order.customer.deliveryType === 'pickup' ? 'Pickup' : 'Delivery'} on ${deliveryDate}${requestedTime ? ` by ${requestedTime}` : ''}</p></div>${badges}</header><div class="admin-order-details"><section class="admin-order-block"><h5>Customer</h5><strong>${escapeHtml(order.user?.name || order.customer.name || 'Customer')}</strong><span>${escapeHtml(order.user?.email || order.customer.email || 'Email not provided')}</span><span>${escapeHtml(order.customer.phone || 'Phone not provided')}</span></section><section class="admin-order-block admin-order-items"><h5>Items <span>${order.items.length}</span></h5><ul>${adminItems}</ul></section><section class="admin-order-block"><h5>${order.customer.deliveryType === 'pickup' ? 'Pickup' : 'Delivery'}</h5><strong>${destination}</strong><span>${fulfillment}</span>${order.customer.postalCode ? `<span>PIN ${escapeHtml(order.customer.postalCode)}</span>` : ''}${order.customer.notes ? `<p><b>Customer note</b>${escapeHtml(order.customer.notes)}</p>` : ''}</section></div><section class="admin-order-activity"><h5>Order and payment history</h5><ol class="order-timeline">${timeline || '<li>No order updates recorded yet.</li>'}</ol></section>${adminControls}</article>`;
+      return `<article class="order-card admin-order-card" data-order-status="${escapeHtml(order.status)}" data-payment-method="${escapeHtml(order.paymentMethod)}" data-payment-status="${escapeHtml(order.paymentStatus)}"><header class="order-card-top"><div class="admin-order-title"><span class="eyebrow">ORDER ${escapeHtml(order.orderNumber)}</span><h4>${money(order.total)}</h4><p>Placed ${orderedDate} <span>·</span> ${order.customer.deliveryType === 'pickup' ? 'Pickup' : 'Delivery'} on ${deliveryDate}${requestedTime ? ` by ${requestedTime}` : ''}</p></div>${badges}</header><div class="admin-order-details"><section class="admin-order-block"><h5>Customer</h5><strong>${escapeHtml(order.user?.name || order.customer.name || 'Customer')}</strong><span>${escapeHtml(order.user?.email || order.customer.email || 'Email not provided')}</span><span>${escapeHtml(order.customer.phone || 'Phone not provided')}</span></section><section class="admin-order-block admin-order-items"><h5>Items <span>${order.items.length}</span></h5><ul>${adminItems}</ul></section><section class="admin-order-block"><h5>${order.customer.deliveryType === 'pickup' ? 'Pickup' : 'Delivery'}</h5><strong>${destination}</strong><span>${fulfillment}</span>${order.customer.postalCode ? `<span>PIN ${escapeHtml(order.customer.postalCode)}</span>` : ''}${order.customer.notes ? `<p><b>Customer note</b>${escapeHtml(order.customer.notes)}</p>` : ''}</section></div><section class="admin-order-activity"><h5>Order and payment history</h5><ol class="order-timeline">${timeline || '<li>No order updates recorded yet.</li>'}</ol></section>${adminControls}</article>`;
     }
-    const shippingDetails = order.status === 'shipped' ? `<p class="order-delivery"><strong>Your cake is on its way.</strong>${order.trackingNumber ? ` Tracking: ${escapeHtml(order.trackingNumber)}` : ''}${order.shippingCarrier ? ` · ${escapeHtml(order.shippingCarrier)}` : ''}${order.estimatedDelivery ? ` · Estimated ${new Date(order.estimatedDelivery).toLocaleDateString('en-IN')}` : ''}</p>` : '';
-    return `<article class="order-card"><div class="order-card-top"><div><h4>${escapeHtml(order.orderNumber)} · ${money(order.total)}</h4><span class="order-number">Ordered ${orderedDate} · ${order.customer.deliveryType === 'pickup' ? 'Pickup' : 'Delivery'} ${deliveryDate}${requestedTime ? ` · requested by ${requestedTime}` : ''}</span></div>${badges}</div>${userName}<p class="order-items-text">${items}</p><p class="order-delivery">${fulfillment}</p><p class="order-delivery">${order.customer.deliveryType === 'pickup' ? 'Collect from the bakery' : `Deliver to: ${escapeHtml(order.customer.address)}`} · ${escapeHtml(order.customer.phone)}</p>${order.customer.notes ? `<p class="order-delivery">Note: ${escapeHtml(order.customer.notes)}</p>` : ''}${shippingDetails}${retry}${cancelControl}<ol class="order-timeline">${timeline}</ol></article>`;
+    const shippingDetails = order.status === 'shipped' || order.status === 'out-for-delivery' ? `<p class="order-delivery"><strong>${deliveryLabel === 'Delivered' ? 'Your cake has been delivered.' : 'Your cake is on its way.'}</strong>${order.trackingNumber ? ` Tracking: ${escapeHtml(order.trackingNumber)}` : ''}${order.shippingCarrier ? ` · ${escapeHtml(order.shippingCarrier)}` : ''}${order.estimatedDelivery && deliveryLabel !== 'Delivered' ? ` · Estimated ${new Date(order.estimatedDelivery).toLocaleDateString('en-IN')}` : ''}</p>` : '';
+    return `<article class="order-card"><div class="order-card-top"><div><h4>${escapeHtml(order.orderNumber)} · ${money(order.total)}</h4><span class="order-number">Ordered ${orderedDate} · ${order.customer.deliveryType === 'pickup' ? 'Pickup' : 'Delivery'} ${deliveryDate}${requestedTime ? ` · requested by ${requestedTime}` : ''}</span></div>${badges}</div>${userName}<p class="order-items-text">${items}</p><p class="order-delivery">${fulfillment}</p><p class="order-delivery">Delivery status: <strong>${escapeHtml(deliveryLabel)}</strong></p><p class="order-delivery">${order.customer.deliveryType === 'pickup' ? 'Collect from the bakery' : `Deliver to: ${escapeHtml(order.customer.address)}`} · ${escapeHtml(order.customer.phone)}</p>${order.customer.notes ? `<p class="order-delivery">Note: ${escapeHtml(order.customer.notes)}</p>` : ''}${shippingDetails}${retry}${cancelControl}<ol class="order-timeline">${timeline}</ol></article>`;
   }
 
   async function loadCustomerOrders() {
@@ -1099,7 +1171,11 @@
   const completedOrderCard = (order) => {
     const items = (order.items || []).map((item) => `<li>${escapeHtml(item.name)} · ${escapeHtml(item.size)} × ${Number(item.quantity)}${item.cakeMessage ? ` — Cake message: “${escapeHtml(item.cakeMessage)}”` : ''}</li>`).join('');
     const method = order.paymentMethod === 'pay-at-store' ? 'Pay at bakery' : String(order.paymentMethod || '').replaceAll('-', ' ');
-    return `<tr><td><strong>${escapeHtml(order.orderNumber)}</strong><div class="admin-table-badges"><span class="admin-status-badge status-completed">Completed</span><span class="admin-status-badge status-paid">Paid</span></div></td><td>${new Date(order.createdAt).toLocaleDateString('en-IN')}</td><td><strong>${escapeHtml(order.user?.name || order.customer?.name || 'Customer')}</strong><small class="admin-table-subtext">${escapeHtml(order.user?.email || order.customer?.email || '')}</small></td><td><ul class="admin-table-items">${items}</ul></td><td><strong>${money(order.total)}</strong></td><td>${escapeHtml(method)}</td></tr>`;
+    const paymentStatus = String(order.paymentStatus || 'unrecorded').replaceAll('-', ' ');
+    const paymentClass = String(order.paymentStatus || 'pending').replace(/[^a-z0-9-]/gi, '').toLowerCase();
+    const fulfilmentLabel = order.deliveryStatus === 'delivered' ? 'Delivered' : 'Completed';
+    const fulfilmentClass = order.deliveryStatus === 'delivered' ? 'status-shipped' : 'status-completed';
+    return `<tr><td><strong>${escapeHtml(order.orderNumber)}</strong><div class="admin-table-badges"><span class="admin-status-badge ${fulfilmentClass}">${fulfilmentLabel}</span><span class="admin-status-badge status-${escapeHtml(paymentClass)}">${escapeHtml(paymentStatus)}</span></div></td><td>${new Date(order.createdAt).toLocaleDateString('en-IN')}</td><td><strong>${escapeHtml(order.user?.name || order.customer?.name || 'Customer')}</strong><small class="admin-table-subtext">${escapeHtml(order.user?.email || order.customer?.email || '')}</small></td><td><ul class="admin-table-items">${items}</ul></td><td><strong>${money(order.total)}</strong></td><td>${escapeHtml(method)}</td></tr>`;
   };
 
   async function loadCompletedOrders() {
@@ -1118,8 +1194,8 @@
       const data = await api(`/orders/admin/completed?${params}`, { cache: 'no-store' });
       completedPages = data.pages;
       document.getElementById('completedPageLabel').textContent = `Page ${data.page} of ${completedPages}`;
-      list.innerHTML = data.orders.length ? `<div class="admin-table-scroll"><table class="admin-table completed-orders-table"><thead><tr><th>Order / status</th><th>Date</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment method</th></tr></thead><tbody>${data.orders.map(completedOrderCard).join('')}</tbody></table></div>` : '<div class="admin-empty-state"><span aria-hidden="true">✓</span><strong>No completed orders</strong><p>No completed and paid orders match these filters.</p></div>';
-      setMessage('completedMessage', `${data.count} completed and paid order${data.count === 1 ? '' : 's'}.`);
+      list.innerHTML = data.orders.length ? `<div class="admin-table-scroll"><table class="admin-table completed-orders-table"><thead><tr><th>Order / status</th><th>Date</th><th>Customer</th><th>Items</th><th>Total</th><th>Payment method</th></tr></thead><tbody>${data.orders.map(completedOrderCard).join('')}</tbody></table></div>` : '<div class="admin-empty-state"><span aria-hidden="true">✓</span><strong>No completed orders</strong><p>No completed orders match these filters.</p></div>';
+      setMessage('completedMessage', `${data.count} completed order${data.count === 1 ? '' : 's'}.`);
       return true;
     } catch (error) {
       setMessage('completedMessage', error.message, true);
@@ -1245,8 +1321,8 @@
     const sampled = daily.length > 32 ? daily.filter((_, index) => index % Math.ceil(daily.length / 32) === 0 || index === daily.length - 1) : daily;
     const maxRevenue = Math.max(1, ...sampled.map((day) => Number(day.revenue || 0)));
     document.getElementById('salesRevenueChart').innerHTML = sampled.length
-      ? `<div class="bar-chart" role="img" aria-label="Paid revenue by day">${sampled.map((day) => { const height = Math.max(3, (Number(day.revenue || 0) / maxRevenue) * 100); const label = new Date(`${day._id}T12:00:00+05:30`).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }); return `<div class="bar-column" title="${label}: ${money(day.revenue)} · ${day.orders} paid orders"><span class="bar-value">${money(day.revenue)}</span><i style="height:${height}%"></i><small>${label}</small></div>`; }).join('')}</div>`
-      : '<p class="chart-empty">No paid sales in this date range yet.</p>';
+      ? `<div class="bar-chart" role="img" aria-label="Paid revenue by day">${sampled.map((day) => { const height = Math.max(3, (Number(day.revenue || 0) / maxRevenue) * 100); const label = new Date(`${day._id}T12:00:00+05:30`).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }); return `<div class="bar-column" title="${label}: ${money(day.revenue)} · ${day.orders} paid orders"><i style="height:${height}%"><span class="bar-value">${money(day.revenue)}</span></i><small>${label}</small></div>`; }).join('')}</div>`
+      : '<p class="chart-empty">No payments recorded in this date range yet. Pay on delivery and pickup orders appear here after the bakery records payment.</p>';
 
     const statuses = insights.orderStatuses || [];
     const statusColors = { placed: '#d6a1a0', confirmed: '#89947b', preparing: '#9b806b', ready: '#c2a46f', shipped: '#8eaeb0', 'out-for-delivery': '#8eaeb0', completed: '#72886a', cancelled: '#9b929e' };
@@ -1268,9 +1344,9 @@
     else renderTopCakeRows([]);
 
     const wished = insights.topWishlisted || [];
-    const wishCard = (entry, index, top = false) => { const product = productData.find((item) => item.id === entry._id || item.slug === entry._id || item.name === entry._id); return `<article class="admin-wishlist-card${top ? ' admin-wishlist-rank-card' : ''}"${top ? ` data-rank="${index + 1}"` : ''}>${top ? `<span class="admin-wishlist-rank">${index + 1}</span>` : ''}<img src="${escapeHtml(product?.image || '/public/images/products/birthday/birthday-confetti.jpg?v=20261101-real')}" alt="${escapeHtml(product?.name || entry._id)}"><div><strong>${escapeHtml(product?.name || entry._id)}</strong><small>${escapeHtml(product?.category || 'Saved cake')}</small></div><span>♥ ${Number(entry.count).toLocaleString('en-IN')} wishlists</span></article>`; };
+    const wishCard = (entry, index, top = false) => { const product = productData.find((item) => item.id === entry._id || item.slug === entry._id || item.name === entry._id); const rankTag = ['1st', '2nd', '3rd'][index] || `#${index + 1}`; return `<article class="admin-wishlist-card${top ? ' admin-wishlist-rank-card' : ''}"${top ? ` data-rank="${index + 1}"` : ''}>${top ? `<span class="admin-wishlist-rank">${rankTag}</span>` : ''}<img src="${escapeHtml(product?.image || '/public/images/products/birthday/birthday-confetti.jpg?v=20261101-real')}" alt="${escapeHtml(product?.name || entry._id)}"><div><strong>${escapeHtml(product?.name || entry._id)}</strong><small>${escapeHtml(product?.category || 'Saved cake')}</small></div><span>♥ ${Number(entry.count).toLocaleString('en-IN')} wishlists</span></article>`; };
     document.getElementById('adminWishlistProducts').innerHTML = wished.length
-      ? `<section class="admin-wishlist-top"><header><h4>Top 3 most wishlisted cakes</h4><p>Customer favourites saved most often.</p></header><div class="admin-wishlist-top-grid">${(wished.length >= 3 ? [1, 0, 2] : wished.slice(0, 3).map((_, index) => index)).map((index) => wished[index] ? wishCard(wished[index], index, true) : '').join('')}</div></section>${wished.length > 3 ? `<section class="admin-wishlist-rest"><h4>More customer favourites</h4><div class="admin-wishlist-rest-list">${wished.slice(3).map((entry, index) => wishCard(entry, index + 3)).join('')}</div></section>` : ''}`
+      ? `<section class="admin-wishlist-top"><header><h4>Top ${Math.min(3, wished.length)} most wishlisted cakes</h4><p>Customer favourites saved most often.</p></header><div class="admin-wishlist-top-grid">${wished.slice(0, 3).map((entry, index) => wishCard(entry, index, true)).join('')}</div></section>${wished.length > 3 ? `<section class="admin-wishlist-rest"><h4>More customer favourites</h4><div class="admin-wishlist-rest-list">${wished.slice(3).map((entry, index) => wishCard(entry, index + 3)).join('')}</div></section>` : ''}`
       : '<p class="chart-empty">Customers have not saved any cakes yet.</p>';
   }
 
@@ -1322,7 +1398,27 @@
     if (getUser()?.role !== 'admin') return;
     try {
       const { enquiries } = await api('/admin/enquiries');
-      document.getElementById('adminEnquiries').innerHTML = enquiries.length ? enquiries.map((item) => `<article class="admin-list-row enquiry-admin-card"><div class="enquiry-admin-main"><div class="enquiry-admin-heading"><strong>${escapeHtml(item.name)}</strong><span class="enquiry-status-pill ${item.status === 'new' ? 'is-new' : ''}">${escapeHtml(item.status || 'new')}</span><span class="enquiry-email-pill ${item.emailStatus === 'sent' ? 'is-sent' : item.emailStatus === 'failed' ? 'is-failed' : ''}">Email ${item.emailStatus === 'sent' ? 'sent' : item.emailStatus === 'failed' ? 'failed' : 'not configured'}</span></div><p class="enquiry-admin-meta">${escapeHtml(item.occasion)} · ${escapeHtml(item.cakeSize)} · Received ${new Date(item.createdAt).toLocaleString('en-IN')}</p><p class="enquiry-admin-contact"><a href="mailto:${escapeHtml(item.email)}">${escapeHtml(item.email)}</a>${item.phone ? ` <span>·</span> <a href="tel:${escapeHtml(item.phone)}">${escapeHtml(item.phone)}</a>` : ''}</p>${item.details ? `<p class="enquiry-admin-details">${escapeHtml(item.details)}</p>` : ''}${item.referenceImage ? `<a class="enquiry-reference-link" href="${escapeHtml(item.referenceImage)}" target="_blank" rel="noopener"><img src="${escapeHtml(item.referenceImage)}" alt="Cake reference attached by ${escapeHtml(item.name)}"><span>View cake reference image ↗</span></a>` : ''}</div></article>`).join('') : '<p class="chart-empty">No custom cake enquiries yet.</p>';
+      const emailLabels = { sent: 'Email sent', failed: 'Email failed', not_configured: 'Email not configured' };
+      const statusLabels = { new: 'New', contacted: 'Contacted', closed: 'Closed' };
+      const formatDate = (value) => {
+        const date = new Date(value);
+        return Number.isNaN(date.getTime()) ? 'Date unavailable' : date.toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+      };
+      document.getElementById('adminEnquiries').innerHTML = enquiries.length ? enquiries.map((item) => {
+        const status = ['new', 'contacted', 'closed'].includes(item.status) ? item.status : 'new';
+        const emailStatus = ['sent', 'failed'].includes(item.emailStatus) ? item.emailStatus : 'not_configured';
+        const enquiryType = item.type === 'contact' ? 'General contact' : 'Custom cake request';
+        const occasion = item.occasion && item.occasion !== 'General enquiry' ? item.occasion : 'Occasion not specified';
+        const cakeSize = item.cakeSize && item.cakeSize !== 'Not specified' ? item.cakeSize : 'Size not specified';
+        return `<article class="admin-list-row enquiry-admin-card">
+          <div class="enquiry-admin-main">
+            <div class="enquiry-admin-topline"><div class="enquiry-admin-tags"><span class="enquiry-type-tag ${item.type === 'contact' ? 'is-contact' : ''}">${enquiryType}</span><span class="enquiry-status-pill is-${status}">${statusLabels[status]}</span><span class="enquiry-email-pill is-${emailStatus}">${emailLabels[emailStatus]}</span>${item.referenceImage ? '<span class="enquiry-reference-tag">Reference photo</span>' : ''}</div><time class="enquiry-admin-date">${formatDate(item.createdAt)}</time></div>
+            <div class="enquiry-admin-content"><div class="enquiry-admin-identity"><h4>${escapeHtml(item.name || 'Customer')}</h4><div class="enquiry-admin-contact"><a href="mailto:${escapeHtml(item.email)}">${escapeHtml(item.email)}</a>${item.phone ? `<a href="tel:${escapeHtml(item.phone)}">${escapeHtml(item.phone)}</a>` : ''}</div></div><div class="enquiry-admin-specs"><span><small>Occasion</small>${escapeHtml(occasion)}</span><span><small>Cake size</small>${escapeHtml(cakeSize)}</span></div></div>
+            ${item.details ? `<p class="enquiry-admin-details">${escapeHtml(item.details)}</p>` : '<p class="enquiry-admin-details is-empty">No additional note from the customer.</p>'}
+            ${item.referenceImage ? `<a class="enquiry-reference-link" href="${escapeHtml(item.referenceImage)}" target="_blank" rel="noopener"><img src="${escapeHtml(item.referenceImage)}" alt="Cake reference attached by ${escapeHtml(item.name || 'customer')}"><span>Open customer reference <b aria-hidden="true">↗</b></span></a>` : ''}
+          </div>
+        </article>`;
+      }).join('') : '<p class="chart-empty">No enquiries yet. Customer messages will appear here.</p>';
     } catch (error) { setMessage('adminEnquiriesMessage', error.message, true); }
   }
 
@@ -1606,7 +1702,7 @@
         giftCardEditDialog.showModal();
       } else if (status) {
         const active = status.dataset.active === 'true';
-        if (!window.confirm(`${active ? 'Reactivate' : 'Revoke'} this gift card?`)) return;
+        if (!await window.cakesConfirm({ title: `${active ? 'Reactivate' : 'Revoke'} this gift card?`, message: active ? 'This gift card will become available to redeem again.' : 'This gift card will no longer be redeemable. Its activity history will be kept.', confirmText: active ? 'Reactivate card' : 'Revoke card' })) return;
         await api(`/commerce/admin/gift-cards/${encodeURIComponent(id)}/status`, { method: 'PATCH', body: JSON.stringify({ active }) });
         setMessage('adminGiftCardMessage', active ? 'Gift card reactivated.' : 'Gift card revoked. Its redemption history is preserved.');
         await loadAdminGiftCards();
@@ -1714,11 +1810,22 @@
       promoPage = data.page;
       promoPages = data.pages;
       const rows = data.promotions.map((promo) => {
-        const expiry = promo.endsAt ? new Date(promo.endsAt).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) : 'No expiry';
-        const description = promo.description ? `${escapeHtml(promo.description)} · ` : '';
-        const occasion = promo.occasionType ? `${escapeHtml(promo.occasionType)} · ` : '';
-        const emailState = promo.sendToSubscribers ? ' · festival email scheduled' : '';
-        return `<article class="admin-list-row"><span><strong>${escapeHtml(promo.code)}</strong><small>${occasion}${description}${promo.type === 'percent' ? `${promo.value}%` : money(promo.value)} off · Expires ${escapeHtml(expiry)} · ${promo.usedCount} uses · ${promo.active ? 'active' : 'paused'}${emailState}</small></span><button class="store-secondary" type="button" data-promo-id="${escapeHtml(promo._id)}" data-active="${!promo.active}">${promo.active ? 'Pause' : 'Activate'}</button></article>`;
+        const expiryDate = promo.endsAt ? new Date(promo.endsAt) : null;
+        const expiry = expiryDate && !Number.isNaN(expiryDate.getTime()) ? expiryDate.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' }) : 'No expiry';
+        const isPercent = promo.type === 'percent';
+        const discountLabel = isPercent ? `${Number(promo.value)}% off` : `${money(promo.value)} off`;
+        const usage = Number(promo.usageLimit) > 0 ? `${Number(promo.usedCount || 0)} / ${Number(promo.usageLimit)} uses` : `${Number(promo.usedCount || 0)} redeemed · unlimited`;
+        const occasion = ({ festival: 'Festival', celebration: 'Celebration', other: 'Special offer' })[promo.occasionType] || 'Special offer';
+        const description = promo.description && promo.description.trim().toLowerCase() !== String(promo.code || '').trim().toLowerCase() ? promo.description : '';
+        const emailState = promo.sendToSubscribers ? '<span class="promo-admin-email"><span aria-hidden="true">✉</span> Festival email scheduled</span>' : '';
+        return `<article class="admin-list-row promo-admin-row">
+          <div class="promo-admin-main">
+            <div class="promo-admin-heading"><div><span class="promo-admin-eyebrow">${occasion}</span><strong>${escapeHtml(promo.code)}</strong></div><span class="promo-admin-discount">${discountLabel}</span><span class="promo-admin-state ${promo.active ? 'is-active' : 'is-paused'}"><i aria-hidden="true"></i>${promo.active ? 'Active' : 'Paused'}</span></div>
+            <div class="promo-admin-facts"><span><small>Minimum basket</small>${money(promo.minimumSubtotal || 0)}</span><span><small>Expires</small>${escapeHtml(expiry)}</span><span><small>Usage</small>${escapeHtml(usage)}</span>${Number(promo.maximumDiscount) > 0 ? `<span><small>Discount cap</small>${money(promo.maximumDiscount)}</span>` : ''}</div>
+            ${(description || promo.sendToSubscribers) ? `<div class="promo-admin-footnote">${description ? `<span>${escapeHtml(description)}</span>` : ''}${emailState}</div>` : ''}
+          </div>
+          <button class="promo-admin-toggle ${promo.active ? 'is-pause' : 'is-activate'}" type="button" data-promo-id="${escapeHtml(promo._id)}" data-active="${!promo.active}" aria-label="${promo.active ? 'Pause' : 'Activate'} ${escapeHtml(promo.code)}">${promo.active ? 'Pause offer' : 'Activate offer'}</button>
+        </article>`;
       }).join('');
       if (append) adminPromos.insertAdjacentHTML('beforeend', rows);
       else adminPromos.innerHTML = rows || `<p>${promoSearch ? 'No offers match your search.' : 'No promotions created.'}</p>`;
@@ -1796,7 +1903,10 @@
   }
 
   const productAdminForm = document.getElementById('productAdminForm');
+  const productEditorDialog = document.getElementById('productEditorDialog');
+  const productEditorTitle = document.getElementById('productEditorTitle');
   const productAdminMessage = document.getElementById('productAdminMessage');
+  const productAdminNotice = document.getElementById('productAdminNotice');
   const adminProducts = document.getElementById('adminProducts');
   const productSectionHeading = document.querySelector('#admin-product-section .admin-section-heading');
   const adminProductLimit = 5;
@@ -1868,17 +1978,24 @@
   });
   loadMoreProductsButton.addEventListener('click', () => loadAdminProductPage({ append: true }).catch(() => {}));
   refreshProductsButton.addEventListener('click', () => loadAdminProductPage().catch(() => {}));
-  productSectionHeading.parentElement.insertBefore(adminProducts, productAdminForm);
+  // Keep the editor form inside its native dialog. The product list belongs
+  // immediately before that dialog in the section; using the nested form as
+  // insertBefore's reference throws NotFoundError and aborts editor setup.
+  productSectionHeading.parentElement.insertBefore(adminProducts, productEditorDialog);
   productSectionHeading.insertAdjacentElement('afterend', productToolbar);
   adminProducts.insertAdjacentElement('afterend', loadMoreProductsButton);
-  productAdminForm.style.display = 'none';
   productAdminMessage.style.display = 'none';
   addProductButton.addEventListener('click', () => {
-    const showForm = productAdminForm.style.display === 'none';
-    productAdminForm.style.display = showForm ? 'grid' : 'none';
-    productAdminMessage.style.display = showForm ? '' : 'none';
-    addProductButton.textContent = showForm ? 'Close form' : 'Add product';
-    if (showForm) productAdminForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (!productEditorDialog || !productEditorTitle) return;
+    resetProductForm();
+    productEditorTitle.textContent = 'Add a cake';
+    productAdminMessage.style.display = '';
+    productAdminNotice.hidden = true;
+    if (!productEditorDialog.open) productEditorDialog.showModal();
+  });
+  document.getElementById('closeProductEditor')?.addEventListener('click', () => productEditorDialog.close());
+  productEditorDialog?.addEventListener('click', (event) => {
+    if (event.target === productEditorDialog) productEditorDialog.close();
   });
   const photoInput = productAdminForm.elements.photoFile;
   const categorySelect = productAdminForm.elements.category;
@@ -1978,24 +2095,28 @@
       if (!payload.images.length) { setMessage('productAdminMessage', 'Choose at least one cake photo before saving.', true); photoInput.focus(); return; }
       await api(editSlug ? `/catalog/admin/products/${encodeURIComponent(editSlug)}` : '/catalog/admin/products', { method: editSlug ? 'PUT' : 'POST', body: JSON.stringify(payload) });
       resetProductForm();
-      productAdminForm.style.display = 'none';
-      productAdminMessage.style.display = 'none';
-      addProductButton.textContent = 'Add product';
-      setMessage('productAdminMessage', editSlug ? 'Product updated successfully.' : 'Product added successfully.');
-      await Promise.all([loadAdminTools(), loadCatalog(), loadAdminInventory()]);
+      productEditorDialog?.close();
+      productAdminMessage.style.display = '';
+      productAdminNotice.hidden = false;
+      setMessage('productAdminNotice', editSlug ? 'Product updated and saved.' : 'Product added and saved.');
+      const refreshResults = await Promise.allSettled([loadAdminProductPage(), loadCatalog(), loadAdminInventory()]);
+      if (refreshResults.some((result) => result.status === 'rejected')) {
+        setMessage('productAdminNotice', `${editSlug ? 'Product updated and saved' : 'Product added and saved'}, but some page data could not refresh. Use Refresh to reload it.`);
+      }
     } catch (error) { setMessage('productAdminMessage', error.message || 'Cake could not be saved. Check the details and try again.', true); }
     finally { submitButton.disabled = false; submitButton.textContent = originalLabel; }
   });
   document.getElementById('adminProducts')?.addEventListener('click', async (event) => {
     const button = event.target.closest('[data-edit-product]');
     if (!button) return;
+    if (!productEditorDialog || !productEditorTitle || !productAdminForm) return;
     try {
       const { product } = await api(`/catalog/admin/products/${encodeURIComponent(button.dataset.editProduct)}`, { cache: 'no-store' });
       if (!product) return;
       resetProductForm();
-      productAdminForm.style.display = 'grid';
+      productEditorTitle.textContent = `Update ${product.name}`;
       productAdminMessage.style.display = '';
-      addProductButton.textContent = 'Close form';
+      productAdminNotice.hidden = true;
       productAdminForm.dataset.editSlug = product.slug;
       productAdminForm.dataset.editImage = product.image;
       productAdminForm.dataset.editImages = JSON.stringify(product.images?.length ? product.images : [product.image]);
@@ -2018,15 +2139,14 @@
       document.getElementById('productPhotoPreview').innerHTML = `${currentImages.map((image, index) => `<img src="${escapeHtml(image)}" alt="Current ${escapeHtml(product.name)} photo ${index + 1}">`).join('')}<span>${currentImages.length} current photo${currentImages.length === 1 ? '' : 's'} · choose photos to replace the gallery</span>`;
       document.getElementById('productPhotoPreview').hidden = false;
       setMessage('productAdminMessage', `Editing ${product.name}. Update any fields and save your changes.`);
-      productAdminForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      productEditorDialog.showModal();
     } catch (error) { setMessage('productAdminMessage', error.message, true); }
   });
-  document.getElementById('clearProductForm')?.addEventListener('click', resetProductForm);
   document.getElementById('adminCustomers')?.addEventListener('click', async (event) => {
     const button = event.target.closest('[data-delete-customer]');
     if (!button) return;
     const name = button.dataset.customerName || 'this customer';
-    if (!window.confirm(`Remove ${name}'s customer account? Completed order records will remain anonymized.`)) return;
+    if (!await window.cakesConfirm({ title: 'Remove this customer account?', message: `${name}'s account will be removed. Completed order records will remain anonymized.`, confirmText: 'Remove account' })) return;
     button.disabled = true;
     try {
       const result = await api(`/admin/customers/${encodeURIComponent(button.dataset.deleteCustomer)}`, { method: 'DELETE' });
@@ -2170,6 +2290,12 @@
       const flavor = flavorSelect?.value || product.flavors[0];
       const size = product.sizes.find((item) => item.name === sizeName);
       if (!size) throw new Error('Please choose a valid size');
+      const available = Math.max(0, Math.floor(Number(product.stock ?? 20)) - cartQuantityFor(product.id));
+      if (available < 1) {
+        if (Number(product.stock ?? 20) <= 0) showUnavailableToast(product.name);
+        else showAddToCartError(`You already have all ${Math.floor(Number(product.stock ?? 20))} available ${product.name} in your bag.`);
+        return;
+      }
 
       const existing = cart.find((item) => item.productId === product.id && item.size === sizeName && item.flavor === flavor && !(item.cakeMessage || ''));
       if (existing) existing.quantity = Math.min(10, existing.quantity + 1);
@@ -2236,6 +2362,12 @@
     const size = product?.sizes?.[0];
     const flavor = product?.flavors?.[0];
     if (!product || !size || !flavor) return;
+    const available = Math.max(0, Math.floor(Number(product.stock ?? 20)) - cartQuantityFor(product.id));
+    if (available < 1) {
+      if (Number(product.stock ?? 20) <= 0) showUnavailableToast(product.name);
+      else showAddToCartError(`You already have all ${Math.floor(Number(product.stock ?? 20))} available ${product.name} in your bag.`);
+      return;
+    }
     const existing = cart.find((item) => item.productId === product.id && item.size === size.name && item.flavor === flavor && !(item.cakeMessage || ''));
     if (existing) existing.quantity = Math.min(10, existing.quantity + 1);
     else cart.push({ productId: product.id, name: product.name, size: size.name, flavor, price: size.price, quantity: 1 });
@@ -2288,6 +2420,23 @@
     } finally { button.disabled = false; }
   });
 
+  document.getElementById('modalReviewForm')?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    if (!getToken()) return setMessage('modalReviewMessage', 'Sign in to review a cake after it has been delivered.', true);
+    const button = form.querySelector('button[type="submit"]');
+    button.disabled = true;
+    try {
+      const result = await api(`/catalog/${encodeURIComponent(form.dataset.product)}/reviews`, {
+        method: 'POST', body: JSON.stringify({ rating: form.elements.rating.value, comment: form.elements.comment.value }),
+      });
+      setMessage('modalReviewMessage', result.message || 'Thank you for sharing your review!');
+      await loadModalReviews(form.dataset.product);
+      await loadCatalog();
+    } catch (error) { setMessage('modalReviewMessage', error.message, true); }
+    finally { button.disabled = false; }
+  });
+
   document.getElementById('clearCategoryBannerBtn')?.addEventListener('click', () => {
     document.getElementById('catalogCategory').value = 'All';
     syncCollectionCategoryState('All');
@@ -2309,6 +2458,9 @@
     }
   }
   window.addEventListener('hashchange', checkUrlCategory);
+  window.addEventListener('pageshow', (event) => {
+    if (event.persisted && document.body.classList.contains('shop-page')) loadCatalog(1);
+  });
 
   initGallery();
 
@@ -2329,34 +2481,47 @@
     finally { button.disabled = false; }
   });
 
+  document.getElementById('adminOrders')?.addEventListener('change', (event) => {
+    const statusSelect = event.target.closest('[data-next-status], [data-next-delivery-status]');
+    if (!statusSelect) return;
+    // A selected status is saved immediately; otherwise it can look completed
+    // in the dropdown while the server still has the old status.
+    statusSelect.closest('.admin-order-card')?.querySelector('[data-order-action="status"]')?.click();
+  });
+
   document.getElementById('adminOrders')?.addEventListener('click', async (event) => {
     const button = event.target.closest('[data-order-action]');
     if (!button) return;
     const orderNumber = button.dataset.order;
     const orderCardNode = button.closest('.admin-order-card');
+    const statusSelect = orderCardNode?.querySelector(`[data-next-status="${CSS.escape(orderNumber)}"]`);
+    const deliverySelect = orderCardNode?.querySelector(`[data-next-delivery-status="${CSS.escape(orderNumber)}"]`);
+    const restoreStatusSelection = () => { if (statusSelect && orderCardNode?.dataset.orderStatus) statusSelect.value = orderCardNode.dataset.orderStatus; };
     const actionType = button.dataset.orderAction;
     const paymentMethod = orderCardNode?.dataset.paymentMethod;
     const unpaid = isOrderUnpaid(orderCardNode?.dataset.paymentStatus);
     let markPaid = false;
     let confirmOfflineRefund = false;
+    if (actionType === 'paid' && !await window.cakesConfirm({ title: 'Record payment received?', message: `Confirm that payment for ${orderNumber} has actually been received from the customer. Only continue after collecting the cash or payment.`, confirmText: 'Yes, payment received' })) return;
     if (actionType === 'status') {
       const requestedStatus = document.querySelector(`[data-next-status="${CSS.escape(orderNumber)}"]`).value;
       if (requestedStatus === 'completed' && unpaid) {
         if (isOfflinePayment(paymentMethod)) {
-          if (!window.confirm('Payment not received. Mark as Paid first?')) return;
+          if (!await window.cakesConfirm({ title: 'Mark this order as paid?', message: 'Payment is currently recorded as unpaid. Continue only if the customer has now paid.', confirmText: 'Mark as paid' })) { restoreStatusSelection(); return; }
           markPaid = true;
         } else {
           setMessage('adminMessage', 'Payment not received. Complete and verify the online payment before marking this order Completed.', true);
+          restoreStatusSelection();
           return;
         }
       }
       if (requestedStatus === 'cancelled' && !unpaid && isOfflinePayment(paymentMethod)) {
-        if (!window.confirm('This order has been paid offline. Cancel it and set payment to Refund Due?')) return;
+        if (!await window.cakesConfirm({ title: 'Cancel this paid order?', message: 'This order was paid offline. Cancelling it will set the payment status to Refund Due.', confirmText: 'Cancel order' })) { restoreStatusSelection(); return; }
         confirmOfflineRefund = true;
       }
     }
     if (actionType === 'refund' && isOfflinePayment(paymentMethod)) {
-      if (!window.confirm('Confirm that you have returned this offline payment to the customer.')) return;
+      if (!await window.cakesConfirm({ title: 'Confirm the refund?', message: 'Confirm that you have returned this offline payment to the customer before recording the refund.', confirmText: 'Refund returned' })) return;
       confirmOfflineRefund = true;
     }
     const originalLabel = button.textContent;
@@ -2377,7 +2542,8 @@
         const trackingNumber = document.querySelector(`[data-tracking-number="${CSS.escape(orderNumber)}"]`).value;
         const carrier = document.querySelector(`[data-shipping-carrier="${CSS.escape(orderNumber)}"]`).value;
         const estimatedDelivery = document.querySelector(`[data-estimated-delivery="${CSS.escape(orderNumber)}"]`).value;
-        const result = await api(`/orders/admin/${encodeURIComponent(orderNumber)}/status`, { method: 'PATCH', body: JSON.stringify({ status, note, markPaid, confirmOfflineRefund, trackingNumber, carrier, estimatedDelivery }) });
+        const deliveryStatus = deliverySelect?.value || 'not-delivered';
+        const result = await api(`/orders/admin/${encodeURIComponent(orderNumber)}/status`, { method: 'PATCH', body: JSON.stringify({ status, deliveryStatus, deliveryNote: note, note, markPaid, confirmOfflineRefund, trackingNumber, carrier, estimatedDelivery }) });
         successMessage = result.message || `${orderNumber} updated to ${status.replaceAll('-', ' ')}.`;
       }
       const refreshed = await Promise.all([loadAdminOrders(), loadCompletedOrders(), refreshAdminSales(), loadCustomerOrders()]);
@@ -2403,10 +2569,46 @@
     toggle.classList.toggle('is-active', active);
     loadCatalog(1);
   });
-  document.getElementById('catalogDietary')?.addEventListener('change', loadCatalog);
-  document.getElementById('catalogPriceRange')?.addEventListener('change', () => loadCatalog(1));
-  document.getElementById('catalogFlavor')?.addEventListener('change', () => loadCatalog(1));
-  document.getElementById('catalogSize')?.addEventListener('change', () => loadCatalog(1));
+  document.getElementById('catalogDietary')?.addEventListener('change', () => loadCatalog(1));
+  window.applyCakePriceFilter = (selectedPrice) => {
+    const nextUrl = new URL(window.location.href);
+    const selectedCategory = document.getElementById('catalogCategory')?.value || 'All';
+    if (selectedCategory === 'All') nextUrl.searchParams.delete('category');
+    else nextUrl.searchParams.set('category', selectedCategory);
+    if (selectedPrice) nextUrl.searchParams.set('price', selectedPrice);
+    else nextUrl.searchParams.delete('price');
+    nextUrl.hash = 'shop';
+    // Keep the storefront mounted while changing a facet. A full navigation
+    // can race the deferred catalogue bootstrap and leave the grid blank until
+    // the customer clicks a category again.
+    window.history.replaceState({}, '', nextUrl);
+    const priceSelect = document.getElementById('catalogPrice');
+    if (priceSelect) priceSelect.value = selectedPrice || '';
+    loadCatalog(1);
+  };
+  document.getElementById('catalogPrice')?.addEventListener('change', (event) => {
+    window.applyCakePriceFilter(event.currentTarget.value);
+  });
+  document.getElementById('clearShopFilters')?.addEventListener('click', () => {
+    document.getElementById('catalogSearch').value = '';
+    document.getElementById('catalogFlavor').value = '';
+    document.getElementById('catalogSize').value = '';
+    document.getElementById('catalogDietary').value = '';
+    document.getElementById('catalogPrice').value = '';
+    const categorySelect = document.getElementById('catalogCategory');
+    if (categorySelect) categorySelect.value = 'All';
+    syncCollectionCategoryState('All');
+    updateCategoryBanner('All');
+    const nextUrl = new URL(window.location.href);
+    nextUrl.searchParams.delete('category');
+    nextUrl.searchParams.delete('price');
+    nextUrl.hash = 'shop';
+    window.history.replaceState({}, '', nextUrl);
+    loadCatalog(1);
+  });
+  document.querySelector('.collection-sidebar')?.addEventListener('change', (event) => {
+    if (event.target.matches('#catalogFlavor, #catalogSize')) loadCatalog(1);
+  });
   document.getElementById('loadMoreCakes')?.addEventListener('click', (event) => {
     if (catalogPage >= catalogTotalPages) return;
     loadCatalog(catalogPage + 1, { append: true });
@@ -2522,10 +2724,41 @@
       if (currentView === 'categories') loadAdminCategories();
       if (currentView === 'overview') { loadOverviewRecentOrders(); loadDashboardRecentEnquiries(); }
       if (currentView === 'wishlist') refreshAdminSales();
-    }).catch(() => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      location.replace('login.html');
+    }).catch((error) => {
+      if (error.status === 401 || error.status === 403) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        location.replace('login.html');
+        return;
+      }
+
+      // A temporary API outage should not replace the admin screen with the
+      // customer storefront or erase a valid sign-in. Keep the requested admin
+      // view visible so the issue is clear and the user can retry when ready.
+      document.body.classList.add('admin-mode');
+      const dashboard = document.getElementById('adminDashboard');
+      dashboard.hidden = false;
+      document.querySelectorAll('#adminDashboard > .admin-layout > .admin-main > .admin-tools').forEach((section) => {
+        section.hidden = section.id !== adminViewKeys[adminView];
+        if (section.hidden) section.style.setProperty('display', 'none', 'important');
+        else section.style.removeProperty('display');
+      });
+      const pageNav = document.getElementById('adminPageNav');
+      const fallbackPages = [
+        ['overview', 'Overview'], ['orders', 'Orders'], ['completed', 'Completed Orders'], ['inventory', 'Inventory'],
+        ['products', 'Products'], ['categories', 'Categories'], ['wishlist', 'Wishlist'], ['gift-cards', 'Gift Cards'],
+        ['reviews', 'Reviews'], ['customers', 'Customers'], ['enquiries', 'Enquiries'], ['offers', 'Offers'], ['settings', 'Settings'],
+      ];
+      pageNav.innerHTML = fallbackPages.map(([key, label]) => `<a data-admin-view="${key}" href="index.html?adminPage=${encodeURIComponent(key)}"${key === adminView ? ' class="active" aria-current="page"' : ''}>${label}</a>`).join('');
+      let notice = document.getElementById('adminConnectionNotice');
+      if (!notice) {
+        notice = document.createElement('p');
+        notice.id = 'adminConnectionNotice';
+        notice.className = 'store-message';
+        notice.setAttribute('role', 'alert');
+        document.querySelector('#adminDashboard .admin-main')?.prepend(notice);
+      }
+      notice.textContent = `Your admin account is signed in, but the bakery service could not be reached: ${error.message}`;
     });
   } else if (new URLSearchParams(location.search).has('adminPage')) {
     sessionStorage.setItem('returnTo', `${location.pathname}${location.search}`);
@@ -2540,8 +2773,30 @@
     reportFromField.value = `${reportDateValue.slice(0, 7)}-01`;
   }
   loadCancellationPolicy();
-  checkUrlCategory({ load: false, scroll: false });
-  loadCatalog(1);
+  const initialShopUrl = new URL(window.location.href);
+  const initialPrice = initialShopUrl.searchParams.get('price');
+  const priceSelect = document.getElementById('catalogPrice');
+  if (priceSelect && [...priceSelect.options].some((option) => option.value === initialPrice)) priceSelect.value = initialPrice || '';
+  const hasInitialCategory = initialShopUrl.searchParams.has('category') || /(?:category|cat)=/i.test(initialShopUrl.hash);
+  if (hasInitialCategory) checkUrlCategory({ load: false, scroll: false });
+  else {
+    const categorySelect = document.getElementById('catalogCategory');
+    if (categorySelect) categorySelect.value = 'All';
+    syncCollectionCategoryState('All');
+    updateCategoryBanner('All');
+  }
+  // `store.js` is deferred, so the document may already be interactive when
+  // this code executes. In that case DOMContentLoaded has not necessarily
+  // fired yet, but waiting for it can leave the catalogue unrequested when
+  // this script is injected after that event. Cover both startup states.
+  const startInitialCatalogLoad = () => {
+    if (productGrid && catalogRequestId === 0) loadCatalog(1);
+  };
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startInitialCatalogLoad, { once: true });
+  } else {
+    startInitialCatalogLoad();
+  }
   loadFeaturedCakes();
   loadCustomerOrders();
   loadAccount();
@@ -2708,7 +2963,7 @@
     const remove = event.target.closest('[data-delete-inventory]');
     if (!remove) return;
     const item = inventoryData.find((entry) => entry.id === remove.dataset.deleteInventory);
-    if (!item || !window.confirm(`Remove ${item.name} from inventory?`)) return;
+    if (!item || !await window.cakesConfirm({ title: 'Remove this inventory item?', message: `${item.name} will be removed from the inventory list.`, confirmText: 'Remove item' })) return;
     remove.disabled = true;
     try {
       await api(`/inventory/admin/items/${encodeURIComponent(item.recordId)}`, { method: 'DELETE' });
@@ -2724,7 +2979,7 @@
   });
   document.getElementById('inventoryBulkRemove')?.addEventListener('click', async () => {
     const removable = [...selectedInventoryRows].map((id) => inventoryData.find((item) => item.id === id)).filter((item) => item && item.type !== 'cakes');
-    if (!removable.length || !window.confirm(`Remove ${removable.length} selected inventory item${removable.length === 1 ? '' : 's'}?`)) return;
+    if (!removable.length || !await window.cakesConfirm({ title: `Remove ${removable.length} selected item${removable.length === 1 ? '' : 's'}?`, message: 'The selected supplies will be removed from inventory. Cakes are not included.', confirmText: 'Remove selected' })) return;
     const button = document.getElementById('inventoryBulkRemove');
     button.disabled = true;
     try {
@@ -2890,6 +3145,11 @@
     const sizeChips = document.getElementById('modalSizeChips');
     if (sizeChips) sizeChips.innerHTML = product.sizes.map((size, index) => `<button type="button" class="modal-size-chip" data-size-option="${escapeHtml(size.name)}" aria-pressed="${index === 0}">${escapeHtml(size.name)}</button>`).join('');
     document.getElementById('modalQuantity').textContent = '1';
+    const modalAvailable = Math.max(0, Math.floor(Number(product.stock ?? 20)) - cartQuantityFor(product.id));
+    modal.dataset.availableToAdd = String(modalAvailable);
+    document.getElementById('modalAddToCartBtn').disabled = false;
+    document.getElementById('modalAddToCartBtn').innerHTML = modalAvailable < 1 ? 'Out of stock' : `${bagIconMarkup}<span>Add to bag</span>`;
+    document.getElementById('modalAddToCartBtn').setAttribute('aria-label', modalAvailable < 1 ? `No ${product.name} stock remains beyond your current bag quantity` : `Add ${product.name} to bag`);
     document.getElementById('modalCakeMessage').value = '';
     document.getElementById('modalCakeMessageCount').textContent = '0/50';
 
@@ -2909,6 +3169,11 @@
         if (!size) throw new Error('Please choose a valid size');
 
         const quantity = Number(document.getElementById('modalQuantity').textContent || 1);
+        if (quantity > Number(modal.dataset.availableToAdd || 0)) {
+          if (Number(product.stock ?? 20) <= 0) showUnavailableToast(product.name);
+          else showAddToCartError(`You already have all ${Math.floor(Number(product.stock ?? 20))} available ${product.name} in your bag.`);
+          return;
+        }
         const cakeMessage = document.getElementById('modalCakeMessage').value.trim();
         const existing = cart.find((item) => item.productId === product.id && item.size === sizeName && item.flavor === flavor && (item.cakeMessage || '') === cakeMessage);
         if (existing) existing.quantity = Math.min(10, existing.quantity + quantity);
@@ -2924,6 +3189,7 @@
 
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
+    loadModalReviews(productId);
 
     if (!Array.isArray(product.images) || product.images.length < 2) {
       api(`/catalog/${encodeURIComponent(productId)}`).then(({ product: detail }) => {
@@ -2950,7 +3216,7 @@
     const sizeChip = event.target.closest('[data-size-option]');
     if (sizeChip) { const select = document.getElementById('modalProductSize'); select.value = sizeChip.dataset.sizeOption; select.dispatchEvent(new Event('change', { bubbles: true })); return; }
     const quantityStep = event.target.closest('[data-quantity-step]');
-    if (quantityStep) { const output = document.getElementById('modalQuantity'); output.textContent = String(Math.max(1, Math.min(10, Number(output.textContent || 1) + Number(quantityStep.dataset.quantityStep)))); return; }
+    if (quantityStep) { const output = document.getElementById('modalQuantity'); const max = Math.max(1, Math.min(10, Number(document.getElementById('productDetailModal')?.dataset.availableToAdd || 0))); output.textContent = String(Math.max(1, Math.min(max, Number(output.textContent || 1) + Number(quantityStep.dataset.quantityStep)))); return; }
     const photoButton = event.target.closest('[data-modal-image-index]');
     if (photoButton) {
       showModalGalleryImage(Number(photoButton.dataset.modalImageIndex));

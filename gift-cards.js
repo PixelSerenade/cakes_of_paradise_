@@ -33,7 +33,7 @@
   let retryWalletPurchaseId = '';
   let walletBalance = null;
   let walletNeedsSignIn = !token();
-  const selectedPayment = () => form.elements.paymentMethod.value || 'upi';
+  const selectedPayment = () => form.elements.paymentMethod.value || 'razorpay';
   const refreshPayButton = () => {
     if (!selectedOffer || retryOrder || retryWalletPurchaseId) return;
     const wallet = selectedPayment() === 'wallet';
@@ -41,14 +41,22 @@
     submitButton.disabled = wallet ? !enough : false;
     submitButton.innerHTML = wallet
       ? `<span aria-hidden="true">♡</span> Pay with gift wallet · <strong>${money(selectedOffer.price)}</strong>`
-      : `<span aria-hidden="true">♡</span> Pay with UPI · <strong>${money(selectedOffer.price)}</strong>`;
+      : `<span aria-hidden="true">♡</span> Pay securely with Razorpay · <strong>${money(selectedOffer.price)}</strong>`;
     if (wallet && walletBalance !== null && !enough) {
-      message.textContent = `Your gift wallet has ${money(walletBalance)}. This card costs ${money(selectedOffer.price)}. Redeem a gift code in your account or choose UPI.`;
+      message.textContent = `Your gift wallet has ${money(walletBalance)}. This card costs ${money(selectedOffer.price)}. Redeem a gift code in your account or choose Razorpay.`;
       message.classList.add('gift-info');
     } else if (wallet && enough && message.classList.contains('gift-info')) {
       message.textContent = '';
       message.classList.remove('gift-info');
     }
+  };
+  const clearRecipientFields = () => {
+    form.elements.recipientName.value = '';
+    form.elements.recipientEmail.value = '';
+    form.elements.message.value = '';
+    const count = form.querySelector('.gift-count');
+    if (count) count.textContent = '0 / 200';
+    refreshPayButton();
   };
 
   const renderOffers = () => {
@@ -88,7 +96,7 @@
     if (event.target.name === 'paymentMethod') {
       message.textContent = '';
       message.classList.remove('gift-info');
-      if (event.target.value === 'upi') {
+      if (event.target.value === 'razorpay') {
         try { sessionStorage.removeItem('giftCardPendingCheckout'); } catch {}
       }
       if (event.target.value === 'wallet' && (!token() || walletNeedsSignIn)) {
@@ -131,9 +139,9 @@
       form.elements.message.value = pending.message || '';
       form.querySelector('.gift-count').textContent = `${form.elements.message.value.length} / 200`;
       if (!token()) {
-        form.querySelector('input[name="paymentMethod"][value="upi"]').checked = true;
+        form.querySelector('input[name="paymentMethod"][value="razorpay"]').checked = true;
         form.querySelector('input[name="paymentMethod"][value="wallet"]').checked = false;
-        message.textContent = 'Sign in to use your gift wallet. Select Gift wallet to sign in, or choose UPI.';
+        message.textContent = 'Sign in to use your gift wallet. Select Gift wallet to sign in, or choose Razorpay.';
         message.classList.add('gift-info');
         return;
       }
@@ -173,7 +181,7 @@
     if (!form.reportValidity()) return;
     if (!selectedOffer) { message.textContent = 'Choose one of the available gift cards first.'; return; }
     const paymentMethod = selectedPayment();
-    if (paymentMethod === 'upi') { try { sessionStorage.removeItem('giftCardPendingCheckout'); } catch {} }
+    if (paymentMethod === 'razorpay') { try { sessionStorage.removeItem('giftCardPendingCheckout'); } catch {} }
     if (paymentMethod === 'wallet') {
       if (!token()) { message.textContent = 'Sign in to pay using your account balance.'; return; }
       if (walletBalance === null || walletBalance < Number(selectedOffer.price)) { message.textContent = 'Your gift wallet balance is not enough. Choose UPI or add funds to your wallet.'; return; }
@@ -194,7 +202,6 @@
         key: order.keyId, amount: order.amount, currency: order.currency, order_id: order.orderId,
         name: 'Cakes of Paradise', description: `${order.offerName} · ${money(order.amount / 100)}`, prefill: { email: form.elements.recipientEmail.value },
         theme: { color: '#d99b98' },
-        config: { display: { blocks: { upi_only: { name: 'Pay via UPI', instruments: [{ method: 'upi' }] } }, sequence: ['block.upi_only'], preferences: { show_default_blocks: false } } },
         handler: async (payment) => {
           retryOrder = order;
           retryPayment = payment;
@@ -203,9 +210,9 @@
         modal: { ondismiss: () => { submitButton.disabled = false; renderOffers(); } },
       });
       checkout.on('payment.failed', (result) => {
-        message.textContent = result.error?.description || 'Payment was not completed. Please try again.';
         submitButton.disabled = false;
         renderOffers();
+        showPaymentFailure(result.error?.description || 'Your payment could not be completed.');
       });
       checkout.open();
     } catch (error) {
@@ -217,7 +224,7 @@
 
   async function verifyGiftCardPayment(order, payment) {
     submitButton.disabled = true;
-    submitButton.textContent = 'Confirming payment and sending your gift card…';
+    submitButton.textContent = 'Confirming your payment…';
     try {
       const verified = await fetch(`${API}/commerce/gift-cards/purchase/verify`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ purchaseId: order.purchaseId, ...payment }) });
       const result = await verified.json();
@@ -229,15 +236,36 @@
         refreshPayButton();
         return;
       }
-      if (!verified.ok) throw new Error(result.message || 'Payment verification could not be completed.');
+      if (!verified.ok) {
+        if (result.paymentFailed) {
+          retryOrder = null;
+          retryPayment = null;
+          submitButton.disabled = false;
+          refreshPayButton();
+          showPaymentFailure(result.message || 'Razorpay could not complete this payment.');
+          return;
+        }
+        if (result.paid || result.deliveryPending) {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Retry gift card email';
+          showDeliveryPending(result.message || 'Payment was received, but the gift email is still pending.', () => verifyGiftCardPayment(order, payment));
+          return;
+        }
+        if (result.paymentPending) {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Check payment status';
+          showVerificationPending(result.message, () => verifyGiftCardPayment(order, payment));
+          return;
+        }
+        throw new Error(result.message || 'Payment verification could not be completed.');
+      }
       retryOrder = null;
       retryPayment = null;
-      form.innerHTML = `<div class="gift-success"><span>♡</span><h2>Your gift card is on its way!</h2><p>We emailed it to <strong></strong>. Thank you for sharing something sweet.</p><a href="shop.html">Explore the cakes →</a></div>`;
-      form.querySelector('strong').textContent = result.recipientEmail;
+      showSuccess(result.recipientEmail, order.offerName);
     } catch (error) {
-      message.textContent = `Your payment was received. ${error.message} Please retry delivery below; you will not be charged again. Payment ID: ${payment.razorpay_payment_id}`;
       submitButton.disabled = false;
-      submitButton.textContent = 'Retry gift card delivery';
+      submitButton.textContent = 'Check payment status';
+      showVerificationPending(error.message || 'We could not confirm payment and email delivery yet.', () => verifyGiftCardPayment(order, payment));
     }
   }
 
@@ -251,11 +279,17 @@
       });
       const result = await response.json();
       if (!response.ok) {
-        if (result.purchaseId && result.paid) { retryWalletPurchaseId = result.purchaseId; submitButton.textContent = 'Retry gift card email'; }
+        if (result.purchaseId && result.paid) {
+          retryWalletPurchaseId = result.purchaseId;
+          submitButton.disabled = false;
+          submitButton.textContent = 'Retry gift card email';
+          showDeliveryPending(result.message || 'Your payment was received, but the gift email is still pending.', () => retryWalletDelivery(retryWalletPurchaseId));
+          return;
+        }
         throw new Error(result.message || 'Could not complete the wallet purchase.');
       }
       walletBalance = Number(result.balance || 0);
-      showSuccess(result.recipientEmail);
+      showSuccess(result.recipientEmail, selectedOffer?.name);
     } catch (error) {
       message.textContent = error.message || 'Could not complete the wallet purchase.';
       submitButton.disabled = false;
@@ -271,20 +305,103 @@
       const result = await response.json();
       if (!response.ok) throw new Error(result.message || 'Email delivery could not be completed.');
       retryWalletPurchaseId = '';
-      showSuccess(result.recipientEmail);
+      showSuccess(result.recipientEmail, selectedOffer?.name);
     } catch (error) {
-      message.textContent = error.message || 'Email delivery could not be completed.';
       submitButton.disabled = false;
       submitButton.textContent = 'Retry gift card email';
+      showDeliveryPending(error.message || 'The gift email is still pending.', () => retryWalletDelivery(purchaseId));
     }
   }
 
-  function showSuccess(recipientEmail) {
+  function showSuccess(recipientEmail, offerName) {
     retryOrder = null;
     retryPayment = null;
     retryWalletPurchaseId = '';
-    form.innerHTML = `<div class="gift-success"><span>♡</span><h2>Your gift card is on its way!</h2><p>We emailed it to <strong></strong>. Thank you for sharing something sweet.</p><a href="shop.html">Explore the cakes →</a></div>`;
-    form.querySelector('strong').textContent = recipientEmail;
+    let dialog = document.getElementById('giftPurchaseSuccessDialog');
+    if (!dialog) {
+      dialog = document.createElement('div');
+      dialog.id = 'giftPurchaseSuccessDialog';
+      dialog.className = 'gift-success-backdrop';
+      dialog.setAttribute('role', 'presentation');
+      dialog.innerHTML = `<section class="gift-success-dialog" role="dialog" aria-modal="true" aria-labelledby="giftSuccessTitle"><button class="gift-success-close" type="button" aria-label="Close confirmation">×</button><span class="gift-success-seal" aria-hidden="true">✓</span><p class="gift-success-kicker">A LITTLE JOY IS ON ITS WAY</p><h2 id="giftSuccessTitle">Gift card purchased</h2><p class="gift-success-copy"></p><p class="gift-success-code-note">The full gift card and its redeem code are delivered by email only. Enter that code under <strong>My Account → Gift wallet</strong> to add its value to the wallet.</p><div class="gift-success-actions"><a class="gift-success-account" href="account.html#gift-wallet">Go to gift wallet</a><button class="gift-success-done" type="button">Lovely, thank you</button></div></section>`;
+      document.body.append(dialog);
+      const close = () => { dialog.remove(); clearRecipientFields(); };
+      dialog.addEventListener('click', (event) => { if (event.target === dialog || event.target.closest('.gift-success-close, .gift-success-done')) close(); });
+      document.addEventListener('keydown', function onEscape(event) { if (event.key === 'Escape' && document.getElementById('giftPurchaseSuccessDialog')) { close(); document.removeEventListener('keydown', onEscape); } });
+    }
+    dialog.querySelector('.gift-success-copy').textContent = `Your payment is confirmed and ${offerName || 'your gift card'} is purchased. We’re sending the gift email to ${recipientEmail} now; it should arrive shortly.`;
+    dialog.querySelector('.gift-success-account').textContent = token() ? 'View gift wallet' : 'Sign in to view gift wallet';
+    dialog.querySelector('.gift-success-close').focus();
+  }
+
+  function showPaymentFailure(reason) {
+    document.getElementById('giftPaymentFailureDialog')?.remove();
+    const dialog = document.createElement('div');
+    dialog.id = 'giftPaymentFailureDialog';
+    dialog.className = 'gift-success-backdrop';
+    dialog.innerHTML = `<section class="gift-payment-failure-dialog" role="dialog" aria-modal="true" aria-labelledby="giftPaymentFailureTitle"><button class="gift-failure-exit" type="button" aria-label="Exit payment">×</button><span class="gift-failure-seal" aria-hidden="true">!</span><p class="gift-success-kicker">PAYMENT NOT COMPLETED</p><h2 id="giftPaymentFailureTitle">Would you like to try again?</h2><p class="gift-success-copy"></p><p class="gift-success-code-note">No gift card has been issued and no redeem code has been sent. Gift cards are purchased only after Razorpay confirms payment.</p><div class="gift-success-actions"><button class="gift-failure-retry" type="button">Try payment again</button><button class="gift-failure-exit-action" type="button">Exit for now</button></div></section>`;
+    document.body.append(dialog);
+    dialog.querySelector('.gift-success-copy').textContent = reason;
+    const exit = () => {
+      dialog.remove();
+      retryOrder = null;
+      retryPayment = null;
+      submitButton.disabled = false;
+      refreshPayButton();
+      clearRecipientFields();
+      message.classList.remove('gift-info');
+      message.textContent = 'Payment was not completed, so the gift card was not purchased. You can try again whenever you are ready.';
+    };
+    dialog.querySelectorAll('.gift-failure-exit, .gift-failure-exit-action').forEach((button) => button.addEventListener('click', exit));
+    dialog.querySelector('.gift-failure-retry').addEventListener('click', () => {
+      dialog.remove();
+      message.textContent = '';
+      message.classList.remove('gift-info');
+      form.requestSubmit();
+    });
+    dialog.addEventListener('click', (event) => { if (event.target === dialog) exit(); });
+    document.addEventListener('keydown', function onEscape(event) { if (event.key === 'Escape' && document.getElementById('giftPaymentFailureDialog')) { exit(); document.removeEventListener('keydown', onEscape); } });
+    dialog.querySelector('.gift-failure-retry').focus();
+  }
+
+  function showDeliveryPending(reason, retry) {
+    document.getElementById('giftDeliveryPendingDialog')?.remove();
+    const dialog = document.createElement('div');
+    dialog.id = 'giftDeliveryPendingDialog';
+    dialog.className = 'gift-success-backdrop';
+    dialog.innerHTML = `<section class="gift-payment-failure-dialog gift-delivery-pending-dialog" role="dialog" aria-modal="true" aria-labelledby="giftDeliveryPendingTitle"><button class="gift-failure-exit" type="button" aria-label="Close message">×</button><span class="gift-failure-seal" aria-hidden="true">♡</span><p class="gift-success-kicker">PAYMENT RECEIVED</p><h2 id="giftDeliveryPendingTitle">Your gift email is still on its way</h2><p class="gift-success-copy"></p><p class="gift-success-code-note">The gift code is sent only to the recipient email you entered. Retrying delivery will not charge you again.</p><div class="gift-success-actions"><button class="gift-failure-retry" type="button">Retry email delivery</button><button class="gift-failure-exit-action" type="button">Close for now</button></div></section>`;
+    document.body.append(dialog);
+    dialog.querySelector('.gift-success-copy').textContent = reason;
+    const close = () => dialog.remove();
+    const exit = () => {
+      close();
+      message.classList.remove('gift-info');
+      message.textContent = 'Payment received. Gift email delivery is pending. Use “Retry gift card email” to try again; you will not be charged again.';
+    };
+    dialog.querySelectorAll('.gift-failure-exit, .gift-failure-exit-action').forEach((button) => button.addEventListener('click', exit));
+    dialog.querySelector('.gift-failure-retry').addEventListener('click', () => { close(); retry(); });
+    dialog.addEventListener('click', (event) => { if (event.target === dialog) exit(); });
+    document.addEventListener('keydown', function onEscape(event) { if (event.key === 'Escape' && document.getElementById('giftDeliveryPendingDialog')) { exit(); document.removeEventListener('keydown', onEscape); } });
+    dialog.querySelector('.gift-failure-retry').focus();
+  }
+
+  function showVerificationPending(reason, retry) {
+    document.getElementById('giftVerificationPendingDialog')?.remove();
+    const dialog = document.createElement('div');
+    dialog.id = 'giftVerificationPendingDialog';
+    dialog.className = 'gift-success-backdrop';
+    dialog.innerHTML = `<section class="gift-payment-failure-dialog gift-delivery-pending-dialog" role="dialog" aria-modal="true" aria-labelledby="giftVerificationPendingTitle"><button class="gift-failure-exit" type="button" aria-label="Close message">×</button><span class="gift-failure-seal" aria-hidden="true">…</span><p class="gift-success-kicker">PAYMENT STATUS</p><h2 id="giftVerificationPendingTitle">We’re checking your payment</h2><p class="gift-success-copy"></p><p class="gift-success-code-note">The gift card will be issued and emailed to your recipient only after Razorpay confirms the payment. Checking again will not create another charge.</p><div class="gift-success-actions"><button class="gift-failure-retry" type="button">Check payment again</button><button class="gift-failure-exit-action" type="button">Close for now</button></div></section>`;
+    document.body.append(dialog);
+    dialog.querySelector('.gift-success-copy').textContent = reason || 'Payment confirmation is taking a little longer.';
+    const exit = () => {
+      dialog.remove();
+      message.textContent = 'Payment status is still being checked. Use “Check payment status” to continue without starting a second charge.';
+    };
+    dialog.querySelectorAll('.gift-failure-exit, .gift-failure-exit-action').forEach((button) => button.addEventListener('click', exit));
+    dialog.querySelector('.gift-failure-retry').addEventListener('click', () => { dialog.remove(); retry(); });
+    dialog.addEventListener('click', (event) => { if (event.target === dialog) exit(); });
+    document.addEventListener('keydown', function onEscape(event) { if (event.key === 'Escape' && document.getElementById('giftVerificationPendingDialog')) { exit(); document.removeEventListener('keydown', onEscape); } });
+    dialog.querySelector('.gift-failure-retry').focus();
   }
 
   loadOffers();
