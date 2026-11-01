@@ -315,10 +315,10 @@
     if (!image || image.dataset.slideshowStarted) return;
     const initialSrc = image.getAttribute('src') || '/public/images/hero-artisan-cake-optimized.jpg?v=20261101-real';
     const slides = [
-      { src: initialSrc, alt: image.alt || 'Scrapbook collage of vintage celebration cakes' },
-      { src: '/public/images/editorial/hero-blush.webp?v=20261101-real', alt: 'Berry layer anniversary cake with fresh fruit' },
-      { src: '/public/images/editorial/hero-blue.webp?v=20261101-real', alt: 'Pastel gender reveal celebration cake' },
-      { src: '/public/images/editorial/hero-sage.webp?v=20261101-real', alt: 'Botanical gold wedding cake with floral decoration' },
+      { src: initialSrc, alt: image.alt || 'Original Cakes of Paradise scrapbook artwork featuring celebration cakes' },
+      { src: '/public/images/products/anniversary/berry-layer-anniversary.jpg?v=20261101-real', alt: 'Berry layer anniversary cake topped with fresh fruit' },
+      { src: '/public/images/products/theme/gender-reveal-celebration.jpg?v=20261101-real', alt: 'Pastel gender reveal celebration cake with blue and pink decoration' },
+      { src: '/public/images/products/wedding/botanical-gold-wedding.jpg?v=20261101-real', alt: 'Botanical gold wedding cake with floral decoration' },
     ];
     image.dataset.slideshowStarted = 'true';
     let index = 0;
@@ -341,6 +341,7 @@
       window.setTimeout(() => {
         image.src = slides[index].src;
         image.alt = slides[index].alt;
+        image.classList.toggle('is-full-cake', index > 0);
         image.classList.remove('is-fading');
       }, 520);
       renderDots();

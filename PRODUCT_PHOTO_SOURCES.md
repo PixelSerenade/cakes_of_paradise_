@@ -4,7 +4,7 @@ The 55 catalog product images now use real stock photographs. They are stored lo
 
 ## Shared page and hero photography
 
-Homepage and shop banners plus supporting page art use real stock cake photography from the catalog sources below. Birthday, wedding, anniversary, theme, and cupcake category shortcuts intentionally retain their previous decorative artwork for the softer pastel look. Cake listings remain real stock photographs.
+The shop banner and supporting page art use real stock cake photography from the catalog sources below. The homepage keeps its original scrapbook artwork as the first carousel slide and uses real catalog photos on later slides. Birthday, wedding, anniversary, theme, and cupcake category shortcuts intentionally retain their previous decorative artwork for the softer pastel look. Cake listings remain real stock photographs.
 
 | Shared files | Reused real photo | Source |
 | --- | --- | --- |
@@ -17,7 +17,7 @@ Homepage and shop banners plus supporting page art use real stock cake photograp
 | `public/images/custom-cake-craft*.jpg`, legacy `images/custom-cake-craft.jpg` | Baker decorating a cake | [Los Muertos Crew / Pexels photo 8477970](https://www.pexels.com/photo/a-person-baking-a-cake-8477970/) |
 | `public/images/hero-artisan-cake*.jpg`, legacy `images/hero-artisan-cake.jpg` | Baker decorating a cake | [Angela Chacón / Pexels photo 26598639](https://www.pexels.com/photo/woman-decorating-the-cake-26598639/) |
 
-The blue, blush, and sage hero slides use real catalog photos: gender reveal, berry anniversary, and botanical wedding. The homepage scrapbook-style hero now uses a real celebration cake photograph. Original bakery photographs in `public/images/gallery/2.jpeg` through `9.jpeg` remain in place.
+The homepage keeps its original scrapbook artwork as the first carousel slide. Later slides use full-cake real catalog photos for anniversary, gender reveal, and wedding designs. Original bakery photographs in `public/images/gallery/2.jpeg` through `9.jpeg` remain in place.
 
 Unsplash images are covered by the [Unsplash License](https://unsplash.com/license), which permits commercial use. Pexels images are covered by the [Pexels License](https://www.pexels.com/license/).
 

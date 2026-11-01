@@ -363,3 +363,6 @@ body:has(.hero) .featured-cake-card{min-width:0;scroll-snap-align:start}
   body:has(.hero) section#home.hero { padding:24px 16px 18px !important; }
   body:has(.hero) section#home .hero-inner { min-height:clamp(390px,112vw,510px) !important; }
 }
+
+/* Keep the full cake in frame on real-photo slides instead of zoom-cropping it. */
+body:has(.hero) section#home .hero-cake-photo.is-full-cake { object-fit:contain !important; object-position:center center !important; }
