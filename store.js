@@ -1,4 +1,10 @@
 (() => {
+  const freshPhotoUrl = (value) => {
+    const url = String(value || '');
+    if (!/^\/?(?:public\/)?images\//.test(url)) return url;
+    const clean = url.replace(/([?&])v=[^&]*/g, '').replace(/[?&]$/, '');
+    return `${clean}${clean.includes('?') ? '&' : '?'}v=20261101-real`;
+  };
   const API = window.CAKES_API_BASE || '/api';
   const statuses = ['placed', 'confirmed', 'preparing', 'ready', 'shipped', 'out-for-delivery', 'completed', 'cancelled'];
   const adminOrderStatuses = ['placed', 'confirmed', 'preparing', 'ready', 'shipped', 'out-for-delivery', 'completed', 'cancelled'];
@@ -21,10 +27,10 @@
   let displayedTopCakes = [];
   const modalCakePhotoOverrides = {
     'gender-reveal-celebration': [
-      '/public/images/products/theme/gender-reveal-celebration.jpg',
-      '/public/images/products/theme/gender-reveal-detail-2.png',
-      '/public/images/products/theme/gender-reveal-detail-3.png',
-      '/public/images/products/theme/gender-reveal-detail-4.png',
+      '/public/images/products/theme/gender-reveal-celebration.jpg?v=20261101-real',
+      '/public/images/products/theme/gender-reveal-detail-2.png?v=20261101-real',
+      '/public/images/products/theme/gender-reveal-detail-3.png?v=20261101-real',
+      '/public/images/products/theme/gender-reveal-detail-4.png?v=20261101-real',
     ],
   };
   const CATALOG_ROWS_PER_BATCH = 4;
@@ -131,20 +137,20 @@
       return;
     }
     const categoryMeta = {
-      'Birthday Cakes': { desc: 'Celebrate milestones with handcrafted birthday cakes made to bring joy to every wish.', img: '/public/images/products/birthday/birthday-confetti.jpg' },
+      'Birthday Cakes': { desc: 'Celebrate milestones with handcrafted birthday cakes made to bring joy to every wish.', img: '/public/images/products/birthday/birthday-confetti.jpg?v=20261101-real' },
       'Wedding Cakes': {
         desc: 'Elegant, multi-tiered artisanal centerpieces baked fresh for your special day.',
-        img: '/public/images/products/wedding/luxury-tiered-wedding.jpg'
+        img: '/public/images/products/wedding/luxury-tiered-wedding.jpg?v=20261101-real'
       },
       'Anniversary Cakes': {
         desc: 'Sweet romance baked into every layer with premium chocolates, fresh berries, and florals.',
-        img: '/public/images/products/anniversary/red-velvet.jpg'
+        img: '/public/images/products/anniversary/red-velvet.jpg?v=20261101-real'
       },
-      'Cupcakes & Jars': { desc: 'Bite-sized perfection and dessert jars filled with velvety sponge and luscious fillings.', img: '/public/images/products/cupcakes-jars/gourmet-cupcake-box.jpg' },
-      'Theme Cakes': { desc: 'Artistic custom creations sculpted to match your celebration theme and passions.', img: '/public/images/products/theme/minnie-mouse-theme.jpg' },
-      'Photo Cakes': { desc: 'Personalised edible photo memories printed with food-safe colors on delicious fresh cake.', img: '/public/images/products/photo/golden-frame-photo-cake.jpg' }
+      'Cupcakes & Jars': { desc: 'Bite-sized perfection and dessert jars filled with velvety sponge and luscious fillings.', img: '/public/images/products/cupcakes-jars/gourmet-cupcake-box.jpg?v=20261101-real' },
+      'Theme Cakes': { desc: 'Artistic custom creations sculpted to match your celebration theme and passions.', img: '/public/images/products/theme/minnie-mouse-theme.jpg?v=20261101-real' },
+      'Photo Cakes': { desc: 'Personalised edible photo memories printed with food-safe colors on delicious fresh cake.', img: '/public/images/products/photo/golden-frame-photo-cake.jpg?v=20261101-real' }
     };
-    const meta = categoryMeta[category] || { desc: 'Handcrafted cakes made fresh to order in Surathkal.', img: '/public/images/products/birthday/birthday-confetti.jpg' };
+    const meta = categoryMeta[category] || { desc: 'Handcrafted cakes made fresh to order in Surathkal.', img: '/public/images/products/birthday/birthday-confetti.jpg?v=20261101-real' };
     const titleEl = document.getElementById('categoryBannerTitle');
     const descEl = document.getElementById('categoryBannerDesc');
     const imgEl = document.getElementById('categoryBannerImg');
@@ -159,13 +165,13 @@
     const galleryGrid = document.getElementById('galleryGrid');
     if (!galleryGrid) return;
     const galleryItems = [
-      { src: '/images/gallery/8.jpeg', title: 'Golden Candle Celebration Cake', category: 'Birthday', subtitle: 'Handcrafted birthday tier with golden celebration candles and swirl accents' },
-      { src: '/images/gallery/2.jpeg', title: 'Blush Floral Dream', category: 'Birthday', subtitle: 'Fresh strawberry compote layered with delicate buttercream florals' },
-      { src: '/images/gallery/3.jpeg', title: 'Golden Crown Theme Cake', category: 'Theme', subtitle: 'Sculpted royal crown and intricate gold lace detailing' },
-      { src: '/images/gallery/4.jpeg', title: 'Ivory Tiered Wedding Showpiece', category: 'Wedding', subtitle: 'Multi-tiered classic elegance with edible pearl finish' },
-      { src: '/images/gallery/5.jpeg', title: 'Rose Gold Romance', category: 'Anniversary', subtitle: 'Handcrafted anniversary cake topped with macaron and rose accents' },
-      { src: '/images/gallery/6.jpeg', title: 'Dessert Jars & Cupcake Platter', category: 'Theme', subtitle: 'Individual party jars layered with Belgian chocolate mousse and sponge' },
-      { src: '/images/gallery/7.jpeg', title: 'Memories Edible Photo Cake', category: 'Anniversary', subtitle: 'Sharp food-grade photo print over light vanilla cream' }
+      { src: '/images/gallery/8.jpeg?v=20261101-real', title: 'Golden Candle Celebration Cake', category: 'Birthday', subtitle: 'Handcrafted birthday tier with golden celebration candles and swirl accents' },
+      { src: '/images/gallery/2.jpeg?v=20261101-real', title: 'Blush Floral Dream', category: 'Birthday', subtitle: 'Fresh strawberry compote layered with delicate buttercream florals' },
+      { src: '/images/gallery/3.jpeg?v=20261101-real', title: 'Golden Crown Theme Cake', category: 'Theme', subtitle: 'Sculpted royal crown and intricate gold lace detailing' },
+      { src: '/images/gallery/4.jpeg?v=20261101-real', title: 'Ivory Tiered Wedding Showpiece', category: 'Wedding', subtitle: 'Multi-tiered classic elegance with edible pearl finish' },
+      { src: '/images/gallery/5.jpeg?v=20261101-real', title: 'Rose Gold Romance', category: 'Anniversary', subtitle: 'Handcrafted anniversary cake topped with macaron and rose accents' },
+      { src: '/images/gallery/6.jpeg?v=20261101-real', title: 'Dessert Jars & Cupcake Platter', category: 'Theme', subtitle: 'Individual party jars layered with Belgian chocolate mousse and sponge' },
+      { src: '/images/gallery/7.jpeg?v=20261101-real', title: 'Memories Edible Photo Cake', category: 'Anniversary', subtitle: 'Sharp food-grade photo print over light vanilla cream' }
     ];
 
     function renderGallery(filter = 'all') {
@@ -244,12 +250,12 @@
   let homeCategoryPage = 0;
   const homeCategoryImage = (category) => {
     const name = String(category).toLowerCase();
-    if (name.includes('wedding') || name.includes('bridal')) return '/public/images/editorial/wedding-cake.jpg';
-    if (name.includes('anniversary') || name.includes('engagement')) return '/public/images/editorial/anniversary-cake.jpg';
-    if (name.includes('cupcake') || name.includes('jar') || name.includes('pastry')) return '/public/images/editorial/cupcakes.jpg';
-    if (name.includes('theme') || name.includes('custom') || name.includes('photo')) return '/public/images/editorial/theme-cake.jpg';
-    if (name.includes('birthday') || name.includes('celebration')) return '/public/images/editorial/birthday-cake.jpg';
-    return '/public/images/hero-artisan-cake-optimized.jpg';
+    if (name.includes('wedding') || name.includes('bridal')) return '/public/images/editorial/wedding-cake.jpg?v=20261101-real';
+    if (name.includes('anniversary') || name.includes('engagement')) return '/public/images/editorial/anniversary-cake.jpg?v=20261101-real';
+    if (name.includes('cupcake') || name.includes('jar') || name.includes('pastry')) return '/public/images/editorial/cupcakes.jpg?v=20261101-real';
+    if (name.includes('theme') || name.includes('custom') || name.includes('photo')) return '/public/images/editorial/theme-cake.jpg?v=20261101-real';
+    if (name.includes('birthday') || name.includes('celebration')) return '/public/images/editorial/birthday-cake.jpg?v=20261101-real';
+    return '/public/images/hero-artisan-cake-optimized.jpg?v=20261101-real';
   };
   function homeCategoryPageSize() {
     return window.matchMedia('(max-width: 520px)').matches ? 2 : window.matchMedia('(max-width: 760px)').matches ? 3 : 5;
@@ -307,12 +313,12 @@
   function startHeroCakeSlideshow() {
     const image = document.querySelector('#home .hero-cake-photo');
     if (!image || image.dataset.slideshowStarted) return;
-    const initialSrc = image.getAttribute('src') || '/public/images/hero-artisan-cake-optimized.jpg';
+    const initialSrc = image.getAttribute('src') || '/public/images/hero-artisan-cake-optimized.jpg?v=20261101-real';
     const slides = [
       { src: initialSrc, alt: image.alt || 'Scrapbook collage of vintage celebration cakes' },
-      { src: '/public/images/editorial/hero-blush.webp', alt: 'Blush vintage cake with cherries, bows and buttercream piping' },
-      { src: '/public/images/editorial/hero-blue.webp', alt: 'Powder blue vintage cake with ivory daisies and ribbon bows' },
-      { src: '/public/images/editorial/hero-sage.webp', alt: 'Sage green vintage cake with cream bows and delicate blossoms' },
+      { src: '/public/images/editorial/hero-blush.webp?v=20261101-real', alt: 'Berry layer anniversary cake with fresh fruit' },
+      { src: '/public/images/editorial/hero-blue.webp?v=20261101-real', alt: 'Pastel gender reveal celebration cake' },
+      { src: '/public/images/editorial/hero-sage.webp?v=20261101-real', alt: 'Botanical gold wedding cake with floral decoration' },
     ];
     image.dataset.slideshowStarted = 'true';
     let index = 0;
@@ -375,7 +381,7 @@
         const isFavorite = savedFeaturedProducts.has(product.id);
         return `
         <article class="cake-card featured-cake-card" data-featured-product="${escapeHtml(product.id)}" tabindex="0" role="group" aria-label="${escapeHtml(product.name)} cake details; press Enter to open" style="--cake-accent:${categoryAccents[product.category] || '#ded3c3'}">
-          <div class="cake-card-thumb-wrap"><img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" class="cake-card-thumb" loading="lazy"><span class="featured-bestseller-badge">Bestseller</span><button class="featured-wishlist-toggle" type="button" data-featured-favorite="${escapeHtml(product.id)}" aria-label="${isFavorite ? 'Remove ' + escapeHtml(product.name) + ' from wishlist' : 'Add ' + escapeHtml(product.name) + ' to wishlist'}" aria-pressed="${isFavorite}">${isFavorite ? '♥' : '♡'}</button></div>
+          <div class="cake-card-thumb-wrap"><img src="${escapeHtml(freshPhotoUrl(product.image))}" alt="${escapeHtml(product.name)}" class="cake-card-thumb" loading="lazy"><span class="featured-bestseller-badge">Bestseller</span><button class="featured-wishlist-toggle" type="button" data-featured-favorite="${escapeHtml(product.id)}" aria-label="${isFavorite ? 'Remove ' + escapeHtml(product.name) + ' from wishlist' : 'Add ' + escapeHtml(product.name) + ' to wishlist'}" aria-pressed="${isFavorite}">${isFavorite ? '♥' : '♡'}</button></div>
           <div class="cake-card-body">
             <span class="product-category" data-category="${escapeHtml(product.category)}">${escapeHtml(product.category)}</span>
             <h3>${escapeHtml(product.name)}</h3>
@@ -620,12 +626,12 @@
     }
 
     const categoryPlaceholders = {
-      'Birthday Cakes': '/public/images/products/birthday/birthday-confetti.jpg',
-      'Wedding Cakes': '/public/images/products/wedding/luxury-tiered-wedding.jpg',
-      'Anniversary Cakes': '/public/images/products/anniversary/red-velvet.jpg',
-      'Cupcakes & Jars': '/public/images/products/cupcakes-jars/gourmet-cupcake-box.jpg',
-      'Theme Cakes': '/public/images/products/theme/minnie-mouse-theme.jpg',
-      'Photo Cakes': '/public/images/products/photo/golden-frame-photo-cake.jpg'
+      'Birthday Cakes': '/public/images/products/birthday/birthday-confetti.jpg?v=20261101-real',
+      'Wedding Cakes': '/public/images/products/wedding/luxury-tiered-wedding.jpg?v=20261101-real',
+      'Anniversary Cakes': '/public/images/products/anniversary/red-velvet.jpg?v=20261101-real',
+      'Cupcakes & Jars': '/public/images/products/cupcakes-jars/gourmet-cupcake-box.jpg?v=20261101-real',
+      'Theme Cakes': '/public/images/products/theme/minnie-mouse-theme.jpg?v=20261101-real',
+      'Photo Cakes': '/public/images/products/photo/golden-frame-photo-cake.jpg?v=20261101-real'
     };
 
     const isShopPage = document.body.classList.contains('shop-page');
@@ -640,8 +646,8 @@
           ? `<span class="stock-status-pill badge-warning" style="margin-left:8px;">Only ${product.stock} left</span>`
           : '';
 
-      const fallbackImg = categoryPlaceholders[product.category] || '/public/images/products/birthday/birthday-confetti.jpg';
-      const imgSrc = product.image && !product.image.includes('/images/gallery/') ? product.image : fallbackImg;
+      const fallbackImg = categoryPlaceholders[product.category] || '/public/images/products/birthday/birthday-confetti.jpg?v=20261101-real';
+      const imgSrc = freshPhotoUrl(product.image && !product.image.includes('/images/gallery/') ? product.image : fallbackImg);
       const isPlaceholder = imgSrc.includes('placeholder-');
       const isFavorite = savedFavorites.has(product.id);
 
@@ -1214,7 +1220,7 @@
     if (!item || !dialog || !content) return;
     const { cake, product, name } = item;
     const price = product?.sizes?.[0]?.price;
-    const photo = product?.image || '/public/images/products/birthday/birthday-confetti.jpg';
+    const photo = product?.image || '/public/images/products/birthday/birthday-confetti.jpg?v=20261101-real';
     const salesNote = cake.salesIsEstimated
       ? ' * This total estimates older orders without a saved price using today’s price for the recorded size. New orders use their recorded checkout price.'
       : 'Total sales use recorded prices from completed, paid orders.';
@@ -1261,7 +1267,7 @@
     else renderTopCakeRows([]);
 
     const wished = insights.topWishlisted || [];
-    const wishCard = (entry, index, top = false) => { const product = productData.find((item) => item.id === entry._id || item.slug === entry._id || item.name === entry._id); return `<article class="admin-wishlist-card${top ? ' admin-wishlist-rank-card' : ''}"${top ? ` data-rank="${index + 1}"` : ''}>${top ? `<span class="admin-wishlist-rank">${index + 1}</span>` : ''}<img src="${escapeHtml(product?.image || '/public/images/products/birthday/birthday-confetti.jpg')}" alt="${escapeHtml(product?.name || entry._id)}"><div><strong>${escapeHtml(product?.name || entry._id)}</strong><small>${escapeHtml(product?.category || 'Saved cake')}</small></div><span>♥ ${Number(entry.count).toLocaleString('en-IN')} wishlists</span></article>`; };
+    const wishCard = (entry, index, top = false) => { const product = productData.find((item) => item.id === entry._id || item.slug === entry._id || item.name === entry._id); return `<article class="admin-wishlist-card${top ? ' admin-wishlist-rank-card' : ''}"${top ? ` data-rank="${index + 1}"` : ''}>${top ? `<span class="admin-wishlist-rank">${index + 1}</span>` : ''}<img src="${escapeHtml(product?.image || '/public/images/products/birthday/birthday-confetti.jpg?v=20261101-real')}" alt="${escapeHtml(product?.name || entry._id)}"><div><strong>${escapeHtml(product?.name || entry._id)}</strong><small>${escapeHtml(product?.category || 'Saved cake')}</small></div><span>♥ ${Number(entry.count).toLocaleString('en-IN')} wishlists</span></article>`; };
     document.getElementById('adminWishlistProducts').innerHTML = wished.length
       ? `<section class="admin-wishlist-top"><header><h4>Top 3 most wishlisted cakes</h4><p>Customer favourites saved most often.</p></header><div class="admin-wishlist-top-grid">${(wished.length >= 3 ? [1, 0, 2] : wished.slice(0, 3).map((_, index) => index)).map((index) => wished[index] ? wishCard(wished[index], index, true) : '').join('')}</div></section>${wished.length > 3 ? `<section class="admin-wishlist-rest"><h4>More customer favourites</h4><div class="admin-wishlist-rest-list">${wished.slice(3).map((entry, index) => wishCard(entry, index + 3)).join('')}</div></section>` : ''}`
       : '<p class="chart-empty">Customers have not saved any cakes yet.</p>';
@@ -1356,7 +1362,7 @@
   }
 
   const getInventoryStatus = (item) => item.stock <= 0 ? 'out' : item.stock <= item.lowStockThreshold ? 'low' : 'in';
-  const getInventoryImage = (item) => item.image || (item.type === 'cakes' ? '/public/images/products/birthday/birthday-confetti.jpg' : '');
+  const getInventoryImage = (item) => item.image || (item.type === 'cakes' ? '/public/images/products/birthday/birthday-confetti.jpg?v=20261101-real' : '');
   const inventoryItemVisual = (item) => getInventoryImage(item)
     ? `<img src="${escapeHtml(getInventoryImage(item))}" alt="">`
     : `<i class="inventory-generic-icon inventory-generic-${item.type}" aria-hidden="true">${item.type === 'ingredients' ? '❧' : '◇'}</i>`;
@@ -1821,7 +1827,7 @@
   refreshProductsButton.setAttribute('aria-label', 'Refresh products');
   productToolbar.append(productSearchInput, refreshProductsButton, addProductButton);
   productSectionHeading.insertAdjacentElement('afterend', productToolbar);
-  const adminProductCard = (product) => `<details class="admin-product-card"><summary><img src="${escapeHtml(product.image)}" alt=""><span><strong>${escapeHtml(product.name)}</strong><small>${escapeHtml(product.category)} · ${product.available ? 'Available' : 'Hidden'} · from ${money(product.sizes[0]?.price)}</small></span><b aria-hidden="true">⌄</b></summary><div class="admin-product-details"><p>${escapeHtml(product.description)}</p><p><strong>Flavours:</strong> ${escapeHtml(product.flavors.join(', '))}</p><p><strong>Sizes:</strong> ${product.sizes.map((size) => `${escapeHtml(size.name)} ${money(size.price)}`).join(' · ')}</p><p><strong>Allergens:</strong> ${escapeHtml(product.allergens.join(', ') || 'Not specified')}</p><p><strong>Dietary:</strong> ${escapeHtml(product.dietaryTags.join(', ') || 'No verified tags')}</p><button class="store-secondary" type="button" data-edit-product="${escapeHtml(product.slug)}">Edit cake details</button></div></details>`;
+  const adminProductCard = (product) => `<details class="admin-product-card"><summary><img src="${escapeHtml(freshPhotoUrl(product.image))}" alt=""><span><strong>${escapeHtml(product.name)}</strong><small>${escapeHtml(product.category)} · ${product.available ? 'Available' : 'Hidden'} · from ${money(product.sizes[0]?.price)}</small></span><b aria-hidden="true">⌄</b></summary><div class="admin-product-details"><p>${escapeHtml(product.description)}</p><p><strong>Flavours:</strong> ${escapeHtml(product.flavors.join(', '))}</p><p><strong>Sizes:</strong> ${product.sizes.map((size) => `${escapeHtml(size.name)} ${money(size.price)}`).join(' · ')}</p><p><strong>Allergens:</strong> ${escapeHtml(product.allergens.join(', ') || 'Not specified')}</p><p><strong>Dietary:</strong> ${escapeHtml(product.dietaryTags.join(', ') || 'No verified tags')}</p><button class="store-secondary" type="button" data-edit-product="${escapeHtml(product.slug)}">Edit cake details</button></div></details>`;
   async function loadAdminProductPage({ append = false } = {}) {
     const requestId = ++adminProductRequest;
     const page = append ? adminProductPage + 1 : 1;
@@ -2921,7 +2927,7 @@
     if (!Array.isArray(product.images) || product.images.length < 2) {
       api(`/catalog/${encodeURIComponent(productId)}`).then(({ product: detail }) => {
         if (modal.hidden || modal.dataset.productId !== productId || !detail) return;
-        const images = modalCakePhotoOverrides[productId] || (Array.isArray(detail.images) && detail.images.length ? detail.images : [detail.image || product.image]);
+        const images = (modalCakePhotoOverrides[productId] || (Array.isArray(detail.images) && detail.images.length ? detail.images : [detail.image || product.image])).map(freshPhotoUrl);
         if (images.length > 1) renderModalProductGallery(images, product.name);
       }).catch(() => {});
     }

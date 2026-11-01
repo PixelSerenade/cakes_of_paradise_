@@ -1,17 +1,17 @@
 (() => {
   const photos = [
-    { src: '/public/images/products/birthday/flower-letter-birthday.jpg', title: 'A little birthday wish', category: 'Birthdays', group: 'birthdays' },
-    { src: '/public/images/products/anniversary/strawberry-cream-anniversary.jpg', title: 'A day to remember', category: 'Anniversaries', group: 'anniversaries' },
-    { src: '/public/images/products/birthday/berry-harvest-birthday.jpg', title: 'Birthday, with berries', category: 'Birthdays', group: 'birthdays' },
-    { src: '/public/images/products/theme/baby-shower-celebration.jpg', title: 'A little one on the way', category: 'Baby Showers', group: 'baby-showers' },
-    { src: '/public/images/products/anniversary/liana-blush-anniversary.jpg', title: 'Twenty one', category: 'Anniversaries', group: 'anniversaries' },
-    { src: '/public/images/products/birthday/fresh-fruit-birthday.jpg', title: 'A little happiness', category: 'Birthdays', group: 'birthdays' },
-    { src: '/public/images/gallery/6.jpeg', title: 'Just graduated', category: 'Graduations', group: 'graduations' },
-    { src: '/public/images/products/theme/gender-reveal-celebration.jpg', title: 'A sweet surprise', category: 'Baby Showers', group: 'baby-showers' },
-    { src: '/public/images/products/wedding/ivory-gold-wedding.jpg', title: 'A celebration in bloom', category: 'Other', group: 'other' },
-    { src: '/public/images/products/anniversary/berry-layer-anniversary.jpg', title: 'Forever & always', category: 'Anniversaries', group: 'anniversaries' },
-    { src: '/public/images/products/birthday/woodland-vanilla-birthday.jpg', title: 'It is a good day', category: 'Birthdays', group: 'birthdays' },
-    { src: '/public/images/products/cupcakes-jars/pink-sprinkle-cupcake-box.jpg', title: 'A sweet little treat', category: 'Other', group: 'other' },
+    { src: '/public/images/products/birthday/flower-letter-birthday.jpg?v=20261101-real', title: 'A little birthday wish', category: 'Birthdays', group: 'birthdays' },
+    { src: '/public/images/products/anniversary/strawberry-cream-anniversary.jpg?v=20261101-real', title: 'A day to remember', category: 'Anniversaries', group: 'anniversaries' },
+    { src: '/public/images/products/birthday/berry-harvest-birthday.jpg?v=20261101-real', title: 'Birthday, with berries', category: 'Birthdays', group: 'birthdays' },
+    { src: '/public/images/products/theme/baby-shower-celebration.jpg?v=20261101-real', title: 'A little one on the way', category: 'Baby Showers', group: 'baby-showers' },
+    { src: '/public/images/products/anniversary/liana-blush-anniversary.jpg?v=20261101-real', title: 'Twenty one', category: 'Anniversaries', group: 'anniversaries' },
+    { src: '/public/images/products/birthday/fresh-fruit-birthday.jpg?v=20261101-real', title: 'A little happiness', category: 'Birthdays', group: 'birthdays' },
+    { src: '/public/images/gallery/6.jpeg?v=20261101-real', title: 'Just graduated', category: 'Graduations', group: 'graduations' },
+    { src: '/public/images/products/theme/gender-reveal-celebration.jpg?v=20261101-real', title: 'A sweet surprise', category: 'Baby Showers', group: 'baby-showers' },
+    { src: '/public/images/products/wedding/ivory-gold-wedding.jpg?v=20261101-real', title: 'A celebration in bloom', category: 'Other', group: 'other' },
+    { src: '/public/images/products/anniversary/berry-layer-anniversary.jpg?v=20261101-real', title: 'Forever & always', category: 'Anniversaries', group: 'anniversaries' },
+    { src: '/public/images/products/birthday/woodland-vanilla-birthday.jpg?v=20261101-real', title: 'It is a good day', category: 'Birthdays', group: 'birthdays' },
+    { src: '/public/images/products/cupcakes-jars/pink-sprinkle-cupcake-box.jpg?v=20261101-real', title: 'A sweet little treat', category: 'Other', group: 'other' },
   ];
 
   const grid = document.getElementById('momentsGrid');

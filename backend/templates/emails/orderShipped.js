@@ -15,7 +15,7 @@ module.exports = (order) => {
       title: 'Your order is on the way!',
       name: order.customer?.name,
       eyebrow: 'FRESHLY BAKED · CAREFULLY ON ITS WAY',
-      heroImage: order.items?.[0]?.image || '/public/images/hero-artisan-cake-optimized.jpg',
+      heroImage: order.items?.[0]?.image || '/public/images/hero-artisan-cake-optimized.jpg?v=20261101-real',
       content: `<p style="margin:0 0 12px">Good news! Your delicious treats have been shipped and are on their way to you.</p>${detailPanel(rows, 'blue')}<p style="margin:0">Can’t wait for you to enjoy these sweet treats ♡</p>`,
       cta: { label: 'TRACK YOUR ORDER', href: absoluteUrl(`/orders.html?order=${encodeURIComponent(order.orderNumber)}`) },
       footer: 'Packed with care by Cakes of Paradise ♡',

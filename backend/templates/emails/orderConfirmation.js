@@ -17,7 +17,7 @@ module.exports = (order) => {
       title: 'Your order is confirmed!',
       name: order.customer?.name,
       eyebrow: 'THANK YOU FOR CHOOSING US',
-      heroImage: order.items?.[0]?.image || '/public/images/hero-artisan-cake-optimized.jpg',
+      heroImage: order.items?.[0]?.image || '/public/images/hero-artisan-cake-optimized.jpg?v=20261101-real',
       content: `<p style="margin:0 0 12px">We’ve received your order and our bakers are getting everything ready with care.</p>${itemHtml ? `<ul style="margin:10px 0 16px;padding-left:20px">${itemHtml}</ul>` : ''}${detailPanel(rows, 'pink')}<p style="margin:0">We’ll keep you updated as your order makes its way to your celebration.</p>`,
       cta: { label: 'VIEW ORDER DETAILS', href: absoluteUrl(`/orders.html?order=${encodeURIComponent(order.orderNumber)}`) },
       footer: 'Thank you for being part of our sweet journey ♡',

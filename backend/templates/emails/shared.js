@@ -15,7 +15,7 @@ const detailPanel = (rows, tone = 'pink') => {
   return `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:${colors[tone] || colors.pink};border:1px solid #ead8ce;border-radius:12px;margin:20px 0"><tbody>${rows.map(([label, value]) => `<tr><td style="padding:9px 15px;color:#756b61;font-size:14px;border-bottom:1px solid #ead8ce">${escapeHtml(label)}</td><td align="right" style="padding:9px 15px;color:#403c36;font-size:14px;font-weight:600;border-bottom:1px solid #ead8ce">${value}</td></tr>`).join('')}</tbody></table>`;
 };
 
-const layout = ({ preheader = '', title, name = '', eyebrow = 'A LITTLE SOMETHING LOVELY', heroImage = '/public/images/hero-artisan-cake-optimized.jpg', content = '', cta, footer = 'Made with love, Cakes of Paradise ♡', footerHtml = '' }) => {
+const layout = ({ preheader = '', title, name = '', eyebrow = 'A LITTLE SOMETHING LOVELY', heroImage = '/public/images/hero-artisan-cake-optimized.jpg?v=20261101-real', content = '', cta, footer = 'Made with love, Cakes of Paradise ♡', footerHtml = '' }) => {
   const safeTitle = escapeHtml(title);
   const safeName = escapeHtml(name || 'sweet friend');
   const hero = heroImage ? absoluteUrl(heroImage) : '';

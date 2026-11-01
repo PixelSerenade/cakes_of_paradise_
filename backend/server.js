@@ -49,6 +49,11 @@ const staticFileOptions = {
     if (path.extname(filePath).toLowerCase() === '.html') {
       res.setHeader('Cache-Control', 'no-cache');
     }
+    if (filePath.includes(`${path.sep}images${path.sep}`)) {
+      // Photo replacements keep their existing paths; revalidate them so
+      // browsers do not keep showing the previous generated artwork.
+      res.setHeader('Cache-Control', 'no-cache');
+    }
   },
 };
 app.use('/public', express.static(path.join(__dirname, '../public'), staticFileOptions));

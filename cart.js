@@ -1,4 +1,10 @@
 (() => {
+  const freshPhotoUrl = (value) => {
+    const url = String(value || '');
+    if (!/^\/?(?:public\/)?images\//.test(url)) return url;
+    const clean = url.replace(/([?&])v=[^&]*/g, '').replace(/[?&]$/, '');
+    return `${clean}${clean.includes('?') ? '&' : '?'}v=20261101-real`;
+  };
   const API = window.CAKES_API_BASE || '/api';
   const token = () => localStorage.getItem('token');
   const user = () => { try { return JSON.parse(localStorage.getItem('user') || 'null'); } catch { return null; } };
@@ -148,7 +154,7 @@
     }
     linesNode.innerHTML = cart.map((line, index) => {
       const product = products.find((item) => item.id === line.productId);
-      return `<article class="checkout-cart-line"><img src="${escapeHtml(product?.image || line.image || '')}" alt="${escapeHtml(line.name)}"><div class="checkout-cart-line-details"><h3>${escapeHtml(line.name)}</h3><p>${escapeHtml(line.flavor)} · ${escapeHtml(line.size)}</p>${line.cakeMessage ? `<small class="cart-cake-message">Cake message: “${escapeHtml(line.cakeMessage)}”</small>` : ''}</div><div class="cart-page-line-actions"><button type="button" data-cart-action="decrease" data-index="${index}" aria-label="Remove one ${escapeHtml(line.name)}">−</button><output>${line.quantity}</output><button type="button" data-cart-action="increase" data-index="${index}" aria-label="Add one ${escapeHtml(line.name)}">+</button></div><strong class="cart-page-line-price">${money(line.price * line.quantity)}</strong><button type="button" class="remove-cart-item" data-cart-action="remove" data-index="${index}" aria-label="Remove ${escapeHtml(line.name)} from order">×</button></article>`;
+      return `<article class="checkout-cart-line"><img src="${escapeHtml(freshPhotoUrl(product?.image || line.image || ''))}" alt="${escapeHtml(line.name)}"><div class="checkout-cart-line-details"><h3>${escapeHtml(line.name)}</h3><p>${escapeHtml(line.flavor)} · ${escapeHtml(line.size)}</p>${line.cakeMessage ? `<small class="cart-cake-message">Cake message: “${escapeHtml(line.cakeMessage)}”</small>` : ''}</div><div class="cart-page-line-actions"><button type="button" data-cart-action="decrease" data-index="${index}" aria-label="Remove one ${escapeHtml(line.name)}">−</button><output>${line.quantity}</output><button type="button" data-cart-action="increase" data-index="${index}" aria-label="Add one ${escapeHtml(line.name)}">+</button></div><strong class="cart-page-line-price">${money(line.price * line.quantity)}</strong><button type="button" class="remove-cart-item" data-cart-action="remove" data-index="${index}" aria-label="Remove ${escapeHtml(line.name)} from order">×</button></article>`;
     }).join('');
   }
   function setDeliveryMode() {

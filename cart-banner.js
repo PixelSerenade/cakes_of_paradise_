@@ -4,12 +4,12 @@
   if (!image || !dots) return;
 
   const fallbackSlides = [
-    { src: '/public/images/products/theme/gender-reveal-celebration.jpg', alt: 'A pastel celebration cake shown from the front' },
-    { src: '/public/images/products/birthday/birthday-confetti.jpg', alt: 'A confetti cake shown from the front and above' },
-    { src: '/public/images/products/birthday/berry-harvest-birthday.jpg', alt: 'A berry topped celebration cake viewed from above' },
-    { src: '/public/images/products/birthday/flower-letter-birthday.jpg', alt: 'A pink floral cake shown from the front' },
-    { src: '/public/images/products/wedding/blush-bloom-wedding.jpg', alt: 'A floral tiered cake shown from the front' },
-    { src: '/public/images/products/birthday/fresh-fruit-birthday.jpg', alt: 'A fruit topped cake viewed from above' },
+    { src: '/public/images/products/theme/gender-reveal-celebration.jpg?v=20261101-real', alt: 'A pastel celebration cake shown from the front' },
+    { src: '/public/images/products/birthday/birthday-confetti.jpg?v=20261101-real', alt: 'A confetti cake shown from the front and above' },
+    { src: '/public/images/products/birthday/berry-harvest-birthday.jpg?v=20261101-real', alt: 'A berry topped celebration cake viewed from above' },
+    { src: '/public/images/products/birthday/flower-letter-birthday.jpg?v=20261101-real', alt: 'A pink floral cake shown from the front' },
+    { src: '/public/images/products/wedding/blush-bloom-wedding.jpg?v=20261101-real', alt: 'A floral tiered cake shown from the front' },
+    { src: '/public/images/products/birthday/fresh-fruit-birthday.jpg?v=20261101-real', alt: 'A fruit topped cake viewed from above' },
   ];
   let slides = fallbackSlides;
   let active = 0;

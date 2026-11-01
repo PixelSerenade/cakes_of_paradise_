@@ -17,7 +17,7 @@ module.exports = (order) => {
       title: 'Payment successful!',
       name: order.customer?.name,
       eyebrow: 'A LITTLE CHECKOUT RELIEF',
-      heroImage: order.items?.[0]?.image || '/public/images/hero-artisan-cake-optimized.jpg',
+      heroImage: order.items?.[0]?.image || '/public/images/hero-artisan-cake-optimized.jpg?v=20261101-real',
       content: `<p style="margin:0 0 12px">Your payment has been successfully processed. Your order is confirmed and our bakers will prepare it soon.</p>${detailPanel(rows, 'sage')}<p style="margin:0">Order number: <strong>${escapeHtml(order.orderNumber)}</strong></p>`,
       cta: { label: 'VIEW YOUR ORDER', href: absoluteUrl(`/orders.html?order=${encodeURIComponent(order.orderNumber)}`) },
       footer: 'Thank you for making us part of your celebration ♡',

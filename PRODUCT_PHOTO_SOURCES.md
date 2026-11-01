@@ -2,6 +2,23 @@
 
 The 55 catalog product images now use real stock photographs. They are stored locally in `public/images/products/`, so the storefront is not dependent on an image host at runtime. Source links are retained here. These are reference stock images, not photos of Cakes of Paradise bakery’s own cakes; replace them with bakery photography when available.
 
+## Shared page and hero photography
+
+Homepage, shop, category shortcuts, and supporting page art use real stock cake photography from the catalog sources below. Shared editorial, auth, and contact assets are kept as correctly sized crops so each page uses genuine photographs instead of the former generated artwork.
+
+| Shared files | Reused real photo | Source |
+| --- | --- | --- |
+| `public/images/editorial/birthday-cake.*`, `public/images/gallery/1.jpeg` | Birthday Confetti Celebration Cake | [Unsplash](https://unsplash.com/photos/icing-cake-on-table-d8s13D29QiE) |
+| `public/images/editorial/wedding-cake.*`, `hero-memory.*`, `auth/auth-bow-cake.jpg` | White Garden Rose Wedding Cake | [Unsplash](https://images.unsplash.com/photo-1503525642560-ecca5e2e49e9) |
+| `public/images/contact/contact-hero.jpg` | Botanical Gold Wedding Cake | [Unsplash](https://images.unsplash.com/photo-1683435844308-b757f5ca64b1) |
+| `public/images/editorial/anniversary-cake.*`, `auth/auth-blush-heart-cake.jpg`, `editorial/hero-blush.webp` | Berry Layer Anniversary Cake | [Unsplash](https://images.unsplash.com/photo-1593452332413-1166af193985) |
+| `public/images/editorial/theme-cake.*`, `editorial/hero-blue.webp` | Gender Reveal Celebration Cake | [Unsplash](https://unsplash.com/photos/a-cake-with-decorations-Rg7InR0a-Bw) |
+| `public/images/editorial/cupcakes.*` | Gourmet Cupcake Collection | [Unsplash](https://unsplash.com/photos/close-up-of-decorated-cupcakes-in-a-box-RxwiDtnYgXE) |
+| `public/images/custom-cake-craft*.jpg`, legacy `images/custom-cake-craft.jpg` | Baker decorating a cake | [Los Muertos Crew / Pexels photo 8477970](https://www.pexels.com/photo/a-person-baking-a-cake-8477970/) |
+| `public/images/hero-artisan-cake*.jpg`, legacy `images/hero-artisan-cake.jpg` | Baker decorating a cake | [Angela Chacón / Pexels photo 26598639](https://www.pexels.com/photo/woman-decorating-the-cake-26598639/) |
+
+The blue, blush, and sage hero slides use real catalog photos: gender reveal, berry anniversary, and botanical wedding. The homepage scrapbook-style hero now uses a real celebration cake photograph. Original bakery photographs in `public/images/gallery/2.jpeg` through `9.jpeg` remain in place.
+
 Unsplash images are covered by the [Unsplash License](https://unsplash.com/license), which permits commercial use. Pexels images are covered by the [Pexels License](https://www.pexels.com/license/).
 
 | Product image | Category | Original source |

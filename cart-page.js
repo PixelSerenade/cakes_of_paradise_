@@ -1,4 +1,10 @@
 (() => {
+  const freshPhotoUrl = (value) => {
+    const url = String(value || '');
+    if (!/^\/?(?:public\/)?images\//.test(url)) return url;
+    const clean = url.replace(/([?&])v=[^&]*/g, '').replace(/[?&]$/, '');
+    return `${clean}${clean.includes('?') ? '&' : '?'}v=20261101-real`;
+  };
   const API = window.CAKES_API_BASE || '/api';
   const linesNode = document.getElementById('cartLines');
   const setHidden = (id, hidden) => {
@@ -51,7 +57,7 @@
     if (badge) badge.textContent = String(count);
     setHidden('cartSignOut', !localStorage.getItem('token'));
     if (checkoutButton) checkoutButton.textContent = localStorage.getItem('token') ? 'Continue to checkout' : 'Login to checkout';
-    linesNode.innerHTML = cart.length ? cart.map((line, index) => `<article class="cart-page-line"><div class="cart-line-product"><img src="${escapeHtml(line.image || '')}" alt="${escapeHtml(line.name || 'Cake')}"></div><div class="cart-line-details"><h3>${escapeHtml(line.name || 'Cake')}</h3><p>${escapeHtml(line.flavor || '')} · ${escapeHtml(line.size || '')}</p>${line.cakeMessage ? `<small class="cart-cake-message">Cake message: “${escapeHtml(line.cakeMessage)}”</small>` : ''}<button type="button" class="cart-save-later" data-cart-action="save" data-index="${index}">♡ &nbsp; Save for later</button></div><div class="cart-line-unit-price"><span>Unit price</span><strong>${money(Number(line.price || 0))}</strong></div><div class="cart-line-quantity"><span>Quantity</span><div class="cart-page-line-actions"><button type="button" data-cart-action="decrease" data-index="${index}" aria-label="Remove one ${escapeHtml(line.name || 'cake')}">−</button><output>${Number(line.quantity)}</output><button type="button" data-cart-action="increase" data-index="${index}" aria-label="Add one ${escapeHtml(line.name || 'cake')}">+</button></div></div><strong class="cart-page-line-price">${money(Number(line.price || 0) * Number(line.quantity || 0))}</strong><button type="button" class="remove-cart-item" data-cart-action="remove" data-index="${index}" aria-label="Remove ${escapeHtml(line.name || 'cake')} from cart">×</button></article>`).join('') : '<p class="empty-account">Your cart is empty. Browse the catalogue and add a cake to get started.</p>';
+    linesNode.innerHTML = cart.length ? cart.map((line, index) => `<article class="cart-page-line"><div class="cart-line-product"><img src="${escapeHtml(freshPhotoUrl(line.image || ''))}" alt="${escapeHtml(line.name || 'Cake')}"></div><div class="cart-line-details"><h3>${escapeHtml(line.name || 'Cake')}</h3><p>${escapeHtml(line.flavor || '')} · ${escapeHtml(line.size || '')}</p>${line.cakeMessage ? `<small class="cart-cake-message">Cake message: “${escapeHtml(line.cakeMessage)}”</small>` : ''}<button type="button" class="cart-save-later" data-cart-action="save" data-index="${index}">♡ &nbsp; Save for later</button></div><div class="cart-line-unit-price"><span>Unit price</span><strong>${money(Number(line.price || 0))}</strong></div><div class="cart-line-quantity"><span>Quantity</span><div class="cart-page-line-actions"><button type="button" data-cart-action="decrease" data-index="${index}" aria-label="Remove one ${escapeHtml(line.name || 'cake')}">−</button><output>${Number(line.quantity)}</output><button type="button" data-cart-action="increase" data-index="${index}" aria-label="Add one ${escapeHtml(line.name || 'cake')}">+</button></div></div><strong class="cart-page-line-price">${money(Number(line.price || 0) * Number(line.quantity || 0))}</strong><button type="button" class="remove-cart-item" data-cart-action="remove" data-index="${index}" aria-label="Remove ${escapeHtml(line.name || 'cake')} from cart">×</button></article>`).join('') : '<p class="empty-account">Your cart is empty. Browse the catalogue and add a cake to get started.</p>';
   }
 
   linesNode.addEventListener('click', async (event) => {

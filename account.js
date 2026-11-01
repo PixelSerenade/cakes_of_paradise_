@@ -12,6 +12,12 @@
     element.textContent = message;
     element.classList.toggle('is-error', isError);
   };
+  const freshPhotoUrl = (value) => {
+    const url = String(value || '');
+    if (!/^\/?(?:public\/)?images\//.test(url)) return url;
+    const clean = url.replace(/([?&])v=[^&]*/g, '').replace(/[?&]$/, '');
+    return `${clean}${clean.includes('?') ? '&' : '?'}v=20261101-real`;
+  };
   const api = async (path, options = {}) => {
     const apiBase = window.CAKES_API_BASE || '/api';
     let response;
@@ -99,7 +105,7 @@
       const favorites = customer.favoriteProducts || [];
       document.getElementById('favoriteCakes').innerHTML = favorites.length ? favorites.map((slug) => {
         const product = products.find((item) => item.id === slug || item.slug === slug);
-        return `<article class="account-row favorite-cake-row">${product?.image ? `<img src="${escapeHtml(product.image)}" alt="${escapeHtml(product.name)}" loading="lazy">` : ''}<span><strong>${escapeHtml(product?.name || slug)}</strong><small>${product ? `${money(product.sizes?.[0]?.price)} · ${escapeHtml(product.category)}` : 'Cake in your favourites'}</small></span><button class="account-button secondary" type="button" data-remove-favorite="${escapeHtml(slug)}">Remove</button></article>`;
+        return `<article class="account-row favorite-cake-row">${product?.image ? `<img src="${escapeHtml(freshPhotoUrl(product.image))}" alt="${escapeHtml(product.name)}" loading="lazy">` : ''}<span><strong>${escapeHtml(product?.name || slug)}</strong><small>${product ? `${money(product.sizes?.[0]?.price)} · ${escapeHtml(product.category)}` : 'Cake in your favourites'}</small></span><button class="account-button secondary" type="button" data-remove-favorite="${escapeHtml(slug)}">Remove</button></article>`;
       }).join('') : '<p class="empty-account">Save cakes from the catalogue and they will show up here.</p>';
       renderOrders(orderData.orders || []);
     } catch (error) {

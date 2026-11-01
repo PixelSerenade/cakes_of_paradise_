@@ -9,7 +9,7 @@ module.exports = (user, code) => {
 
   const displayName = String(user?.name || '').trim().split(/\s+/)[0] || 'there';
   const name = escapeHtml(displayName);
-  const imageUrl = absoluteUrl('/public/images/auth/auth-blush-heart-cake.jpg');
+  const imageUrl = absoluteUrl('/public/images/auth/auth-blush-heart-cake.jpg?v=20261101-real');
   const digitText = code.split('').join('   ');
 
   return {

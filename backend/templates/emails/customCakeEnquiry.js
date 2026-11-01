@@ -18,7 +18,7 @@ module.exports = (enquiry) => {
       title: 'Thank you for your enquiry!',
       name: enquiry.name,
       eyebrow: 'LET’S MAKE SOMETHING SWEET',
-      heroImage: '/public/images/custom-cake-craft-optimized.jpg',
+      heroImage: '/public/images/custom-cake-craft-optimized.jpg?v=20261101-real',
       content: `<p style="margin:0 0 12px">We’ve received your custom cake request and our team will get back to you within 24–48 hours with the next sweet details.</p>${detailPanel(rows, 'pink')}${details}`,
       cta: { label: 'VISIT OUR CAKE SHOP', href: absoluteUrl('/shop.html') },
       footer: 'We can’t wait to create something special for you ♡',

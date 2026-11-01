@@ -1,4 +1,10 @@
 (() => {
+  const freshPhotoUrl = (value) => {
+    const url = String(value || '');
+    if (!/^\/?(?:public\/)?images\//.test(url)) return url;
+    const clean = url.replace(/([?&])v=[^&]*/g, '').replace(/[?&]$/, '');
+    return `${clean}${clean.includes('?') ? '&' : '?'}v=20261101-real`;
+  };
   const API = window.CAKES_API_BASE || '/api';
   const list = document.getElementById('wishlistItems');
   const empty = document.getElementById('wishlistEmpty');
@@ -17,7 +23,7 @@
       toast.setAttribute('aria-live', 'polite');
       document.body.append(toast);
     }
-    toast.innerHTML = `<span class="wishlist-bag-toast-photo">${product.image ? `<img src="${escapeHtml(product.image)}" alt="">` : '♡'}<b aria-hidden="true">${title.startsWith('Added') ? '✓' : '♡'}</b></span><div><strong>${title}</strong><p>${escapeHtml(product.name)}${title.startsWith('Added') ? ` (${escapeHtml(product.sizes?.[0]?.name || 'Cake')})` : ' removed from your wishlist.'}</p>${title.startsWith('Added') ? '<a href="cart.html">View Bag <span aria-hidden="true">→</span></a>' : ''}</div><button type="button" aria-label="Dismiss notification">×</button>`;
+    toast.innerHTML = `<span class="wishlist-bag-toast-photo">${product.image ? `<img src="${escapeHtml(freshPhotoUrl(product.image))}" alt="">` : '♡'}<b aria-hidden="true">${title.startsWith('Added') ? '✓' : '♡'}</b></span><div><strong>${title}</strong><p>${escapeHtml(product.name)}${title.startsWith('Added') ? ` (${escapeHtml(product.sizes?.[0]?.name || 'Cake')})` : ' removed from your wishlist.'}</p>${title.startsWith('Added') ? '<a href="cart.html">View Bag <span aria-hidden="true">→</span></a>' : ''}</div><button type="button" aria-label="Dismiss notification">×</button>`;
     toast.classList.add('is-visible');
     toast.querySelector('button').addEventListener('click', () => toast.classList.remove('is-visible'), { once: true });
     clearTimeout(bagToastTimer);
@@ -35,7 +41,7 @@
     const items = products.filter((product) => saved.has(product.id));
     updateWishlistCount(saved.size);
     empty.hidden = items.length !== 0;
-    list.innerHTML = items.map((product) => `<article class="wishlist-row" data-wishlist-product="${escapeHtml(product.id)}"><div class="wishlist-image-wrap"><img src="${escapeHtml(product.image || '/public/images/products/birthday/birthday-confetti.jpg')}" alt="${escapeHtml(product.name)}"><button class="wishlist-remove" type="button" data-remove="${escapeHtml(product.id)}" aria-label="Remove ${escapeHtml(product.name)} from wishlist" title="Remove from wishlist">♥</button></div><div class="wishlist-copy"><h2>${escapeHtml(product.name)}</h2><p>${money(product.sizes?.[0]?.price)}</p><small>${escapeHtml(product.description || 'A sweet little favorite, baked fresh for your celebration.')}</small></div><div class="wishlist-row-actions"><button class="wishlist-add" type="button" data-add="${escapeHtml(product.id)}" ${product.stock <= 0 ? 'disabled' : ''}>${product.stock <= 0 ? 'Out of stock' : `${bagIconMarkup}<span>Add to bag</span>`}</button></div></article>`).join('');
+    list.innerHTML = items.map((product) => `<article class="wishlist-row" data-wishlist-product="${escapeHtml(product.id)}"><div class="wishlist-image-wrap"><img src="${escapeHtml(freshPhotoUrl(product.image || '/public/images/products/birthday/birthday-confetti.jpg'))}" alt="${escapeHtml(product.name)}"><button class="wishlist-remove" type="button" data-remove="${escapeHtml(product.id)}" aria-label="Remove ${escapeHtml(product.name)} from wishlist" title="Remove from wishlist">♥</button></div><div class="wishlist-copy"><h2>${escapeHtml(product.name)}</h2><p>${money(product.sizes?.[0]?.price)}</p><small>${escapeHtml(product.description || 'A sweet little favorite, baked fresh for your celebration.')}</small></div><div class="wishlist-row-actions"><button class="wishlist-add" type="button" data-add="${escapeHtml(product.id)}" ${product.stock <= 0 ? 'disabled' : ''}>${product.stock <= 0 ? 'Out of stock' : `${bagIconMarkup}<span>Add to bag</span>`}</button></div></article>`).join('');
     if (!items.length) setStatus('Your saved cakes will be collected here.');
   };
   const load = async () => {
