@@ -250,11 +250,11 @@
   let homeCategoryPage = 0;
   const homeCategoryImage = (category) => {
     const name = String(category).toLowerCase();
-    if (name.includes('wedding') || name.includes('bridal')) return '/public/images/editorial/wedding-cake.jpg?v=20261101-real';
-    if (name.includes('anniversary') || name.includes('engagement')) return '/public/images/editorial/anniversary-cake.jpg?v=20261101-real';
-    if (name.includes('cupcake') || name.includes('jar') || name.includes('pastry')) return '/public/images/editorial/cupcakes.jpg?v=20261101-real';
-    if (name.includes('theme') || name.includes('custom') || name.includes('photo')) return '/public/images/editorial/theme-cake.jpg?v=20261101-real';
-    if (name.includes('birthday') || name.includes('celebration')) return '/public/images/editorial/birthday-cake.jpg?v=20261101-real';
+    if (name.includes('wedding') || name.includes('bridal')) return '/public/images/categories/wedding.jpg?v=20261101-category';
+    if (name.includes('anniversary') || name.includes('engagement')) return '/public/images/categories/anniversary.jpg?v=20261101-category';
+    if (name.includes('cupcake') || name.includes('jar') || name.includes('pastry')) return '/public/images/categories/cupcakes.jpg?v=20261101-category';
+    if (name.includes('theme') || name.includes('custom') || name.includes('photo')) return '/public/images/categories/theme.jpg?v=20261101-category';
+    if (name.includes('birthday') || name.includes('celebration')) return '/public/images/categories/birthday.jpg?v=20261101-category';
     return '/public/images/hero-artisan-cake-optimized.jpg?v=20261101-real';
   };
   function homeCategoryPageSize() {
