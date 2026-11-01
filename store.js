@@ -313,12 +313,12 @@
   function startHeroCakeSlideshow() {
     const image = document.querySelector('#home .hero-cake-photo');
     if (!image || image.dataset.slideshowStarted) return;
-    const initialSrc = image.getAttribute('src') || '/public/images/editorial/home-hero-original.jpg?v=20261101-home-hero-ai';
+    const initialSrc = image.getAttribute('src') || '/public/images/editorial/home-hero-original.jpg?v=20261101-all-ai-slides';
     const slides = [
-      { src: initialSrc, alt: image.alt || 'Original Cakes of Paradise scrapbook artwork featuring celebration cakes' },
-      { src: '/public/images/editorial/hero-blush.webp?v=20261101-home-hero-ai', alt: 'AI illustrated blush vintage celebration cake with cherries and buttercream piping' },
-      { src: '/public/images/editorial/hero-blue.webp?v=20261101-home-hero-ai', alt: 'AI illustrated powder blue vintage cake with ivory flowers and ribbon bows' },
-      { src: '/public/images/editorial/hero-sage.webp?v=20261101-home-hero-ai', alt: 'AI illustrated sage green vintage cake with cream bows and delicate blossoms' },
+      { src: initialSrc, alt: image.alt || 'Original AI-generated Cakes of Paradise scrapbook artwork featuring celebration cakes' },
+      { src: '/public/images/editorial/hero-blush.webp?v=20261101-all-ai-slides', alt: 'AI illustrated blush vintage celebration cake with cherries and buttercream piping' },
+      { src: '/public/images/editorial/hero-blue.webp?v=20261101-all-ai-slides', alt: 'AI illustrated powder blue vintage cake with ivory flowers and ribbon bows' },
+      { src: '/public/images/editorial/hero-sage.webp?v=20261101-all-ai-slides', alt: 'AI illustrated sage green vintage cake with cream bows and delicate blossoms' },
     ];
     image.dataset.slideshowStarted = 'true';
     let index = 0;
