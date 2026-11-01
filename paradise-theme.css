@@ -1,0 +1,447 @@
+/* Cakes of Paradise visual system inspired by the supplied cream, sage and blush references. */
+/* Keep the HTML hidden state authoritative over component display rules. */
+[hidden] { display: none !important; }
+
+:root {
+  color-scheme: light;
+  --palette-paper: #f5f0e8;
+  --palette-ivory: #fcfaf5;
+  --palette-surface: #fffdf9;
+  --palette-lilac: #ece8ef;
+  --palette-blush: #e7c2c0;
+  --palette-blush-deep: #bd8585;
+  --palette-sage: #89947b;
+  --palette-sage-deep: #68745f;
+  --palette-blue: #c5d8d9;
+  --palette-cocoa: #795d4b;
+  --palette-ink: #332b26;
+  --palette-muted: #574b42;
+  --palette-border: #e4ddd3;
+  --palette-danger: #a84848;
+  --palette-success: #637c61;
+  --palette-shadow: 0 14px 36px rgb(61 47 39 / 8%);
+
+  --bg-color: var(--palette-paper);
+  --bg-cream: var(--palette-paper);
+  --cream: var(--palette-paper);
+  --ivory: var(--palette-ivory);
+  --warm-cream: var(--palette-paper);
+  --primary: var(--palette-sage);
+  --primary-hover: var(--palette-sage-deep);
+  --primary-mocha: var(--palette-sage);
+  --primary-pink: var(--palette-sage);
+  --mocha: var(--palette-sage);
+  --primary-pink-deep: var(--palette-sage-deep);
+  --mocha-deep: var(--palette-sage-deep);
+  --accent: var(--palette-cocoa);
+  --secondary-rose: var(--palette-blush-deep);
+  --muted-rose: var(--palette-blush-deep);
+  --rose: var(--palette-blush-deep);
+  --gold: #aa8a5c;
+  --rose-gold: var(--palette-cocoa);
+  --soft-border: var(--palette-border);
+  --soft-section: var(--palette-lilac);
+  --border-champagne: var(--palette-border);
+  --champagne: var(--palette-paper);
+  --light-pink: var(--palette-blush);
+  --blush-pink: var(--palette-blush);
+  --input-border: #d8cec1;
+  --card-border: var(--palette-border);
+  --card-white: var(--palette-surface);
+  --surface-white: var(--palette-surface);
+  --white: var(--palette-surface);
+  --text-espresso: var(--palette-ink);
+  --espresso: var(--palette-ink);
+  --dark-brown: var(--palette-ink);
+  --text-brown: var(--palette-ink);
+  --chocolate: var(--palette-ink);
+  --text-color: var(--palette-ink);
+  --account-ink: var(--palette-ink);
+  --account-muted: var(--palette-muted);
+  --account-pink: var(--palette-sage-deep);
+  --account-deep: var(--palette-sage-deep);
+  --account-border: var(--palette-border);
+  --account-surface: var(--palette-surface);
+  --account-wash: var(--palette-paper);
+  --ui-ink: var(--palette-ink);
+  --ui-muted: var(--palette-muted);
+  --ui-accent: var(--palette-sage);
+  --ui-highlight: var(--palette-cocoa);
+  --ui-border: var(--palette-border);
+  --ui-surface: var(--palette-surface);
+  --ui-wash: var(--palette-paper);
+  --ui-shadow: var(--palette-shadow);
+  --ui-shadow-raised: 0 18px 42px rgb(61 47 39 / 14%);
+  --shadow-soft: var(--palette-shadow);
+  --shadow-hover: 0 18px 42px rgb(61 47 39 / 14%);
+  --admin-ink: var(--palette-ink);
+  --admin-muted: var(--palette-muted);
+  --admin-accent: var(--palette-sage-deep);
+  --admin-border: var(--palette-border);
+  --admin-surface: var(--palette-surface);
+  --admin-wash: var(--palette-paper);
+}
+
+html, body {
+  background: var(--palette-paper) !important;
+  color: var(--palette-ink) !important;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+}
+
+h1, h2, h3, h4, h5, .account-brand, .footer-brand, .hero-text h1,
+.admin-welcome h2, .admin-panel h3, .cart-page-heading h1 {
+  color: var(--palette-ink);
+  font-family: "Playfair Display", "Cormorant Garamond", Georgia, serif;
+  font-weight: 500;
+  letter-spacing: -.025em;
+}
+
+p, label, small, .account-muted, .checkout-hint { color: var(--palette-muted); }
+a { color: var(--palette-sage-deep); }
+a:hover { color: var(--palette-cocoa); }
+
+header:not(.admin-topbar), .nav-wrap, .account-topbar {
+  background: var(--palette-ivory) !important;
+  color: var(--palette-ink) !important;
+  border-color: var(--palette-border) !important;
+  box-shadow: 0 5px 22px rgb(61 47 39 / 5%);
+}
+
+header:not(.admin-topbar) a, .nav-wrap a, .account-topbar nav a,
+.account-topbar nav button, .account-brand {
+  color: var(--palette-ink) !important;
+}
+
+#home, .hero { background-color: var(--palette-paper) !important; }
+#cakes, #about, .soft-section { background-color: var(--palette-lilac) !important; }
+#gallery, #contact, .shop-section { background-color: var(--palette-ivory) !important; }
+#custom { background-color: #e9e6dc !important; }
+.hero-text h1, .hero-text p, .hero .eyebrow { color: var(--palette-ink) !important; }
+.hero .blob, .hero-visual .halo { background-color: var(--palette-blush) !important; }
+
+.cake-card, .product-card, .category-card, .account-card, .overview-card,
+.cart-page-card, .cart-checkout-card, .auth-card, .admin-kpi, .admin-chart-card,
+.admin-subpanel, .admin-order-card, .admin-product-card, .admin-panel .order-card,
+.admin-panel .admin-chart-card, .admin-panel .admin-kpi, .admin-panel .admin-subpanel,
+.orders-card .order-card, .settings-card, .order-panel, .cart-panel {
+  background: var(--palette-surface) !important;
+  border-color: var(--palette-border) !important;
+  color: var(--palette-ink) !important;
+  box-shadow: var(--palette-shadow) !important;
+}
+
+.cake-card:nth-child(4n + 1) .cake-card-thumb-wrap,
+.product-card:nth-child(4n + 1) .product-photo { background-color: var(--palette-blush); }
+.cake-card:nth-child(4n + 2) .cake-card-thumb-wrap,
+.product-card:nth-child(4n + 2) .product-photo { background-color: #dfe5d7; }
+.cake-card:nth-child(4n + 3) .cake-card-thumb-wrap,
+.product-card:nth-child(4n + 3) .product-photo { background-color: var(--palette-blue); }
+.cake-card:nth-child(4n) .cake-card-thumb-wrap,
+.product-card:nth-child(4n) .product-photo { background-color: var(--palette-lilac); }
+
+.btn-primary, button.btn-primary, a.btn-primary, .account-button.primary,
+.cart-checkout-btn, #cartCheckoutButton, .submit-btn, .auth-submit-btn,
+.admin-btn-primary, .order-btn-primary, .return-home-btn, .tab-btn.active,
+.order-admin-controls button, .retry-payment, .success-actions .btn,
+.gallery-filter-btn.active, .admin-inventory-filters .btn.active,
+.nav-a11y-pill.active, body > header .nav-wrap nav ul#navLinks > li > .nav-cakes-control > a.active,
+body > header .nav-wrap nav ul.nav-compact-dropdown li a.active, #adminPageNav a.active {
+  background: var(--palette-sage-deep) !important;
+  border-color: var(--palette-sage-deep) !important;
+  color: #fffdf9 !important;
+  box-shadow: 0 7px 18px rgb(104 116 95 / 20%) !important;
+}
+.btn-primary:hover, button.btn-primary:hover, a.btn-primary:hover,
+.account-button.primary:hover, #cartCheckoutButton:hover, .submit-btn:hover,
+.auth-submit-btn:hover, .admin-btn-primary:hover, .order-btn-primary:hover {
+  background: var(--palette-sage-deep) !important;
+  border-color: var(--palette-sage-deep) !important;
+}
+html body :is(.btn-primary, button.btn-primary, a.btn-primary, .account-button.primary,
+  .cart-checkout-btn, #cartCheckoutButton, .submit-btn, .auth-submit-btn,
+  .admin-btn-primary, .order-btn-primary, .toast-btn-view, #adminLogout,
+  .tab-btn.active, .order-admin-controls button, .retry-payment, .success-actions .btn,
+  .gallery-filter-btn.active, .admin-inventory-filters .btn.active, .nav-a11y-pill.active,
+  body > header .nav-wrap nav ul#navLinks > li > .nav-cakes-control > a.active,
+  body > header .nav-wrap nav ul.nav-compact-dropdown li a.active, #adminPageNav a.active) {
+  background: var(--palette-sage-deep) !important;
+  border-color: var(--palette-sage-deep) !important;
+  color: #fffdf9 !important;
+}
+html body :is(.btn-primary:hover, button.btn-primary:hover, a.btn-primary:hover,
+  .account-button.primary:hover, .cart-checkout-btn:hover, #cartCheckoutButton:hover,
+  .submit-btn:hover, .auth-submit-btn:hover, .admin-btn-primary:hover,
+  .order-btn-primary:hover, .toast-btn-view:hover, #adminLogout:hover) {
+  background: var(--palette-sage-deep) !important;
+  border-color: var(--palette-sage-deep) !important;
+  color: #fffdf9 !important;
+}
+.btn-outline, .btn-secondary, .account-button.secondary, .store-secondary,
+a.btn-outline, button.btn-outline, .secondary-btn {
+  background: var(--palette-ivory) !important;
+  border-color: var(--palette-blush-deep) !important;
+  color: var(--palette-cocoa) !important;
+}
+.btn-outline:hover, .btn-secondary:hover, .account-button.secondary:hover,
+.store-secondary:hover, button.btn-outline:hover, .secondary-btn:hover {
+  background: #f2e3df !important;
+  border-color: var(--palette-blush-deep) !important;
+  color: var(--palette-ink) !important;
+}
+
+input, textarea, select, .form-input, .settings-field select,
+.admin-panel input, .admin-panel select, .admin-panel textarea {
+  background-color: var(--palette-surface) !important;
+  border-color: #d8cec1 !important;
+  color: var(--palette-ink) !important;
+}
+input::placeholder, textarea::placeholder { color: var(--palette-muted) !important; opacity: 1; }
+input:focus, textarea:focus, select:focus, .form-input:focus {
+  border-color: var(--palette-sage) !important;
+  box-shadow: 0 0 0 3px rgb(137 148 123 / 22%) !important;
+}
+
+.account-welcome, .account-summary, .referral-terms, .settings-check,
+.account-order, .account-row, .account-list > p, .empty-account,
+.order-card, .review-entry, .cart-page-line, .admin-photo-field,
+.insight-wide, .admin-product-card summary:hover {
+  background: #f0ece4 !important;
+  border-color: var(--palette-border) !important;
+  color: var(--palette-ink) !important;
+}
+.account-avatar, .account-cart-link span { background: var(--palette-blush) !important; color: var(--palette-ink) !important; }
+.account-kicker, .product-category, .account-muted, .checkout-intro,
+.product-description, .allergen-note, .photo-credit { color: var(--palette-muted) !important; }
+.product-price, .price-tag, .cake-price { color: var(--palette-cocoa) !important; }
+.favorite-toggle.active, .save-icon, .product-rating-stars { color: var(--palette-blush-deep) !important; }
+.admin-kpi strong, .popular-cake-row>strong, .cart-page-summary>div strong,
+.cart-price-breakdown .cart-grand-total strong { color: var(--palette-cocoa) !important; }
+.bar-column i, .popular-cake-row>div i { background: linear-gradient(180deg, var(--palette-sage), var(--palette-cocoa)) !important; }
+.status-donut::after { background: var(--palette-surface) !important; }
+.nav-cart-count, .menu-cart-count, .account-topbar nav .account-cart-link span {
+  background: var(--palette-blush) !important;
+  color: var(--palette-ink) !important;
+}
+.order-badge, .account-status, .account-order li.current,
+.orders-card .order-timeline li.current, .cart-page-card-heading h2 span {
+  background: var(--palette-blush) !important;
+  color: var(--palette-ink) !important;
+  border-color: var(--palette-blush-deep) !important;
+}
+.heart-float path, .sparkle path { fill: var(--palette-blush-deep) !important; }
+.category-cake-icon [fill="#E0587D"], .category-cake-icon [fill="#c94e72"],
+.category-cake-icon [stroke="#E0587D"] { fill: var(--palette-blush-deep) !important; stroke: var(--palette-blush-deep) !important; }
+.badge-success, .order-status-delivered { color: #526c50 !important; background: #e3ecdf !important; }
+
+.site-footer, footer, .footer-bottom {
+  background: #e7e3da !important;
+  color: var(--palette-ink) !important;
+  border-color: var(--palette-border) !important;
+}
+.site-footer p, .site-footer a, .site-footer h4, .site-footer li,
+.footer-bottom p { color: var(--palette-ink) !important; }
+
+body.admin-mode #adminDashboard, body.admin-mode .admin-layout,
+body.admin-mode .admin-main { background: var(--palette-paper) !important; color: var(--palette-ink) !important; }
+body.admin-mode .admin-sidebar {
+  background: #e7e3da !important;
+  border-color: var(--palette-border) !important;
+  color: var(--palette-ink) !important;
+}
+body.admin-mode .admin-sidebar a { color: var(--palette-ink) !important; }
+body.admin-mode .admin-sidebar a.active,
+body.admin-mode .admin-sidebar a[aria-current="page"] {
+  background: var(--palette-sage-deep) !important;
+  color: #fffdf9 !important;
+}
+body.admin-mode .admin-topbar, body.admin-mode .admin-tools,
+body.admin-mode .admin-overview, body.admin-mode .admin-section-heading,
+body.admin-mode .admin-recent-orders, body.admin-mode .upcoming-deliveries {
+  background: transparent !important;
+  color: var(--palette-ink) !important;
+}
+body.admin-mode .admin-welcome h2, body.admin-mode .admin-panel h3,
+body.admin-mode .admin-panel h4, body.admin-mode .admin-panel strong,
+body.admin-mode .admin-product-card summary strong { color: var(--palette-ink) !important; }
+body.admin-mode .admin-panel :is(p, small, label, .admin-pagination, .chart-empty,
+  .admin-section-heading>div>p, .admin-product-details, .admin-product-card summary small) {
+  color: var(--palette-muted) !important;
+}
+body.admin-mode .admin-product-card, body.admin-mode .admin-subpanel,
+body.admin-mode .admin-chart-card, body.admin-mode .admin-kpi,
+body.admin-mode .admin-order-card, body.admin-mode .admin-panel .order-card,
+body.admin-mode .admin-panel table, body.admin-mode .admin-list > *,
+body.admin-mode .admin-panel .insight-wide {
+  background: var(--palette-surface) !important;
+  border-color: var(--palette-border) !important;
+  color: var(--palette-ink) !important;
+}
+body.admin-mode .admin-panel table th { background: #e9e5dc !important; color: var(--palette-ink) !important; }
+body.admin-mode .admin-panel table td { border-color: var(--palette-border) !important; color: var(--palette-ink) !important; }
+body.admin-mode .admin-panel .admin-product-card summary:hover { background: #f0ece4 !important; }
+
+.modal, dialog, .product-detail-modal, .profile-dropdown-menu,
+.order-success-card, .success-card { background: var(--palette-surface) !important; color: var(--palette-ink) !important; border-color: var(--palette-border) !important; }
+.toast, .admin-toast { background: var(--palette-cocoa) !important; color: #fff !important; }
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --palette-paper: #191a18;
+  --palette-ivory: #20211e;
+  --palette-surface: #272824;
+  --palette-lilac: #292925;
+  --palette-blush: #463936;
+  --palette-blush-deep: #d1a29b;
+  --palette-sage: #98a58a;
+  --palette-sage-deep: #aab69c;
+  --palette-blue: #323b3a;
+  --palette-cocoa: #e0bea0;
+  --palette-ink: #f2eee6;
+  --palette-muted: #c2bbb0;
+  --palette-border: #45443e;
+  --palette-danger: #f0a4a0;
+  --palette-success: #b8d2ae;
+  --palette-shadow: 0 14px 36px rgb(0 0 0 / 24%);
+  --input-border: #55544d;
+  --admin-ink: var(--palette-ink);
+  --admin-muted: var(--palette-muted);
+  --admin-accent: var(--palette-sage);
+  --admin-border: var(--palette-border);
+  --admin-surface: var(--palette-surface);
+  --admin-wash: var(--palette-ivory);
+}
+
+html[data-theme="dark"] body, html[data-theme="dark"] main,
+html[data-theme="dark"] section, html[data-theme="dark"] .hero,
+html[data-theme="dark"] #home, html[data-theme="dark"] #cakes,
+html[data-theme="dark"] #custom, html[data-theme="dark"] #gallery,
+html[data-theme="dark"] #about, html[data-theme="dark"] #contact,
+html[data-theme="dark"] .shop-section, html[data-theme="dark"] .account-page,
+html[data-theme="dark"] .cart-page-shell {
+  background-color: var(--palette-paper) !important;
+  color: var(--palette-ink) !important;
+}
+html[data-theme="dark"] header:not(.admin-topbar),
+html[data-theme="dark"] .nav-wrap, html[data-theme="dark"] .account-topbar,
+html[data-theme="dark"] .site-footer, html[data-theme="dark"] footer,
+html[data-theme="dark"] .footer-bottom, html[data-theme="dark"] body.admin-mode .admin-sidebar {
+  background: var(--palette-ivory) !important;
+  color: var(--palette-ink) !important;
+  border-color: var(--palette-border) !important;
+}
+html[data-theme="dark"] header a, html[data-theme="dark"] .nav-wrap a,
+html[data-theme="dark"] .account-topbar nav a, html[data-theme="dark"] .account-topbar nav button,
+html[data-theme="dark"] .account-brand, html[data-theme="dark"] .site-footer a,
+html[data-theme="dark"] .site-footer p, html[data-theme="dark"] .site-footer h4,
+html[data-theme="dark"] .site-footer li, html[data-theme="dark"] .footer-bottom p {
+  color: var(--palette-ink) !important;
+}
+html[data-theme="dark"] :is(h1,h2,h3,h4,h5,p,label,small,li,summary,strong,
+  .account-muted,.checkout-intro,.product-description,.allergen-note,.photo-credit,
+  .admin-section-heading>div>p,.admin-product-details,.chart-empty) {
+  color: var(--palette-ink) !important;
+}
+html[data-theme="dark"] :is(.cake-card,.product-card,.category-card,.account-card,.overview-card,
+  .cart-page-card,.cart-checkout-card,.auth-card,.admin-kpi,.admin-chart-card,.admin-subpanel,
+  .admin-order-card,.admin-product-card,.order-card,.order-panel,.cart-panel,.orders-card .order-card,
+  .settings-card,.account-welcome,.account-summary,.referral-terms,.settings-check,.account-order,
+  .account-row,.account-list>p,.empty-account,.cart-page-line,.admin-photo-field,.insight-wide,
+  .modal,.product-detail-modal,.profile-dropdown-menu,.order-success-card,.success-card) {
+  background: var(--palette-surface) !important;
+  border-color: var(--palette-border) !important;
+  color: var(--palette-ink) !important;
+}
+html[data-theme="dark"] input, html[data-theme="dark"] textarea,
+html[data-theme="dark"] select, html[data-theme="dark"] .form-input,
+html[data-theme="dark"] .admin-panel input, html[data-theme="dark"] .admin-panel select,
+html[data-theme="dark"] .admin-panel textarea {
+  background: #1f201d !important;
+  border-color: #55544d !important;
+  color: var(--palette-ink) !important;
+}
+html[data-theme="dark"] input::placeholder, html[data-theme="dark"] textarea::placeholder { color: #aaa398 !important; }
+html[data-theme="dark"] .btn-primary, html[data-theme="dark"] button.btn-primary,
+html[data-theme="dark"] a.btn-primary, html[data-theme="dark"] .account-button.primary,
+html[data-theme="dark"] #cartCheckoutButton, html[data-theme="dark"] .auth-submit-btn,
+html[data-theme="dark"] .admin-btn-primary {
+  background: var(--palette-sage) !important;
+  border-color: var(--palette-sage) !important;
+  color: #171a16 !important;
+}
+html[data-theme="dark"] .btn-outline, html[data-theme="dark"] .btn-secondary,
+html[data-theme="dark"] .account-button.secondary, html[data-theme="dark"] .store-secondary,
+html[data-theme="dark"] button.btn-outline {
+  background: var(--palette-ivory) !important;
+  border-color: var(--palette-blush-deep) !important;
+  color: var(--palette-cocoa) !important;
+}
+html[data-theme="dark"] body :is(.btn-primary, button.btn-primary, a.btn-primary,
+  .account-button.primary, .cart-checkout-btn, #cartCheckoutButton, .submit-btn,
+  .auth-submit-btn, .admin-btn-primary, .order-btn-primary, .toast-btn-view, #adminLogout,
+  .tab-btn.active, .order-admin-controls button, .retry-payment, .success-actions .btn,
+  .gallery-filter-btn.active, .admin-inventory-filters .btn.active, .nav-a11y-pill.active,
+  body > header .nav-wrap nav ul#navLinks > li > .nav-cakes-control > a.active,
+  body > header .nav-wrap nav ul.nav-compact-dropdown li a.active, #adminPageNav a.active) {
+  background: var(--palette-sage) !important;
+  border-color: var(--palette-sage) !important;
+  color: #171a16 !important;
+}
+html[data-theme="dark"] body :is(.btn-primary:hover, button.btn-primary:hover,
+  a.btn-primary:hover, .account-button.primary:hover, .cart-checkout-btn:hover,
+  #cartCheckoutButton:hover, .submit-btn:hover, .auth-submit-btn:hover,
+  .admin-btn-primary:hover, .order-btn-primary:hover, .toast-btn-view:hover, #adminLogout:hover) {
+  background: var(--palette-sage-deep) !important;
+  border-color: var(--palette-sage-deep) !important;
+  color: #171a16 !important;
+}
+html[data-theme="dark"] body.admin-mode #adminDashboard,
+html[data-theme="dark"] body.admin-mode .admin-layout,
+html[data-theme="dark"] body.admin-mode .admin-main,
+html[data-theme="dark"] body.admin-mode .admin-tools,
+html[data-theme="dark"] body.admin-mode .admin-overview,
+html[data-theme="dark"] body.admin-mode .admin-topbar {
+  background: var(--palette-paper) !important;
+  color: var(--palette-ink) !important;
+}
+html[data-theme="dark"] body.admin-mode .admin-sidebar a { color: var(--palette-ink) !important; }
+html[data-theme="dark"] body.admin-mode .admin-sidebar a.active,
+html[data-theme="dark"] body.admin-mode .admin-sidebar a[aria-current="page"] {
+  background: var(--palette-sage) !important;
+  color: #171a16 !important;
+}
+html[data-theme="dark"] .admin-panel table th { background: #31322d !important; color: var(--palette-ink) !important; }
+html[data-theme="dark"] .admin-panel table td { color: var(--palette-ink) !important; border-color: var(--palette-border) !important; }
+html[data-theme="dark"] .admin-panel .admin-product-card summary:hover { background: #30312c !important; }
+html[data-theme="dark"] .badge-warning { background: #453c28 !important; border-color: #665736 !important; color: #f2d895 !important; }
+html[data-theme="dark"] .badge-danger { background: #472c2b !important; border-color: #6e3d3a !important; color: #ffc2bc !important; }
+html[data-theme="dark"] .badge-success,
+html[data-theme="dark"] .order-status-delivered { background: #2e392b !important; border-color: #43513f !important; color: #c6debb !important; }
+html[data-theme="dark"] .orders-page .orders-card .order-badge.status-pending { background: #453c28 !important; border-color: #665736 !important; color: #f2d895 !important; }
+html[data-theme="dark"] .orders-page .orders-card .order-badge.status-confirmed,
+html[data-theme="dark"] .orders-page .orders-card .order-badge.status-progress { background: #463536 !important; border-color: #674b49 !important; color: #f0c1bb !important; }
+html[data-theme="dark"] .orders-page .orders-card .order-badge.status-completed { background: #2e392b !important; border-color: #43513f !important; color: #c6debb !important; }
+html[data-theme="dark"] .orders-page .orders-card .order-badge.status-cancelled { background: #333538 !important; border-color: #4e5054 !important; color: #d1d1ce !important; }
+html[data-theme="dark"] .nav-cart-count, html[data-theme="dark"] .menu-cart-count,
+html[data-theme="dark"] .account-topbar nav .account-cart-link span {
+  background: var(--palette-blush) !important;
+  color: var(--palette-ink) !important;
+}
+html[data-theme="dark"] .order-badge, html[data-theme="dark"] .account-status,
+html[data-theme="dark"] .account-order li.current,
+html[data-theme="dark"] .orders-card .order-timeline li.current,
+html[data-theme="dark"] .cart-page-card-heading h2 span {
+  background: var(--palette-blush) !important;
+  color: var(--palette-ink) !important;
+  border-color: var(--palette-blush-deep) !important;
+}
+html[data-theme="dark"] .heart-float path, html[data-theme="dark"] .sparkle path { fill: var(--palette-blush-deep) !important; }
+html[data-theme="dark"] .hero-text h1, html[data-theme="dark"] .hero-text p,
+html[data-theme="dark"] .hero .eyebrow { color: var(--palette-ink) !important; }
+html[data-theme="dark"] .hero, html[data-theme="dark"] #home,
+html[data-theme="dark"] #cakes, html[data-theme="dark"] #custom,
+html[data-theme="dark"] #gallery, html[data-theme="dark"] #about,
+html[data-theme="dark"] #contact { background-image: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; }
+}

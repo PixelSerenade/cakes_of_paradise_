@@ -1,0 +1,51 @@
+/* Compact shared footer used on every storefront page. */
+body > footer.site-footer#siteFooter {
+  display: grid;
+  grid-template-columns: minmax(190px, 1fr) minmax(220px, 1.2fr) minmax(220px, 1fr) 24px;
+  align-items: center;
+  gap: 22px;
+  min-height: 60px;
+  margin: 0;
+  padding: 8px clamp(22px, 5vw, 76px);
+  border-top: 1px solid #e4ddd3;
+  background: #f1ede5;
+  color: #6f665c;
+  font-family: 'DM Sans', sans-serif;
+}
+body > footer.site-footer#siteFooter .footer-brand {
+  display: inline-flex;
+  flex-direction: column;
+  justify-self: start;
+  color: #332b26;
+  text-decoration: none;
+}
+body > footer.site-footer#siteFooter .footer-brand span {
+  font: italic 600 1.75rem/1 'Cormorant Garamond', Georgia, serif;
+}
+body > footer.site-footer#siteFooter .footer-brand small {
+  margin-top: 4px;
+  font: 600 .45rem/1 'DM Sans', sans-serif;
+  letter-spacing: .24em;
+}
+body > footer.site-footer#siteFooter .footer-note,
+body > footer.site-footer#siteFooter .footer-copyright {
+  margin: 0;
+  color: #756c62;
+  font: 400 .72rem/1.5 'DM Sans', sans-serif;
+}
+body > footer.site-footer#siteFooter .footer-note { text-align: center; }
+body > footer.site-footer#siteFooter .footer-copyright { justify-self: end; text-align: right; }
+body > footer.site-footer#siteFooter .footer-sparkle { color: #bba087; font: 1.35rem/1 Georgia, serif; }
+body > footer.site-footer#siteFooter a:focus-visible { outline: 2px solid #849176; outline-offset: 4px; }
+
+@media (max-width: 700px) {
+  body > footer.site-footer#siteFooter {
+    grid-template-columns: 1fr auto;
+    gap: 8px 16px;
+    padding: 10px 20px;
+  }
+  body > footer.site-footer#siteFooter .footer-brand { grid-column: 1; }
+  body > footer.site-footer#siteFooter .footer-note { grid-column: 1; text-align: left; }
+  body > footer.site-footer#siteFooter .footer-copyright { grid-column: 1; justify-self: start; text-align: left; }
+  body > footer.site-footer#siteFooter .footer-sparkle { grid-column: 2; grid-row: 1 / span 3; }
+}

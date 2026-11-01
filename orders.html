@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff8f5">
+  <script src="preferences.js?v=20261101-sitewide"></script>
+  <title>Your Orders | Cakes of Paradise</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap"></noscript>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="store.css">
+  <link rel="stylesheet" href="account.css">
+  <link rel="stylesheet" href="ui-polish.css?v=20261031-toast-right">
+  <link rel="stylesheet" href="paradise-theme.css">
+  <link rel="stylesheet" href="shared-footer.css?v=20261031-newsletter-polish">
+  <link rel="stylesheet" href="site-navigation.css?v=20261031-global-nav">
+  <link rel="stylesheet" href="shared-navigation.css?v=20261031-account-shortcuts">
+  <link rel="stylesheet" href="preferences.css?v=20261101-sitewide">
+</head>
+<body class="account-page orders-page">
+  <header class="account-topbar">
+    <a class="account-brand" href="index.html"><img class="brand-logo" src="logo.jpg" alt=""><span>Cakes of Paradise<small>Handcrafted in Surathkal</small></span></a>
+    <nav aria-label="Orders navigation"><a href="index.html#shop">Shop cakes</a><a href="account.html">My account</a><a href="settings.html">Settings</a><a href="index.html">Home</a><button id="ordersSignOut" type="button">Sign out</button></nav>
+  </header>
+  <main class="account-shell orders-shell">
+    <section class="account-welcome"><div class="account-avatar" aria-hidden="true">♡</div><div><span class="account-kicker">YOUR CAKES OF PARADISE ORDERS</span><h1>Your orders</h1><p>Follow every cake from order confirmation to delivery or pickup.</p></div><a class="account-shop-link" href="index.html#shop">Browse cakes <span aria-hidden="true">→</span></a></section>
+    <p id="ordersMessage" class="account-message" role="status" aria-live="polite"></p>
+    <p id="cancelPolicyHint" class="orders-policy account-muted">Cancel at least one day before delivery, while your order remains within the bakery’s cancellation window.</p>
+    <section class="account-card orders-card"><div class="account-card-heading"><div><span class="account-kicker">ORDER TRACKING</span><h2>Order history</h2></div><div class="orders-toolbar"><label class="orders-filter">Status<select id="orderStatusFilter" aria-label="Filter orders by status"><option value="all">All orders</option><option value="placed">Pending</option><option value="confirmed">Confirmed</option><option value="completed">Completed</option><option value="cancelled">Cancelled</option><option value="other">In progress</option></select></label><button id="refreshOrders" class="account-button secondary" type="button">Refresh</button></div></div><div id="customerOrders" class="order-list" aria-live="polite"><p class="empty-account">Loading your orders…</p></div></section>
+  </main>
+  
+<footer class="site-footer" id="siteFooter">
+  <div class="footer-wrap">
+    <div class="footer-col footer-col-brand">
+      <a class="footer-brand" href="index.html" aria-label="Cakes of Paradise home">
+        <img src="logo.jpg" alt="Cakes of Paradise Logo" class="footer-logo-img">
+        <span>Cakes of Paradise</span>
+      </a>
+      <p>Handcrafted artisan cakes made fresh with love in Surathkal. Celebrating birthdays, weddings, anniversaries, and sweet milestones across Mangaluru.</p>
+      <div class="footer-a11y-quick">
+        <a href="settings.html" class="footer-a11y-link" title="Accessibility & Settings">♿ Accessibility</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#cakes">Cake Categories</a></li>
+        <li><a href="index.html#shop">Shop Collection</a></li>
+        <li><a href="custom.html">Custom Cakes</a></li>
+        <li><a href="gallery.html">Bakery Gallery</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact &amp; Enquiries</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Customer Care</h4>
+      <ul>
+        <li><a href="cart.html">View Cart</a></li>
+        <li><a href="orders.html">Track Orders</a></li>
+        <li><a href="account.html">My Account &amp; Rewards</a></li>
+        <li><a href="settings.html">Settings &amp; Accessibility</a></li>
+        <li><a href="login.html">Sign In / Register</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Visit &amp; Connect</h4>
+      <ul class="footer-contact-list">
+        <li><span>💬 WhatsApp / Call:</span> <a href="tel:7019994145" class="footer-contact-link">7019994145</a></li>
+        <li><span>📸 Instagram:</span> <a href="https://instagram.com/_cakes_of_paradise/" target="_blank" rel="noreferrer" class="footer-contact-link">_cakes_of_paradise</a></li>
+        <li><span>📍 Location:</span> Surathkal, Mangaluru, Karnataka</li>
+        <li><span>🚚 Free Delivery:</span> All orders within Surathkal</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <p>© 2026 Cakes of Paradise. All rights reserved. Handcrafted with 🤎 in Surathkal.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="api-config.js" defer></script>
+  <script src="orders.js" defer></script>
+<script src="motion.js" defer></script>
+  <script src="shared-footer.js?v=20261031-home-footer-title" defer></script>
+  <script src="shared-navigation.js?v=20261101-role-aware" defer></script>
+  <script src="site-navigation.js?v=20261101-role-aware" defer></script>
+</body>
+</html>

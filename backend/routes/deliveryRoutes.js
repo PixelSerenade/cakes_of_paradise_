@@ -1,0 +1,12 @@
+const express = require('express');
+const controller = require('../controllers/deliveryController');
+const { protect } = require('../middleware/authMiddleware');
+const { requireRole } = require('../middleware/roleMiddleware');
+const router = express.Router();
+const asyncRoute = (handler) => (req, res, next) => Promise.resolve(handler(req, res, next)).catch(next);
+router.get('/quote', asyncRoute(controller.quoteDelivery));
+router.get('/rates', asyncRoute(controller.listActiveRates));
+router.get('/admin/zones', protect, requireRole('admin'), asyncRoute(controller.listZones));
+router.post('/admin/zones', protect, requireRole('admin'), asyncRoute(controller.createZone));
+router.patch('/admin/zones/:id', protect, requireRole('admin'), asyncRoute(controller.updateZone));
+module.exports = router;

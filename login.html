@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=DM+Sans:wght@400;500;600;700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=DM+Sans:wght@400;500;600;700&amp;display=swap"></noscript>
+<meta charset="UTF-8">
+  <script src="preferences.js?v=20261101-sitewide"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="theme.css">
+<title>Account Authentication | Cakes of Paradise</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&amp;family=Poppins:wght@300;400;500;600;700&amp;family=Great+Vibes&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,600&amp;family=Poppins:wght@300;400;500;600;700&amp;family=Great+Vibes&amp;display=swap"></noscript>
+<style>
+  :root {
+    --cream: #FFF8F5;
+    --light-pink: #FCECEF;
+    --primary-pink: #E0587D;
+    --primary-pink-deep: #c8466b;
+    --dark-brown: #4A2C2A;
+    --text-brown: #4A2C2A;
+    --gold: #E3A34B;
+    --white: #FFFFFF;
+    --shadow-soft: 0 8px 24px rgba(74,44,42,0.06);
+    --shadow-hover: 0 16px 36px rgba(224,88,125,0.2);
+    --radius-lg: 28px;
+    --radius-md: 18px;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html, body {
+    cursor: default;
+  }
+  a, button, [role="button"], .btn, select, summary {
+    cursor: pointer;
+  }
+  input, textarea {
+    cursor: text;
+  }
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: var(--cream);
+    color: var(--text-brown);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    line-height: 1.6;
+  }
+
+  /* Header */
+  header {
+    background: rgba(250, 247, 242, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 24px rgba(74, 44, 42,0.06);
+    padding: 16px 6vw;
+  }
+  .nav-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .logo-text {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--dark-brown);
+  }
+  .logo-text span {
+    display: block;
+    font-family: 'Great Vibes', cursive;
+    color: var(--primary-pink);
+    font-size: 1.4rem;
+  }
+
+  /* Elegant Mocha Button Style */
+  .btn, .btn-primary, .return-home-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 30px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    border: none;
+    background: linear-gradient(135deg, var(--primary-pink), var(--primary-pink-deep));
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(224, 88, 125,0.22);
+    transition: all 0.35s ease;
+    font-family: 'Poppins', sans-serif;
+    text-decoration: none;
+  }
+  .btn:hover, .btn-primary:hover, .return-home-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(224, 88, 125,0.3);
+    color: #fff;
+  }
+
+  /* Auth Container */
+  .auth-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 20px;
+  }
+  .auth-card {
+    background: var(--white);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
+    width: 100%;
+    max-width: 480px;
+    padding: 40px 36px;
+    position: relative;
+    border: 1px solid #FCECEF;
+  }
+  .auth-card h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--dark-brown);
+    font-size: 1.9rem;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .auth-subtitle {
+    text-align: center;
+    font-size: 0.88rem;
+    color: var(--text-brown);
+    opacity: 0.85;
+    margin-bottom: 26px;
+  }
+
+  /* Tab Navigation */
+  .tab-buttons {
+    display: flex;
+    background: var(--light-pink);
+    border-radius: 50px;
+    padding: 5px;
+    margin-bottom: 26px;
+  }
+  .tab-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 10px 14px;
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--dark-brown);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .tab-btn.active {
+    background: var(--primary-pink);
+    color: #fff;
+    box-shadow: 0 4px 14px rgba(224, 88, 125,0.25);
+  }
+
+  /* Form Elements */
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 18px;
+    text-align: left;
+  }
+  label {
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: var(--dark-brown);
+  }
+  input {
+    border: 1.4px solid #FCECEF;
+    background: var(--cream);
+    border-radius: 14px;
+    padding: 12px 16px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.92rem;
+    color: var(--text-brown);
+    outline: none;
+    transition: border 0.3s;
+  }
+  input:focus {
+    border-color: var(--primary-pink);
+  }
+
+  .form-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 10px;
+  }
+
+  /* Feedback Alerts */
+  .alert {
+    padding: 12px 16px;
+    border-radius: 12px;
+    font-size: 0.86rem;
+    margin-bottom: 20px;
+    display: none;
+    line-height: 1.5;
+  }
+  .alert.success {
+    display: block;
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+  }
+  .alert.danger {
+    display: block;
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+  }
+  .alert.info {
+    display: block;
+    background: #e3f2fd;
+    color: #1565c0;
+    border: 1px solid #bbdefb;
+  }
+
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.82rem;
+    color: var(--text-brown);
+    opacity: 0.8;
+  }
+</style>
+  <link rel="stylesheet" href="ui-polish.css?v=20261031-toast-right">
+  <link rel="stylesheet" href="paradise-theme.css">
+  <link rel="stylesheet" href="site-navigation.css?v=20261031-global-nav"><link rel="stylesheet" href="shared-navigation.css?v=20261031-account-signout">
+  <link rel="stylesheet" href="auth-page.css?v=20261031-return-home-button">
+  <link rel="stylesheet" href="shared-footer.css?v=20261031-newsletter-polish">
+  <link rel="stylesheet" href="preferences.css?v=20261101-sitewide">
+</head>
+<body class="login-page">
+
+<header class="site-header">
+  <div class="nav-wrap">
+    <a class="logo-group" href="index.html" aria-label="Cakes of Paradise home"><img src="logo.jpg" alt=""><div class="logo-text">Cakes of Paradise</div></a>
+    <nav aria-label="Main navigation">
+      <ul id="loginNavLinks">
+        <li><a href="index.html">Home</a></li>
+        <li class="nav-item-dropdown"><div class="nav-cakes-control"><a href="#loginCakeMenu" class="nav-link-dropdown" aria-haspopup="true" aria-expanded="false">Cakes</a><button class="nav-category-toggle" type="button" aria-label="Open cake categories" aria-expanded="false" aria-controls="loginCakeMenu"><span aria-hidden="true">▾</span></button></div>
+          <ul class="nav-compact-dropdown" id="loginCakeMenu">
+            <li><a href="shop.html?category=All">All Cakes</a></li><li><a href="shop.html?category=Birthday%20Cakes">Birthday Cakes</a></li><li><a href="shop.html?category=Wedding%20Cakes">Wedding Cakes</a></li><li><a href="shop.html?category=Anniversary%20Cakes">Anniversary Cakes</a></li><li><a href="shop.html?category=Cupcakes%20%26%20Jars">Cupcakes &amp; Jars</a></li><li><a href="shop.html?category=Theme%20Cakes">Theme Cakes</a></li><li><a href="shop.html?category=Photo%20Cakes">Photo Cakes</a></li>
+          </ul>
+        </li>
+        <li><a href="custom.html">Custom Cakes</a></li><li><a href="gallery.html">Sweet Moments</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-cta">
+      <a class="nav-cart-link" href="cart.html" aria-label="Cart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 8.5h11l1.2 12H5.3l1.2-12Z"/><path d="M9 9V6.5a3 3 0 0 1 6 0V9"/></svg><span id="loginCartCount" class="nav-cart-count">0</span></a>
+      <a href="contact.html" class="btn btn-primary nav-order-link">Order Now</a>
+      <a href="login.html" class="btn btn-outline nav-sign-in" aria-current="page">Sign In</a>
+      <button class="hamburger" id="loginHamburger" type="button" aria-label="Menu" aria-controls="loginNavLinks" aria-expanded="false"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main class="auth-editorial">
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <section class="auth-welcome" aria-labelledby="authWelcomeTitle">
+      <div class="auth-welcome-photo" aria-hidden="true"><img class="auth-login-photo" src="/public/images/auth/auth-blush-heart-cake.jpg" alt=""><img class="auth-register-photo" src="/public/images/auth/auth-bow-cake.jpg" alt=""><span class="auth-photo-bow">୨୧</span></div>
+      <div class="auth-welcome-copy"><span class="auth-welcome-eyebrow" id="authWelcomeEyebrow">♡ &nbsp; Welcome Back &nbsp; ♡</span><h1 id="authWelcomeTitle">Sign In</h1><p id="authWelcomeDescription">Log in to your Cakes of Paradise account<br>to continue your sweet journey.</p></div>
+      <div class="auth-welcome-note"><span aria-hidden="true">♡</span><p><strong id="authWelcomeBenefitTitle">Sweet things await you</strong><span id="authWelcomeBenefitText">Save favourite cakes, keep up with your orders, and make every celebration a little sweeter.</span></p></div>
+    </section>
+    <div class="auth-form-panel">
+    
+    <div class="tab-buttons" role="tablist" aria-label="Account access">
+      <button type="button" role="tab" aria-selected="true" class="tab-btn active" id="loginTabBtn" onclick="switchTab('login')">Sign In</button>
+      <button type="button" role="tab" aria-selected="false" class="tab-btn" id="registerTabBtn" onclick="switchTab('register')">Create Account</button>
+    </div>
+
+    <div id="alertBox" class="alert"></div>
+
+    <!-- Login Form -->
+    <form id="loginForm" onsubmit="handleLogin(event)">
+      <h2 class="visually-hidden">Welcome Back</h2>
+      <p class="auth-subtitle visually-hidden">Please sign in to continue</p>
+
+      <div class="form-group">
+        <label for="loginEmail">Email or admin username</label>
+        <input type="text" id="loginEmail" inputmode="email" placeholder="Enter your email or admin" autocomplete="username" required>
+      </div>
+
+      <div class="form-group">
+        <label for="loginPassword">Password</label>
+        <div class="auth-password-field"><input type="password" id="loginPassword" placeholder="Enter password" autocomplete="current-password" required><button type="button" class="auth-password-toggle" id="toggleLoginPassword" aria-label="Show password" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.6"/></svg></button></div>
+      </div>
+      <div class="auth-forgot-row"><a href="forgot-password.html" id="forgotPasswordLink">Forgot password?</a></div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" id="loginSubmitBtn">Sign In</button>
+        <!-- Return to Home Link Styled as Bubbly Pink Button -->
+        <a href="index.html" class="return-home-btn">Return to Home</a>
+      </div>
+    </form>
+
+    <!-- Register Form -->
+    <form id="registerForm" onsubmit="handleRegister(event)" style="display:none;">
+      <h2 class="visually-hidden">Create Account</h2>
+      <p class="auth-subtitle visually-hidden">Join Cakes of Paradise for handcrafted delights</p>
+
+      <!-- Optional Profile Picture Upload -->
+      <div style="display:flex;flex-direction:column;align-items:center;margin-bottom:18px;">
+        <div id="regAvatarPreview" style="width:74px;height:74px;border-radius:50%;overflow:hidden;background:#E0587D;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:700;box-shadow:0 6px 16px rgba(233,106,141,0.3);margin-bottom:8px;border:3px solid #FFF8F5;cursor:pointer;" onclick="document.getElementById('regAvatarFileInput').click()" title="Click to upload profile photo">
+          📷
+        </div>
+        <input type="file" id="regAvatarFileInput" accept="image/*" style="display:none;" onchange="handleRegAvatarUpload(event)">
+        <button type="button" onclick="document.getElementById('regAvatarFileInput').click()" style="background:none;border:none;color:#E0587D;font-weight:600;font-size:0.82rem;cursor:pointer;text-decoration:underline;">Add a profile photo</button>
+      </div>
+
+      <div class="form-group">
+        <label for="registerName">Full Name</label>
+        <input type="text" id="registerName" placeholder="Enter your full name" autocomplete="name" required oninput="updateRegAvatarInitial()">
+      </div>
+
+      <div class="form-group">
+        <label for="registerEmail">Email Address</label>
+        <input type="email" id="registerEmail" placeholder="Enter your email address" autocomplete="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="registerPhone">Phone Number <span style="font-weight:normal;color:#888;font-size:0.75rem;">(Optional)</span></label>
+        <input type="tel" id="registerPhone" placeholder="Enter your phone number" autocomplete="tel">
+      </div>
+
+      <div class="form-group">
+        <label for="registerReferralCode">Referral Code <span style="font-weight:normal;color:#888;font-size:0.75rem;">(Optional)</span></label>
+        <input type="text" id="registerReferralCode" placeholder="Enter a friend’s referral code" autocomplete="off" autocapitalize="characters" maxlength="32" aria-describedby="registerReferralNote">
+        <small id="registerReferralNote">After your first paid order is completed, you’ll receive 50 bonus points and your friend will receive 100 points.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="registerPassword">Password (6–12 characters)</label>
+        <div class="auth-password-field"><input type="password" id="registerPassword" placeholder="6–12 characters" autocomplete="new-password" minlength="6" maxlength="12" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9\s]).{6,12}" title="Use 6–12 characters with uppercase and lowercase letters, a number, and a symbol." required><button type="button" class="auth-password-toggle" id="toggleRegisterPassword" aria-label="Show password" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.6"/></svg></button></div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary" id="registerSubmitBtn">Create Account</button>
+        <!-- Return to Home Link Styled as Bubbly Pink Button -->
+        <a href="index.html" class="return-home-btn">Return to Home</a>
+      </div>
+    </form>
+
+    </div>
+  </div>
+</div>
+</main>
+
+
+<footer class="site-footer" id="siteFooter">
+  <div class="footer-wrap">
+    <div class="footer-col footer-col-brand">
+      <a class="footer-brand" href="index.html" aria-label="Cakes of Paradise home">
+        <img src="logo.jpg" alt="Cakes of Paradise Logo" class="footer-logo-img">
+        <span>Cakes of Paradise</span>
+      </a>
+      <p>Handcrafted artisan cakes made fresh with love in Surathkal. Celebrating birthdays, weddings, anniversaries, and sweet milestones across Mangaluru.</p>
+      <div class="footer-a11y-quick">
+        <a href="settings.html" class="footer-a11y-link" title="Accessibility & Settings">♿ Accessibility</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#cakes">Cake Categories</a></li>
+        <li><a href="index.html#shop">Shop Collection</a></li>
+        <li><a href="custom.html">Custom Cakes</a></li>
+        <li><a href="gallery.html">Bakery Gallery</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact &amp; Enquiries</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Customer Care</h4>
+      <ul>
+        <li><a href="cart.html">View Cart</a></li>
+        <li><a href="orders.html">Track Orders</a></li>
+        <li><a href="account.html">My Account &amp; Rewards</a></li>
+        <li><a href="settings.html">Settings &amp; Accessibility</a></li>
+        <li><a href="login.html">Sign In / Register</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Visit &amp; Connect</h4>
+      <ul class="footer-contact-list">
+        <li><span>💬 WhatsApp / Call:</span> <a href="tel:7019994145" class="footer-contact-link">7019994145</a></li>
+        <li><span>📸 Instagram:</span> <a href="https://instagram.com/_cakes_of_paradise/" target="_blank" rel="noreferrer" class="footer-contact-link">_cakes_of_paradise</a></li>
+        <li><span>📍 Location:</span> Surathkal, Mangaluru, Karnataka</li>
+        <li><span>🚚 Free Delivery:</span> All orders within Surathkal</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <p>© 2026 Cakes of Paradise. All rights reserved. Handcrafted with 🤎 in Surathkal.</p>
+    </div>
+  </div>
+</footer>
+
+
+<script src="api-config.js"></script>
+<script>
+  const API_BASE = window.CAKES_API_BASE || '/api';
+  let regAvatarBase64 = '';
+
+  function handleRegAvatarUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      showAlert('Please select an image smaller than 2MB', 'danger');
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      regAvatarBase64 = e.target.result;
+      document.getElementById('regAvatarPreview').innerHTML = `<img src="${regAvatarBase64}" style="width:100%;height:100%;object-fit:cover;">`;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function updateRegAvatarInitial() {
+    if (!regAvatarBase64) {
+      const name = document.getElementById('registerName').value.trim();
+      document.getElementById('regAvatarPreview').innerHTML = name ? name.charAt(0).toUpperCase() : '📷';
+    }
+  }
+
+  function showAlert(message, type = 'info') {
+    const alertBox = document.getElementById('alertBox');
+    alertBox.textContent = message;
+    alertBox.className = `alert ${type}`;
+    alertBox.style.display = 'block';
+  }
+
+  function hideAlert() {
+    const alertBox = document.getElementById('alertBox');
+    alertBox.style.display = 'none';
+  }
+
+  if (new URLSearchParams(window.location.search).get('reason') === 'wishlist') {
+    showAlert('Sign in or create an account to save cakes to your wishlist.', 'info');
+  }
+
+  function switchTab(tab) {
+    hideAlert();
+    const loginBtn = document.getElementById('loginTabBtn');
+    const regBtn = document.getElementById('registerTabBtn');
+    const loginForm = document.getElementById('loginForm');
+    const regForm = document.getElementById('registerForm');
+    const isRegister = tab === 'register';
+    document.body.classList.toggle('auth-register', isRegister);
+    document.getElementById('authWelcomeEyebrow').innerHTML = isRegister ? '♡ &nbsp; Join Our Bakery &nbsp; ♡' : '♡ &nbsp; Welcome Back &nbsp; ♡';
+    document.getElementById('authWelcomeTitle').textContent = isRegister ? 'Create Account' : 'Sign In';
+    document.getElementById('authWelcomeDescription').innerHTML = isRegister ? 'Be part of our sweet community<br>and never miss a moment ♡' : 'Log in to your Cakes of Paradise account<br>to continue your sweet journey.';
+    document.getElementById('authWelcomeBenefitTitle').textContent = isRegister ? 'Made for sweet moments' : 'Sweet things await you';
+    document.getElementById('authWelcomeBenefitText').textContent = isRegister ? 'Save your favourites, follow orders, and hear about new cake designs.' : 'Keep favourite cakes and order updates together for your next celebration.';
+    loginBtn.setAttribute('aria-selected', String(!isRegister));
+    regBtn.setAttribute('aria-selected', String(isRegister));
+
+    if (!isRegister) {
+      loginBtn.classList.add('active');
+      regBtn.classList.remove('active');
+      loginForm.style.display = 'block';
+      regForm.style.display = 'none';
+    } else {
+      regBtn.classList.add('active');
+      loginBtn.classList.remove('active');
+      regForm.style.display = 'block';
+      loginForm.style.display = 'none';
+    }
+    if (new URLSearchParams(window.location.search).get('reason') === 'wishlist') {
+      showAlert('Sign in or create an account to save cakes to your wishlist.', 'info');
+    }
+  }
+
+  if (new URLSearchParams(window.location.search).get('tab') === 'register') switchTab('register');
+
+  // Handle User Registration
+  async function handleRegister(e) {
+    e.preventDefault();
+    hideAlert();
+
+    const name = document.getElementById('registerName').value.trim();
+    const email = document.getElementById('registerEmail').value.trim();
+    const phone = document.getElementById('registerPhone').value.trim();
+    const password = document.getElementById('registerPassword').value;
+    const referralCode = document.getElementById('registerReferralCode').value.trim().toUpperCase();
+
+    const submitBtn = document.getElementById('registerSubmitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Registering...';
+
+    try {
+      const response = await fetch(`${API_BASE}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          phone,
+          avatar: regAvatarBase64,
+          referralCode
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Registration failed');
+      }
+
+      const adminReturnRequested = /^\/?index\.html\?adminPage=(overview|orders|completed|inventory|products|categories|gift-cards|reviews|customers|enquiries|offers|settings)$/.test(sessionStorage.getItem('returnTo') || '');
+      if (adminReturnRequested && data.user?.role !== 'admin') {
+        showAlert('Customer accounts cannot open the admin pages. Sign in with the configured bakery admin account.', 'danger');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Register';
+        return;
+      }
+
+      // Save credentials in localStorage
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      await window.CakeCart?.mergeGuestIntoAccount();
+
+      const referralNotice = data.user.referralCodeUsed ? ' Referral saved: after your first paid order is completed, you and your friend will receive bonus points.' : '';
+      showAlert(`🎉 Account created successfully!${referralNotice} Redirecting you to home...`, 'success');
+      setTimeout(() => {
+        const returnTo = sessionStorage.getItem('returnTo');
+        sessionStorage.removeItem('returnTo');
+        const adminPageReturn = /^\/?index\.html\?adminPage=(overview|orders|completed|inventory|products|categories|gift-cards|reviews|customers|enquiries|offers|settings)$/.test(returnTo || '') ? returnTo : 'index.html?adminPage=overview';
+        const giftCardReturn = /^\/?gift-cards\.html(?:\?[^#]*)?(?:#.*)?$/.test(returnTo || '') ? String(returnTo).replace(/^\/+/, '') : null;
+        const shopReturn = /^\/?shop\.html(?:\?[^#]*)?(?:#.*)?$/.test(returnTo || '') ? String(returnTo).replace(/^\/+/, '') : null;
+        window.location.href = data.user.role === 'admin' ? adminPageReturn : (['checkout.html#checkout', 'cart.html#checkout', 'orders.html'].includes(returnTo) ? returnTo : giftCardReturn || shopReturn || 'index.html#shop');
+      }, 1200);
+    } catch (err) {
+      const message = err instanceof TypeError ? `Cannot reach the bakery API at ${API_BASE}. Start the backend or set its deployed URL in api-config.js.` : err.message;
+      showAlert(`❌ ${message}`, 'danger');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Register';
+    }
+  }
+
+  // Handle Login (Admin or Normal User)
+  async function handleLogin(e) {
+    e.preventDefault();
+    hideAlert();
+
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    const submitBtn = document.getElementById('loginSubmitBtn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Signing in...';
+
+    try {
+      const response = await fetch(`${API_BASE}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Invalid email/username or password');
+      }
+
+      const adminReturnRequested = /^\/?index\.html\?adminPage=(overview|orders|completed|inventory|products|categories|gift-cards|reviews|customers|enquiries|offers|settings)$/.test(sessionStorage.getItem('returnTo') || '');
+      if (adminReturnRequested && data.user?.role !== 'admin') {
+        showAlert('This account has customer access, not bakery administrator access. Use the configured admin account to continue.', 'danger');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Sign In';
+        return;
+      }
+
+      // Save token and user details in localStorage
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      await window.CakeCart?.mergeGuestIntoAccount();
+
+      showAlert(`✨ Welcome back, ${data.user.name}! Redirecting you to home...`, 'success');
+      setTimeout(() => {
+        const returnTo = sessionStorage.getItem('returnTo');
+        sessionStorage.removeItem('returnTo');
+        const adminPageReturn = /^\/?index\.html\?adminPage=(overview|orders|completed|inventory|products|categories|gift-cards|reviews|customers|enquiries|offers|settings)$/.test(returnTo || '') ? returnTo : 'index.html?adminPage=overview';
+        const giftCardReturn = /^\/?gift-cards\.html(?:\?[^#]*)?(?:#.*)?$/.test(returnTo || '') ? String(returnTo).replace(/^\/+/, '') : null;
+        const shopReturn = /^\/?shop\.html(?:\?[^#]*)?(?:#.*)?$/.test(returnTo || '') ? String(returnTo).replace(/^\/+/, '') : null;
+        window.location.href = data.user.role === 'admin' ? adminPageReturn : (['checkout.html#checkout', 'cart.html#checkout', 'orders.html'].includes(returnTo) ? returnTo : giftCardReturn || shopReturn || 'index.html#shop');
+      }, 1200);
+    } catch (err) {
+      const message = err instanceof TypeError ? `Cannot reach the bakery API at ${API_BASE}. Start the backend or set its deployed URL in api-config.js.` : err.message;
+      showAlert(`❌ ${message}`, 'danger');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Sign In';
+    }
+  }
+</script>
+
+<script>
+  (() => {
+    const eye = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z"/><circle cx="12" cy="12" r="2.6"/></svg>';
+    const eyeOff = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 3 18 18M10.6 6.2A10.8 10.8 0 0 1 12 6c6.1 0 9.5 6 9.5 6a15 15 0 0 1-2.5 3.2M6.2 6.2C3.8 7.8 2.5 12 2.5 12s3.4 6 9.5 6c1.3 0 2.4-.3 3.4-.7"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg>';
+    ['login', 'register'].forEach((form) => {
+      const password = document.getElementById(`${form}Password`);
+      const toggle = document.getElementById(`toggle${form === 'login' ? 'Login' : 'Register'}Password`);
+      toggle?.addEventListener('click', () => {
+        const visible = password.type === 'password';
+        password.type = visible ? 'text' : 'password';
+        toggle.setAttribute('aria-pressed', String(visible));
+        toggle.setAttribute('aria-label', visible ? 'Hide password' : 'Show password');
+        toggle.innerHTML = visible ? eyeOff : eye;
+      });
+    });
+
+  })();
+</script>
+
+<script src="cart-storage.js" defer></script>
+<script src="shared-navigation.js?v=20261101-role-aware"></script><script src="site-navigation.js?v=20261101-role-aware" defer></script>
+<script src="motion.js" defer></script>
+  <script src="shared-footer.js?v=20261031-home-footer-title" defer></script>
+</body>
+</html>

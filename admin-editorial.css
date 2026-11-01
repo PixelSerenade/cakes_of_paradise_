@@ -1,0 +1,695 @@
+/* Editorial bakery dashboard: cream canvas, blush details, sage actions. */
+body.admin-mode{--admin-ink:#3f3832;--admin-muted:#756d64;--admin-accent:#d7a09a;--admin-accent-strong:#aa7772;--admin-border:#e6d9cd;--admin-surface:#faf7ef;--admin-canvas:#f5f1e8;--admin-wash:#f3e4df;background:#f5f1e8!important;color:#3f3832!important;font-family:"Cormorant Garamond",Georgia,serif}
+body.admin-mode #shop{min-height:100vh;padding:0 0 34px;background:#f5f1e8!important}
+body.admin-mode .admin-layout{grid-template-columns:230px minmax(0,1fr);gap:0;max-width:none;min-height:100vh;align-items:stretch}
+body.admin-mode .admin-sidebar{position:static;top:auto;grid-column:1;grid-row:1;align-content:start;gap:19px;min-height:100vh;height:auto;max-height:none;padding:22px 15px;border:0;border-right:1px solid #e7ddd2;border-radius:0;background:#f7f3eb!important;box-shadow:none;overflow:visible;align-self:start}
+body.admin-mode .admin-sidebar-title{gap:4px;padding:0 10px 17px;border-bottom:1px solid #e8ddd2}
+body.admin-mode .admin-sidebar-title .eyebrow{display:none}
+body.admin-mode .admin-sidebar-title strong{color:#2f2925;font:italic 600 2.15rem/1 "Cormorant Garamond",Georgia,serif}
+body.admin-mode .admin-sidebar-title strong::after{content:"CAKES · SWEET MOMENTS";display:block;margin-top:4px;color:#8e887a;font:500 .48rem "DM Sans",sans-serif;letter-spacing:.18em}
+body.admin-mode #adminPageNav{display:grid;gap:5px}
+body.admin-mode #adminPageNav a{min-height:42px;padding:8px 10px;border-radius:11px;color:#514a41;font:500 .96rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode #adminPageNav a.active,body.admin-mode #adminPageNav a[aria-current="page"]{background:#f1dfda;color:#9b6e69}
+body.admin-mode .admin-nav-icon{width:26px;height:26px;border-radius:8px;background:#fffaf3;color:#7a806e;font-size:1rem}
+body.admin-mode #adminPageNav a.active .admin-nav-icon{background:#e5c1ba;color:#845d58}
+body.admin-mode .admin-main{grid-column:2;min-width:0;padding:0 clamp(16px,1.6vw,28px) 34px;background:#f5f1e8!important}
+body.admin-mode .admin-mobile-heading{display:none}
+body.admin-mode .admin-welcome-banner{position:relative;display:flex;align-items:center;min-height:180px;margin:0 -28px 15px;padding:28px clamp(26px,3vw,50px);overflow:hidden;isolation:isolate;background:#f4e7df url('/public/images/editorial/hero-memory.jpg') center 43%/cover no-repeat}
+body.admin-mode .admin-welcome-banner::before{position:absolute;inset:0;z-index:-1;content:"";background:linear-gradient(90deg,#f5eae2 0%,#f5eae2f0 38%,#f5eae280 62%,#f5eae20a 100%)}
+body.admin-mode .admin-welcome-banner .eyebrow{margin:0;color:#927a67;font:600 .58rem "DM Sans",sans-serif;letter-spacing:.17em}
+body.admin-mode .admin-welcome-banner h1{margin:5px 0 3px;color:#302a25;font:500 clamp(2rem,3.2vw,3rem)/1.05 "Cormorant Garamond",Georgia,serif}
+body.admin-mode .admin-welcome-banner h1 span{color:#be8680}
+body.admin-mode .admin-welcome-banner p{margin:0 0 0 4px;color:#5e544b;font:400 1.14rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .admin-hero-note{position:absolute;right:6%;top:24px;color:#766b61;font:italic 1.18rem/1.15 "Great Vibes",cursive;transform:rotate(-6deg)}
+body.admin-mode .admin-topbar{min-height:50px;margin:0 0 13px;padding:0 2px;border:0;border-radius:0;background:transparent;box-shadow:none}
+body.admin-mode .admin-topbar>div:first-child{display:none}
+body.admin-mode .admin-topbar-actions{gap:8px}
+body.admin-mode .admin-user-role{background:#f1e9dc;border-color:#e2d6c7;color:#655b50;font:500 .7rem "DM Sans",sans-serif}
+body.admin-mode #refreshAdminOrders{min-height:33px;padding:7px 11px;border-color:#ddd2c5;background:#faf7ef;color:#655b50;font:500 .7rem "DM Sans",sans-serif}
+body.admin-mode #adminLogout{min-height:33px;padding:7px 12px;border:0;border-radius:999px;background:#89927b!important;color:#fffdf7!important;box-shadow:none;font:500 .7rem "DM Sans",sans-serif}
+body.admin-mode .admin-panel .admin-tools{margin:0;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none}
+body.admin-mode .admin-overview .admin-section-heading{margin:0 0 10px;padding:0;border:0;align-items:center;flex-direction:row}
+body.admin-mode .admin-section-heading .eyebrow{color:#8a8877;font:600 .58rem "DM Sans",sans-serif;letter-spacing:.12em}
+body.admin-mode .admin-section-heading h3{margin:2px 0;color:#433a33;font:500 1.58rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .admin-section-heading>div>p{color:#756d64;font:400 .88rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .report-range label{color:#766d63;font:500 .65rem "DM Sans",sans-serif}
+body.admin-mode .report-range input{border-color:#e2d9cd;border-radius:8px;background:#fbf8f1;color:#4e453c;font:.68rem "DM Sans",sans-serif}
+body.admin-mode .report-range .store-secondary{border-radius:8px;background:#89927b;color:#fff;border:0;font:.68rem "DM Sans",sans-serif}
+body.admin-mode .admin-kpis{gap:11px;margin:0 0 14px}
+body.admin-mode .admin-kpi{min-height:77px;padding:12px 13px;border-color:#e5d9ce;border-radius:11px;background:#faf7ef;box-shadow:none}
+body.admin-mode .admin-kpi-icon{flex-basis:42px;width:42px;height:42px;border-radius:50%;background:#f1dfda!important;color:#a97873!important;font-size:1.1rem!important}
+body.admin-mode .admin-kpi:nth-child(2) .admin-kpi-icon{background:#e4e8dc!important;color:#76836c!important}
+body.admin-mode .admin-kpi:nth-child(3) .admin-kpi-icon{background:#e9e2eb!important;color:#897993!important}
+body.admin-mode .admin-kpi:nth-child(4) .admin-kpi-icon{background:#e0e9ed!important;color:#718c96!important}
+body.admin-mode .admin-kpi:nth-child(5) .admin-kpi-icon{background:#efe7d8!important;color:#9a8364!important}
+body.admin-mode .admin-kpi strong{margin:2px 0;color:#3d3731!important;font:500 1.32rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .admin-kpi-label{color:#756d64!important;font:400 .78rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .admin-overview-middle{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);align-items:stretch;gap:12px}
+body.admin-mode .admin-chart-grid{grid-template-columns:minmax(0,1.4fr) minmax(190px,.9fr);gap:10px}
+body.admin-mode .admin-chart-card,body.admin-mode .admin-recent-orders,body.admin-mode .admin-overview-panel{min-width:0;padding:15px;border:1px solid #e3d9ce;border-radius:11px;background:#faf7ef;box-shadow:none}
+body.admin-mode .admin-chart-card h4,body.admin-mode .admin-recent-orders h4,body.admin-mode .admin-overview-panel h4{margin:0;color:#433a33;font:500 1.15rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .admin-chart-card h4::before,body.admin-mode .admin-recent-orders h4::before{display:inline-block;margin-right:7px;color:#7a806e;font:1rem Georgia,serif}
+body.admin-mode .admin-chart-card:first-child h4::before{content:"▦"}
+body.admin-mode .admin-chart-card:nth-child(2) h4::before{content:"♙"}
+body.admin-mode .admin-chart-wide{grid-column:1/-1}
+body.admin-mode .admin-chart-wide .popular-chart{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+body.admin-mode .admin-top-cake-card{min-width:0;display:grid;gap:4px;padding:6px;border:1px solid #ece2d7;border-radius:9px;background:#fcf9f2}
+body.admin-mode .admin-top-cake-card img{width:100%;height:78px;object-fit:cover;border-radius:6px;background:#eee6dc}
+body.admin-mode .admin-top-cake-card strong{overflow:hidden;color:#403931;font:500 .84rem/1.15 "Cormorant Garamond",Georgia,serif;text-overflow:ellipsis;white-space:nowrap}
+body.admin-mode .admin-top-cake-card span{color:#856b61;font:500 .76rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .admin-top-cake-card small{color:#777066;font:400 .64rem "DM Sans",sans-serif}
+body.admin-mode .admin-recent-orders{margin:0;overflow:hidden}
+body.admin-mode .admin-card-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 9px}
+body.admin-mode .admin-card-heading>a{color:#746b60;text-decoration:none;font:400 .68rem "DM Sans",sans-serif;white-space:nowrap}
+body.admin-mode .admin-card-heading>a:hover{color:#9e716c}
+body.admin-mode .admin-table-scroll{border-color:#e8ded3;border-radius:8px}
+body.admin-mode .admin-table{min-width:480px;background:#faf7ef;color:#473f37;font:400 .72rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .admin-table th{padding:9px 8px;background:#f3eee4!important;border-color:#e8ded3;color:#766c61!important;font:500 .62rem "DM Sans",sans-serif}
+body.admin-mode .admin-table td{padding:9px 8px;border-color:#eee5dc;color:#473f37!important}
+body.admin-mode .admin-overview-lower{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(210px,.8fr);gap:12px;margin-top:12px}
+body.admin-mode .dashboard-enquiry-row{display:grid;grid-template-columns:12px minmax(70px,.9fr) minmax(80px,1fr) auto;align-items:center;gap:8px;min-height:31px;border-bottom:1px solid #eee5dc;color:#5f574e;font:400 .82rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .dashboard-enquiry-row:last-child{border-bottom:0}
+body.admin-mode .dashboard-enquiry-row strong{overflow:hidden;color:#453e36;font:500 .82rem "Cormorant Garamond",Georgia,serif;text-overflow:ellipsis;white-space:nowrap}
+body.admin-mode .dashboard-enquiry-row time{color:#82796e;font:400 .62rem "DM Sans",sans-serif;white-space:nowrap}
+body.admin-mode .dashboard-enquiry-dot{width:7px;height:7px;border-radius:50%;background:#89927b}
+body.admin-mode .admin-quick-actions>a{display:block;margin-top:6px;padding:8px 10px;border:0;border-radius:8px;background:#f2e1dc;color:#63574e;text-decoration:none;font:500 .78rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .admin-quick-actions>a:nth-of-type(2){background:#e7e7db}
+body.admin-mode .admin-quick-actions>a:nth-of-type(3){background:#e9e5ef}
+body.admin-mode .admin-quick-actions>a:nth-of-type(4){background:#e1e9ea}
+body.admin-mode .admin-quick-actions>a:nth-of-type(5){background:#eee7d9}
+body.admin-mode .admin-quick-actions>a:hover{filter:brightness(.97)}
+body.admin-mode .admin-wishlist-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px}
+body.admin-mode .admin-wishlist-card{display:grid;grid-template-columns:56px minmax(0,1fr) auto;align-items:center;gap:10px;padding:10px;border:1px solid #e6dbcf;border-radius:10px;background:#faf7ef}
+body.admin-mode .admin-wishlist-card img{width:56px;height:52px;object-fit:cover;border-radius:7px;background:#eee6dc}
+body.admin-mode .admin-wishlist-card>div{min-width:0;display:grid;gap:3px}
+body.admin-mode .admin-wishlist-card strong{overflow:hidden;color:#423a33;font:500 .95rem "Cormorant Garamond",Georgia,serif;text-overflow:ellipsis;white-space:nowrap}
+body.admin-mode .admin-wishlist-card small{color:#81786e;font:400 .65rem "DM Sans",sans-serif}
+body.admin-mode .admin-wishlist-card>span{color:#a67872;font:500 .8rem "DM Sans",sans-serif;white-space:nowrap}
+body.admin-mode .admin-panel .admin-tools:not(.admin-overview){padding:20px;border:1px solid #e4d9cd;border-radius:12px;background:#faf7ef;box-shadow:none}
+body.admin-mode .admin-panel .admin-tools:not(.admin-overview) .admin-section-heading h3{font:500 1.58rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .admin-panel input,body.admin-mode .admin-panel select,body.admin-mode .admin-panel textarea{border-color:#ded5c9!important;border-radius:8px!important;background:#fcfaf5!important;color:#4b433b!important;font-family:"DM Sans",sans-serif!important}
+body.admin-mode .admin-panel .btn-primary,body.admin-mode .admin-panel .order-admin-controls button{background:#89927b!important;border-color:#89927b!important;color:#fffdf7!important;box-shadow:none!important}
+body.admin-mode .admin-panel .store-secondary,body.admin-mode .admin-panel .btn-outline{border-color:#e3d6ca!important;border-radius:8px!important;background:#f5eee5!important;color:#665b50!important}
+body.admin-mode .admin-panel .admin-subpanel,body.admin-mode .admin-panel .admin-product-card,body.admin-mode .admin-panel .admin-order-card,body.admin-mode .admin-panel .admin-list-row{border-color:#e6dbcf!important;border-radius:10px!important;background:#fcf9f2!important;box-shadow:none!important}
+body.admin-mode .admin-panel .admin-section-heading{border-color:#e7ddd2}
+body.admin-mode .site-footer{display:block!important;margin:0;padding:13px 20px;background:#a6ad95!important;color:#fffdf7!important}
+body.admin-mode .site-footer .footer-wrap{display:none}
+body.admin-mode .site-footer .footer-bottom{padding:0;border:0;background:transparent}
+body.admin-mode .site-footer .footer-bottom-inner{justify-content:space-between;gap:12px}
+body.admin-mode .site-footer .footer-bottom p{margin:0;color:#fffdf7;font:400 .68rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .admin-mobile-heading{display:none}
+@media(max-width:1100px){body.admin-mode .admin-layout{grid-template-columns:205px minmax(0,1fr)}body.admin-mode .admin-overview-middle{grid-template-columns:1fr}body.admin-mode .admin-chart-grid{grid-template-columns:minmax(0,1.4fr) minmax(190px,.9fr)}body.admin-mode .admin-recent-orders{min-height:0}}
+@media(max-width:760px){body.admin-mode .admin-layout{display:block}body.admin-mode .admin-sidebar{position:fixed;z-index:1002;top:0;left:0;width:min(285px,84vw);height:100dvh;min-height:100dvh;transform:translateX(-105%);transition:transform .22s ease;box-shadow:10px 0 30px #42372c24}body.admin-mode .admin-sidebar.open{transform:translateX(0)}body.admin-mode .admin-main{padding:0 14px 24px}body.admin-mode .admin-mobile-heading{position:sticky;top:0;z-index:1001;display:flex;align-items:center;gap:12px;min-height:48px;margin:0 -14px;padding:6px 14px;background:#f8f4eced;backdrop-filter:blur(8px)}body.admin-mode #adminMenuToggle{padding:7px 10px;border:1px solid #e1d7cb;border-radius:8px;background:#faf7ef;color:#514940;font:500 .72rem "DM Sans",sans-serif}body.admin-mode .admin-welcome-banner{min-height:150px;margin:0 -14px 11px;padding:22px 19px}body.admin-mode .admin-hero-note{display:none}body.admin-mode .admin-topbar{min-height:42px;margin-bottom:11px}body.admin-mode .admin-topbar-actions{width:100%;justify-content:flex-end}body.admin-mode .admin-overview .admin-section-heading{align-items:flex-start;flex-direction:column}body.admin-mode .admin-kpis{grid-template-columns:repeat(2,minmax(0,1fr))}body.admin-mode .admin-kpi:last-child{grid-column:1/-1}body.admin-mode .admin-chart-grid{grid-template-columns:1fr}body.admin-mode .admin-chart-wide{grid-column:auto}body.admin-mode .admin-chart-wide .popular-chart{grid-template-columns:repeat(2,minmax(0,1fr))}body.admin-mode .admin-top-cake-card img{height:92px}body.admin-mode .admin-overview-lower{grid-template-columns:1fr}body.admin-mode .admin-wishlist-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:430px){body.admin-mode .admin-user-role{display:none}body.admin-mode #refreshAdminOrders{font-size:0}body.admin-mode #refreshAdminOrders::after{content:"↻";font-size:1rem}body.admin-mode .admin-wishlist-grid{grid-template-columns:1fr}body.admin-mode .dashboard-enquiry-row{grid-template-columns:10px minmax(70px,1fr) auto}body.admin-mode .dashboard-enquiry-row>span:nth-of-type(2){display:none}}
+
+/* Admin overview, inventory and category refinements */
+body.admin-mode .admin-overview-middle{grid-template-columns:minmax(0,1fr) minmax(0,1fr);grid-template-rows:auto auto;align-items:stretch}
+body.admin-mode .admin-chart-grid{display:contents}
+body.admin-mode .admin-chart-card:first-child{grid-column:1;grid-row:1;min-height:250px}
+body.admin-mode .admin-chart-card:nth-child(2){grid-column:2;grid-row:1;min-height:250px}
+body.admin-mode .admin-chart-wide{grid-column:1;grid-row:2}
+body.admin-mode .admin-recent-orders{grid-column:2;grid-row:2;min-height:0}
+body.admin-mode .admin-chart-wide .popular-chart{grid-template-columns:repeat(auto-fit,minmax(96px,1fr))}
+body.admin-mode .admin-table{width:100%;min-width:0;table-layout:fixed}
+body.admin-mode .admin-table th,body.admin-mode .admin-table td{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+body.admin-mode #adminSidebar .admin-sidebar-title strong{max-width:100%;font-size:1.3rem;line-height:1.05;letter-spacing:-.035em;white-space:normal}
+body.admin-mode #adminPageNav a[data-admin-view].active{background:#f2dedb!important;color:#6f514e!important}
+body.admin-mode #adminPageNav a[data-admin-view="orders"].active{background:#e4eadf!important;color:#54684f!important}
+body.admin-mode #adminPageNav a[data-admin-view="completed"].active{background:#e3edf0!important;color:#4e6871!important}
+body.admin-mode #adminPageNav a[data-admin-view="inventory"].active{background:#ece5f0!important;color:#685875!important}
+body.admin-mode #adminPageNav a[data-admin-view="products"].active{background:#f3e5d9!important;color:#765b47!important}
+body.admin-mode #adminPageNav a[data-admin-view="categories"].active{background:#f1ebd9!important;color:#766a48!important}
+body.admin-mode #adminPageNav a[data-admin-view="wishlist"].active{background:#f5e1e2!important;color:#865d61!important}
+body.admin-mode #adminPageNav .admin-nav-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.55;stroke-linecap:round;stroke-linejoin:round}
+body.admin-mode .admin-wishlist-top,body.admin-mode .admin-wishlist-rest{padding:16px;border:1px solid #eadbd4;border-radius:14px;background:linear-gradient(135deg,#fffaf5,#f8efed)}
+body.admin-mode .admin-wishlist-top{margin:10px 0 18px}
+body.admin-mode .admin-wishlist-top>header h4,body.admin-mode .admin-wishlist-rest>h4{margin:0;color:#624d48;font:500 1.35rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .admin-wishlist-top>header p{margin:3px 0 12px;color:#766d63;font:.77rem "DM Sans",sans-serif}
+body.admin-mode .admin-wishlist-top-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+body.admin-mode .admin-wishlist-top-grid{align-items:end;max-width:760px;margin:0 auto;gap:14px}
+body.admin-mode .admin-wishlist-rank-card{position:relative;display:flex;min-width:0;min-height:190px;flex-direction:column;align-items:center;justify-content:flex-end;gap:8px;padding:18px 12px 14px;border:1px solid #e5d8c9;border-radius:15px;background:linear-gradient(180deg,#fffdf9,#f1eee5);text-align:center;box-shadow:0 8px 18px rgba(64,50,39,.06)}
+body.admin-mode .admin-wishlist-rank-card[data-rank="1"]{min-height:220px;border-color:#d9c397;background:linear-gradient(180deg,#fffaf0,#eee5d0);box-shadow:0 12px 24px rgba(126,102,60,.12)}
+body.admin-mode .admin-wishlist-rank-card img{display:block;width:92px;height:82px;min-height:0;flex:0 0 82px;object-fit:contain;border-radius:8px;background:transparent}
+body.admin-mode .admin-wishlist-rank-card[data-rank="1"] img{width:108px;height:98px;flex-basis:98px}
+body.admin-mode .admin-wishlist-rank-card>div{width:100%;min-width:0;align-self:stretch}
+body.admin-mode .admin-wishlist-rank-card strong{display:block;white-space:normal;line-height:1.15}
+body.admin-mode .admin-wishlist-rank-card>span:last-child{align-self:center;white-space:normal;font-size:.69rem}
+body.admin-mode .admin-wishlist-rank{position:absolute;top:9px;left:50%;display:grid;width:26px;height:26px;place-items:center;border:2px solid #fffaf4;border-radius:50%;background:#89947b;color:#fff;font:600 .72rem "DM Sans",sans-serif;transform:translateX(-50%)}
+body.admin-mode .admin-wishlist-rank-card[data-rank="1"] .admin-wishlist-rank{top:8px;width:30px;height:30px;background:#c4a45f}
+body.admin-mode .admin-wishlist-rest-list{display:grid;gap:0;margin-top:8px}
+body.admin-mode .admin-wishlist-rest .admin-wishlist-card{border:0;border-top:1px solid #eee4dc;border-radius:0;background:transparent}
+body.admin-mode .admin-inventory-filters{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+body.admin-mode .admin-inventory-filters button{border-radius:99px!important;background:#faf6ef!important;color:#6f665c!important}
+body.admin-mode .admin-inventory-filters button.active{background:#e3e9dc!important;border-color:#cbd5c2!important;color:#56654e!important}
+body.admin-mode .admin-inventory-card[hidden]{display:none!important}
+body.admin-mode .admin-inventory-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:12px}
+body.admin-mode #admin-category-section .admin-product-toolbar{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+body.admin-mode #admin-category-section .admin-product-search{flex:1;min-width:200px}
+body.admin-mode #admin-category-section #adminCategories{display:grid;gap:9px}
+body.admin-mode #admin-category-section .admin-category-form{padding:16px;border:1px solid #eaded3;border-radius:12px;background:#fffaf5}
+@media(max-width:1100px){body.admin-mode .admin-overview-middle{grid-template-columns:1fr;grid-template-rows:auto}body.admin-mode .admin-chart-card:first-child,body.admin-mode .admin-chart-card:nth-child(2),body.admin-mode .admin-chart-wide,body.admin-mode .admin-recent-orders{grid-column:1;grid-row:auto}body.admin-mode .admin-chart-grid{display:contents}body.admin-mode .admin-recent-orders{min-height:0}}
+@media(max-width:760px){body.admin-mode .admin-sidebar{position:fixed;height:100dvh;min-height:100dvh;max-height:100dvh;overflow-y:auto}body.admin-mode .admin-wishlist-top-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}body.admin-mode .admin-wishlist-rank-card,body.admin-mode .admin-wishlist-rank-card[data-rank="1"]{min-height:176px;padding:16px 7px 10px}body.admin-mode .admin-wishlist-rank-card img,body.admin-mode .admin-wishlist-rank-card[data-rank="1"] img{width:72px;height:66px;flex-basis:66px}body.admin-mode .admin-overview-middle{display:grid}}
+
+/* Inventory Management workspace inspired by the supplied bakery admin reference. */
+body.admin-mode.admin-inventory-view .admin-topbar{display:none}
+body.admin-mode.admin-inventory-view .admin-welcome-banner{min-height:148px;margin:0 -14px 18px;padding:24px clamp(24px,3vw,44px);border:0;border-bottom:1px solid #e5d8cd;border-radius:0;background-color:#f3e7dc}
+body.admin-mode.admin-inventory-view .admin-welcome-banner h1{font-size:clamp(2.2rem,4vw,3.25rem)}
+body.admin-mode.admin-inventory-view .admin-welcome-banner p{max-width:560px}
+body.admin-mode .inventory-management{padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
+body.admin-mode .inventory-page-hero{display:none}
+body.admin-mode .inventory-workspace{display:grid;grid-template-columns:minmax(0,2.45fr) minmax(265px,.9fr);align-items:start;gap:16px}
+body.admin-mode .inventory-main-panel,body.admin-mode .inventory-summary-panel,body.admin-mode .inventory-alert-panel,body.admin-mode .inventory-aside-note{min-width:0;border:1px solid #e4dbd1;border-radius:12px;background:#faf7f0;box-shadow:0 5px 18px #51443608}
+body.admin-mode .inventory-main-panel{overflow:hidden;padding:0 15px 12px}
+body.admin-mode .inventory-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:17px 0 13px;border-bottom:1px solid #e7ddd2}
+body.admin-mode .inventory-panel-heading h4,body.admin-mode .inventory-summary-panel h4,body.admin-mode .inventory-alert-panel h4{margin:0;color:#38332e;font:500 1.4rem/1.1 "Cormorant Garamond",Georgia,serif}
+body.admin-mode .inventory-panel-heading h4 span{margin-right:8px;color:#78836e;font-size:1.35rem}
+body.admin-mode .inventory-panel-heading p{margin:5px 0 0;color:#746b61;font:400 .76rem/1.35 "DM Sans",sans-serif}
+body.admin-mode .inventory-heading-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}
+body.admin-mode .inventory-add-button,body.admin-mode .inventory-cancel-button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:7px 13px;border:1px solid #8d987f;border-radius:999px;background:#8b9680;color:#fffdf8;font:500 .72rem "DM Sans",sans-serif;cursor:pointer;transition:filter .16s,transform .16s}
+body.admin-mode .inventory-add-button:hover,body.admin-mode .inventory-cancel-button:hover{filter:brightness(.95);transform:translateY(-1px)}
+body.admin-mode .inventory-cancel-button{border-color:#e1c7bd;background:#fff8f2;color:#735c52}
+body.admin-mode .inventory-tabs{display:flex;gap:10px;overflow:auto;padding:6px 0 0;border-bottom:1px solid #e8dfd5}
+body.admin-mode .inventory-tabs button{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:39px;padding:7px 8px;border:0;background:none;color:#71695f;font:400 .78rem "Cormorant Garamond",Georgia,serif;white-space:nowrap;cursor:pointer}
+body.admin-mode .inventory-tabs button span{display:grid;min-width:21px;height:21px;place-items:center;padding:0 5px;border-radius:50%;background:#eee8de;color:#746b5f;font:500 .58rem "DM Sans",sans-serif}
+body.admin-mode .inventory-tabs button.is-active{color:#66534e}
+body.admin-mode .inventory-tabs button.is-active::after{position:absolute;right:0;bottom:-1px;left:0;height:2px;background:#d69e99;content:""}
+body.admin-mode .inventory-tabs button.is-active span{background:#89947b;color:#fff}
+body.admin-mode .inventory-toolbar{display:grid;grid-template-columns:minmax(160px,1fr) minmax(110px,.42fr) minmax(125px,.45fr);align-items:end;gap:10px;padding:13px 0}
+body.admin-mode .inventory-toolbar>label{display:grid;gap:4px;color:#726b60;font:500 .6rem "DM Sans",sans-serif}
+body.admin-mode .inventory-toolbar select,body.admin-mode .inventory-search input{width:100%;height:34px;padding:7px 10px;border:1px solid #dfd6cc;border-radius:7px;background:#fffdf8;color:#514a42;font:400 .7rem "DM Sans",sans-serif}
+body.admin-mode .inventory-search{position:relative;display:block!important}
+body.admin-mode .inventory-search input{padding-right:34px}
+body.admin-mode .inventory-search>span:last-child{position:absolute;right:11px;bottom:7px;color:#766e62;font:1rem/1 Georgia,serif}
+body.admin-mode .inventory-table-wrap{overflow:auto;border:1px solid #e6ded4;border-radius:9px;background:#fcfaf5}
+body.admin-mode .inventory-table{width:100%;min-width:690px;border-collapse:collapse;color:#514a42;font:400 .72rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .inventory-table th{height:32px;padding:7px 8px;background:#f1eee6;color:#716a60;text-align:left;font:500 .59rem "DM Sans",sans-serif;white-space:nowrap}
+body.admin-mode .inventory-table td{height:51px;padding:6px 8px;border-top:1px solid #ebe3da;vertical-align:middle}
+body.admin-mode .inventory-table tr:hover td{background:#fffdf9}
+body.admin-mode .inventory-table input[type=checkbox]{width:13px;height:13px;margin:0;accent-color:#7f8d73}
+body.admin-mode .inventory-check-col{width:33px}
+body.admin-mode .inventory-item-cell{display:flex;align-items:center;gap:9px;min-width:155px}
+body.admin-mode .inventory-item-cell>img,body.admin-mode .inventory-generic-icon{width:48px;height:42px;flex:0 0 48px;object-fit:cover;border-radius:7px;background:#eee6dc}
+body.admin-mode .inventory-item-cell>span{display:grid;min-width:0;gap:2px}
+body.admin-mode .inventory-item-cell strong{overflow:hidden;color:#443c35;font:500 .85rem/1.1 "Cormorant Garamond",Georgia,serif;text-overflow:ellipsis;white-space:nowrap}
+body.admin-mode .inventory-item-cell small{overflow:hidden;color:#80776d;font:400 .58rem "DM Sans",sans-serif;text-overflow:ellipsis;white-space:nowrap}
+body.admin-mode .inventory-generic-icon{display:grid;place-items:center;color:#718578;font:1.5rem Georgia,serif;font-style:normal}
+body.admin-mode .inventory-generic-supplies{background:#e7edf3;color:#71869b}
+body.admin-mode .inventory-category-pill{display:inline-flex;align-items:center;min-height:20px;padding:3px 9px;border-radius:999px;background:#f1e0dc;color:#795e59;font:500 .56rem "Cormorant Garamond",Georgia,serif;white-space:nowrap}
+body.admin-mode .inventory-category-ingredients{background:#ece5f2;color:#6d6079}
+body.admin-mode .inventory-category-supplies{background:#e2eaf2;color:#61788e}
+body.admin-mode .inventory-stock-number{color:#433d36;font:500 .76rem "DM Sans",sans-serif}
+body.admin-mode .inventory-table td>small{color:#83796c;font:.58rem "DM Sans",sans-serif}
+body.admin-mode .inventory-state{display:inline-flex;align-items:center;min-height:20px;padding:3px 9px;border-radius:999px;background:#e1ebdf;color:#516d54;font:500 .57rem "DM Sans",sans-serif;white-space:nowrap}
+body.admin-mode .inventory-state-low{background:#f6e8c9;color:#8a6935}
+body.admin-mode .inventory-state-out{background:#f2dedd;color:#905d5c}
+body.admin-mode .inventory-row-actions{display:flex;gap:5px}
+body.admin-mode .inventory-row-actions button{display:grid;width:25px;height:25px;place-items:center;border:1px solid transparent;border-radius:6px;background:transparent;color:#615b52;font:1rem Georgia,serif;cursor:pointer}
+body.admin-mode .inventory-row-actions button:hover{border-color:#ead8ce;background:#f8ece6;color:#a36968}
+body.admin-mode .inventory-loading{height:105px;color:#82796e;text-align:center}
+body.admin-mode .inventory-loading.is-error{color:#9b5a57}
+body.admin-mode .inventory-pagination{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 1px 0;color:#746c62;font:.62rem "DM Sans",sans-serif}
+body.admin-mode .inventory-pagination>div{display:flex;align-items:center;gap:3px}
+body.admin-mode .inventory-pagination button{display:grid;min-width:25px;height:25px;place-items:center;padding:0 5px;border:0;border-radius:50%;background:transparent;color:#6d665d;font:.65rem "DM Sans",sans-serif;cursor:pointer}
+body.admin-mode .inventory-pagination button.is-current{background:#89947b;color:white}
+body.admin-mode .inventory-pagination button:disabled{opacity:.38;cursor:default}
+body.admin-mode .inventory-pagination label{display:flex;align-items:center;gap:5px;white-space:nowrap}
+body.admin-mode .inventory-pagination select{height:26px;padding:3px 7px;border:1px solid #e2d9ce;border-radius:6px;background:#fffdf9;color:#524b42;font:.65rem "DM Sans",sans-serif}
+body.admin-mode .inventory-aside{display:grid;gap:12px;min-width:0}
+body.admin-mode .inventory-summary-panel,body.admin-mode .inventory-alert-panel{padding:14px}
+body.admin-mode .inventory-summary-panel h4{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:1.2rem}
+body.admin-mode .inventory-summary-panel h4 span{color:#78836e}
+body.admin-mode .inventory-summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+body.admin-mode .inventory-summary-card{position:relative;display:grid;min-height:72px;align-content:space-between;gap:5px;padding:10px;border:1px solid #e5e5d8;border-radius:9px;background:#eef0e7;text-align:left;cursor:pointer}
+body.admin-mode .inventory-summary-card:hover{filter:brightness(.97)}
+body.admin-mode .inventory-summary-card>span{color:#6a655c;font:400 .62rem "DM Sans",sans-serif}
+body.admin-mode .inventory-summary-card strong{color:#332e29;font:500 1.35rem/1 "Cormorant Garamond",Georgia,serif}
+body.admin-mode .inventory-summary-card i{position:absolute;right:10px;bottom:10px;color:#728373;font:1.15rem Georgia,serif;font-style:normal}
+body.admin-mode .inventory-summary-cakes{background:#f4e8e5;border-color:#efddda}
+body.admin-mode .inventory-summary-cakes i{color:#b67c78}
+body.admin-mode .inventory-summary-ingredients{background:#edf0e8;border-color:#dfe7de}
+body.admin-mode .inventory-summary-ingredients i{color:#738c7c}
+body.admin-mode .inventory-summary-supplies{background:#eaf0f5;border-color:#dce4ec}
+body.admin-mode .inventory-summary-supplies i{color:#73879a}
+body.admin-mode .inventory-alert-panel header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}
+body.admin-mode .inventory-alert-panel h4{font-size:1.1rem}
+body.admin-mode .inventory-alert-panel h4 span{margin-right:5px;color:#ba7974}
+body.admin-mode #inventoryShowAlerts{padding:4px;border:0;background:transparent;color:#777066;font:.6rem "Cormorant Garamond",Georgia,serif;white-space:nowrap;cursor:pointer}
+body.admin-mode .inventory-alert-row{display:grid;width:100%;grid-template-columns:40px minmax(0,1fr) auto;align-items:center;gap:8px;padding:7px 0;border:0;border-bottom:1px solid #eee7de;background:transparent;text-align:left;cursor:pointer}
+body.admin-mode .inventory-alert-row:last-child{border-bottom:0}
+body.admin-mode .inventory-alert-row>img,body.admin-mode .inventory-alert-row>.inventory-generic-icon{width:40px;height:36px;flex-basis:40px;border-radius:6px}
+body.admin-mode .inventory-alert-row>span{display:grid;gap:3px;min-width:0}
+body.admin-mode .inventory-alert-row strong{overflow:hidden;color:#4d443c;font:500 .76rem "Cormorant Garamond",Georgia,serif;text-overflow:ellipsis;white-space:nowrap}
+body.admin-mode .inventory-alert-row small{width:max-content;padding:3px 7px;border-radius:999px;background:#f4e4df;color:#9a6967;font:.53rem "DM Sans",sans-serif}
+body.admin-mode .inventory-alert-row>i{color:#746e63;font:1.1rem Georgia,serif;font-style:normal}
+body.admin-mode .inventory-empty-note{margin:8px 0 2px;color:#80776d;font:.68rem/1.4 "Cormorant Garamond",Georgia,serif}
+body.admin-mode .inventory-aside-note{position:relative;display:flex;align-items:center;gap:12px;overflow:hidden;padding:15px;background:linear-gradient(135deg,#f7e9e6,#fbf2e8)}
+body.admin-mode .inventory-aside-note>span:first-child{display:grid;width:48px;height:48px;flex:0 0 48px;place-items:center;border-radius:50%;background:#f7f0e8;color:#8c7669;font-size:1.6rem}
+body.admin-mode .inventory-aside-note strong{color:#50433b;font:500 1rem/1.12 "Cormorant Garamond",Georgia,serif}
+body.admin-mode .inventory-aside-note p{margin:4px 18px 0 0;color:#72675e;font:.67rem/1.35 "Cormorant Garamond",Georgia,serif}
+body.admin-mode .inventory-note-bow{position:absolute;right:12px;top:8px;color:#d59b99;font:2rem Georgia,serif}
+body.admin-mode .inventory-stock-badges{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+body.admin-mode .inventory-dialog{width:min(460px,calc(100vw - 28px));padding:0;border:1px solid #e3c9bf;border-radius:15px;background:#fcf9f2;color:#51483f;box-shadow:0 25px 80px #33271f45}
+body.admin-mode .inventory-dialog::backdrop{background:#322b26a6;backdrop-filter:blur(3px)}
+body.admin-mode .inventory-dialog form{display:grid;gap:13px;padding:20px}
+body.admin-mode .inventory-dialog form>header{display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:9px;border-bottom:1px solid #ebddd4}
+body.admin-mode .inventory-dialog h4{margin:4px 0 0;color:#413a34;font:500 1.55rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .inventory-dialog form>header button{width:29px;height:29px;border:1px solid #e6d8cf;border-radius:50%;background:#fffaf5;color:#655b52;font:1.1rem Georgia,serif;cursor:pointer}
+body.admin-mode .inventory-dialog form>label,body.admin-mode .inventory-form-row>label{display:grid;gap:5px;color:#6c665c;font:500 .68rem "DM Sans",sans-serif}
+body.admin-mode .inventory-dialog input,body.admin-mode .inventory-dialog select{width:100%;min-height:38px;padding:8px 10px;border:1px solid #ded4c9;border-radius:7px;background:#fffdf9;color:#493f37;font:400 .75rem "DM Sans",sans-serif}
+body.admin-mode .inventory-form-row{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+body.admin-mode .inventory-dialog form>footer{display:flex;justify-content:flex-end;gap:8px;padding-top:7px;border-top:1px solid #ebddd4}
+body.admin-mode .inventory-dialog #inventoryFormMessage{margin:0}
+@media(max-width:1040px){body.admin-mode .inventory-workspace{grid-template-columns:minmax(0,1fr)}body.admin-mode .inventory-aside{grid-template-columns:repeat(2,minmax(0,1fr))}body.admin-mode .inventory-aside-note{grid-column:1/-1}}
+@media(max-width:700px){body.admin-mode .inventory-toolbar{grid-template-columns:1fr 1fr}body.admin-mode .inventory-search{grid-column:1/-1}body.admin-mode .inventory-aside{grid-template-columns:1fr}body.admin-mode .inventory-aside-note{grid-column:auto}body.admin-mode .inventory-pagination{flex-wrap:wrap;justify-content:center}body.admin-mode .inventory-pagination>span{width:100%;text-align:center}body.admin-mode .inventory-panel-heading{align-items:flex-start;flex-direction:column}body.admin-mode .inventory-heading-actions{width:100%;justify-content:flex-start}}
+@media(max-width:420px){body.admin-mode .inventory-toolbar{grid-template-columns:1fr}body.admin-mode .inventory-search{grid-column:auto}body.admin-mode .inventory-form-row{grid-template-columns:1fr}body.admin-mode .inventory-tabs{gap:3px}body.admin-mode .inventory-tabs button{padding-right:5px;padding-left:5px;font-size:.7rem}}
+
+/* Gift card management dashboard in the soft editorial bakery palette. */
+body.admin-mode.admin-giftcard-view .admin-topbar{display:none}
+body.admin-mode.admin-giftcard-view .admin-welcome-banner{min-height:148px;margin:0 -14px 18px;padding:24px clamp(24px,3vw,44px);border:0;border-bottom:1px solid #e5d8cd;border-radius:0;background-color:#f3e7dc}
+body.admin-mode.admin-giftcard-view .admin-welcome-banner h1{font-size:clamp(2.2rem,4vw,3.25rem)}
+body.admin-mode .giftcard-management{padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
+body.admin-mode .giftcard-stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}
+body.admin-mode .giftcard-stat{position:relative;display:grid;min-height:91px;align-content:start;gap:4px;overflow:hidden;padding:13px 15px;border:1px solid #e8d9d1;border-radius:11px;background:#f4e6e2}
+body.admin-mode .giftcard-stat>span{color:#645d54;font:400 .68rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .giftcard-stat>strong{color:#332e29;font:500 1.55rem/1 "Cormorant Garamond",Georgia,serif}
+body.admin-mode .giftcard-stat>small{color:#766e64;font:.56rem "DM Sans",sans-serif}
+body.admin-mode .giftcard-stat>i{position:absolute;right:14px;top:20px;display:grid;width:42px;height:42px;place-items:center;border-radius:50%;background:#f1d6d2;color:#a66f6d;font:1.45rem Georgia,serif;font-style:normal}
+body.admin-mode .giftcard-stat-sage{background:#edf0e7;border-color:#e0e5d8}.giftcard-stat-sage>i{background:#e0e6d8!important;color:#78856d!important}
+body.admin-mode .giftcard-stat-lavender{background:#f0eaf2;border-color:#e7dfe9}.giftcard-stat-lavender>i{background:#e6ddec!important;color:#857493!important}
+body.admin-mode .giftcard-stat-blue{background:#eaf0f3;border-color:#dfe8eb}.giftcard-stat-blue>i{background:#dce8ec!important;color:#6f8993!important}
+body.admin-mode .giftcard-created-banner{position:relative;display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin:0 0 12px;padding:12px 42px 12px 14px;border:1px solid #d7e0d0;border-radius:10px;background:#edf2e9;color:#4f684f;font:.72rem "DM Sans",sans-serif}
+body.admin-mode .giftcard-created-banner[hidden]{display:none}
+body.admin-mode .giftcard-created-banner strong{font:500 .92rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .giftcard-created-banner .copyable-code{padding:6px 10px;border:1px dashed #a3ae95;border-radius:7px;background:#fffdf8;color:#564c42;font:600 .78rem "DM Sans",sans-serif;letter-spacing:.08em;cursor:pointer}
+body.admin-mode .giftcard-created-banner small{color:#62685c;font:.6rem "DM Sans",sans-serif}
+body.admin-mode .giftcard-reveal-dismiss{position:absolute;top:7px;right:8px;width:25px;height:25px;border:0;background:transparent;color:#68705f;font:1.1rem Georgia,serif;cursor:pointer}
+body.admin-mode .giftcard-workspace{display:grid;grid-template-columns:minmax(0,2.45fr) minmax(255px,.9fr);align-items:start;gap:15px}
+body.admin-mode .giftcard-main-panel,body.admin-mode .giftcard-create-card,body.admin-mode .giftcard-activity-card,body.admin-mode .giftcard-quick-card{min-width:0;border:1px solid #e4dbd1;border-radius:12px;background:#faf7f0;box-shadow:0 5px 18px #51443608}
+body.admin-mode .giftcard-main-panel{overflow:hidden;padding:0 14px 10px}
+body.admin-mode .giftcard-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 0 12px;border-bottom:1px solid #e7ddd2}
+body.admin-mode .giftcard-panel-heading h4,body.admin-mode .giftcard-create-card h4,body.admin-mode .giftcard-activity-card h4,body.admin-mode .giftcard-quick-card h4{margin:0;color:#39332e;font:500 1.35rem/1.1 "Cormorant Garamond",Georgia,serif}
+body.admin-mode .giftcard-panel-heading h4 span{margin-right:7px;color:#c38482}
+body.admin-mode .giftcard-panel-heading p{margin:4px 0 0;color:#756c62;font:.68rem "DM Sans",sans-serif}
+body.admin-mode .giftcard-primary-button,body.admin-mode .giftcard-secondary-button{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:7px 13px;border:1px solid #87947a;border-radius:999px;background:#89947b;color:#fffdf8;font:500 .68rem "DM Sans",sans-serif;cursor:pointer;transition:filter .16s,transform .16s}
+body.admin-mode .giftcard-primary-button:hover{filter:brightness(.95);transform:translateY(-1px)}
+body.admin-mode .giftcard-secondary-button{border-color:#e0d5ca;background:#fffaf5;color:#695e53}
+body.admin-mode .giftcard-toolbar{display:grid;grid-template-columns:minmax(170px,1fr) minmax(105px,.45fr) minmax(120px,.48fr);align-items:end;gap:10px;padding:12px 0}
+body.admin-mode .giftcard-toolbar>label{display:grid;gap:4px;color:#70695f;font:500 .59rem "DM Sans",sans-serif}
+body.admin-mode .giftcard-search{position:relative;display:block!important}
+body.admin-mode .giftcard-search input,body.admin-mode .giftcard-toolbar select{width:100%;height:34px;padding:7px 10px;border:1px solid #dfd6cc;border-radius:7px;background:#fffdf8;color:#514a42;font:400 .68rem "DM Sans",sans-serif}
+body.admin-mode .giftcard-search input{padding-right:33px}
+body.admin-mode .giftcard-search>span:last-child{position:absolute;right:10px;bottom:8px;color:#736c62;font:1rem/1 Georgia,serif}
+body.admin-mode .giftcard-table-wrap{overflow:auto;border:1px solid #e6ded4;border-radius:8px;background:#fcfaf5}
+body.admin-mode .giftcard-table{width:100%;min-width:770px;border-collapse:collapse;color:#504940;font:400 .7rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .giftcard-table th{height:31px;padding:6px 7px;background:#f1eee6;color:#70685e;text-align:left;font:500 .57rem "DM Sans",sans-serif;white-space:nowrap}
+body.admin-mode .giftcard-table td{height:56px;padding:5px 7px;border-top:1px solid #ebe3da;vertical-align:middle;white-space:nowrap}
+body.admin-mode .giftcard-table tr:hover td{background:#fffdf9}
+body.admin-mode .giftcard-design-swatch{display:grid;width:70px;height:42px;align-content:center;justify-items:center;gap:0;border:1px solid #e5c7c1;border-radius:6px;background:linear-gradient(135deg,#f5d9d5,#f9eee5);color:#a87473}
+body.admin-mode .giftcard-design-swatch span{font:1.25rem/1 Georgia,serif}
+body.admin-mode .giftcard-design-swatch small{font:500 .42rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .giftcard-design-swatch.sage,body.admin-mode .giftcard-design-cake-love{border-color:#d7dece;background:linear-gradient(135deg,#e4e9d9,#f5f3e9);color:#728066}
+body.admin-mode .giftcard-design-swatch.blue,body.admin-mode .giftcard-design-birthday-bliss{border-color:#d4e0e5;background:linear-gradient(135deg,#dce9ef,#f3f2eb);color:#688492}
+body.admin-mode .giftcard-design-swatch.lavender,body.admin-mode .giftcard-design-just-because{border-color:#ddd4e5;background:linear-gradient(135deg,#e9def0,#f5ecf3);color:#82718f}
+body.admin-mode .giftcard-design-swatch.peach,body.admin-mode .giftcard-design-with-love{border-color:#ead6c8;background:linear-gradient(135deg,#f2dfd2,#fcf3e7);color:#a67e69}
+body.admin-mode .giftcard-design-swatch.butter,body.admin-mode .giftcard-design-special-treat{border-color:#e6dfc6;background:linear-gradient(135deg,#f0ebd9,#faf6e9);color:#908252}
+body.admin-mode .giftcard-recipient-name{display:block;color:#453c35;font:500 .83rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .giftcard-table td small{display:block;margin-top:2px;color:#81776d;font:.55rem "DM Sans",sans-serif}
+body.admin-mode .giftcard-code{color:#5e544a;font:500 .59rem "DM Sans",sans-serif;letter-spacing:.015em}
+body.admin-mode .giftcard-state{display:inline-flex;align-items:center;min-height:19px;padding:3px 9px;border-radius:999px;background:#e1ebdf;color:#516d54;font:500 .55rem "DM Sans",sans-serif}
+body.admin-mode .giftcard-state-expired,body.admin-mode .giftcard-state-inactive{background:#f3dddd;color:#925e5d}
+body.admin-mode .giftcard-state-used{background:#e9e4ed;color:#75677f}
+body.admin-mode .giftcard-row-actions{display:flex;gap:3px}
+body.admin-mode .giftcard-row-actions button{display:grid;width:23px;height:24px;place-items:center;border:1px solid transparent;border-radius:5px;background:transparent;color:#625b53;font:1rem Georgia,serif;cursor:pointer}
+body.admin-mode .giftcard-row-actions button:hover{border-color:#e7d6ce;background:#f8ece6;color:#a36968}
+body.admin-mode .giftcard-empty{padding:35px 12px!important;color:#82796e;text-align:center;font:.72rem/1.5 "Cormorant Garamond",Georgia,serif;white-space:normal!important}
+body.admin-mode .giftcard-error{color:#985e5b}
+body.admin-mode .giftcard-pagination{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 1px 0;color:#746c62;font:.59rem "DM Sans",sans-serif}
+body.admin-mode .giftcard-pagination>div{display:flex;align-items:center;gap:3px}
+body.admin-mode .giftcard-pagination button{display:grid;min-width:24px;height:24px;place-items:center;padding:0 5px;border:0;border-radius:50%;background:transparent;color:#6d665d;font:.64rem "DM Sans",sans-serif;cursor:pointer}
+body.admin-mode .giftcard-pagination button.is-current{background:#89947b;color:white}
+body.admin-mode .giftcard-pagination button:disabled{opacity:.4;cursor:default}
+body.admin-mode .giftcard-pagination select{height:25px;padding:3px 6px;border:1px solid #e2d9ce;border-radius:6px;background:#fffdf9;color:#524b42;font:.62rem "DM Sans",sans-serif}
+body.admin-mode .giftcard-aside{display:grid;gap:11px;min-width:0}
+body.admin-mode .giftcard-create-card{position:relative;min-height:145px;overflow:hidden;padding:18px;background:linear-gradient(135deg,#f5e5e1,#f8f0e6)}
+body.admin-mode .giftcard-create-card h4{font-size:1.45rem}
+body.admin-mode .giftcard-create-card p{margin:6px 0 12px;color:#6c6057;font:400 .8rem/1.3 "Cormorant Garamond",Georgia,serif}
+body.admin-mode .giftcard-create-card>button{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:150px;padding:8px 12px;border:0;border-radius:99px;background:#89947b;color:#fffdf7;font:.63rem "DM Sans",sans-serif;cursor:pointer}
+body.admin-mode .giftcard-side-bow{position:absolute;right:20px;top:10px;color:#d69a99;font:3.2rem/1 Georgia,serif;opacity:.8}
+body.admin-mode .giftcard-activity-card,body.admin-mode .giftcard-quick-card{padding:13px}
+body.admin-mode .giftcard-activity-card>header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:7px}
+body.admin-mode .giftcard-activity-card h4,body.admin-mode .giftcard-quick-card h4{font-size:1.1rem}
+body.admin-mode .giftcard-activity-card h4 span,body.admin-mode .giftcard-quick-card h4 span{margin-right:5px;color:#8b927b}
+body.admin-mode #giftCardViewActivity{padding:3px;border:0;background:transparent;color:#746d62;font:.58rem "Cormorant Garamond",Georgia,serif;white-space:nowrap;cursor:pointer}
+body.admin-mode .giftcard-activity-row{display:grid;grid-template-columns:25px minmax(0,1fr) auto;align-items:center;gap:7px;min-height:42px;padding:5px 0;border-bottom:1px solid #eee7de}
+body.admin-mode .giftcard-activity-row:last-child{border-bottom:0}
+body.admin-mode .giftcard-activity-icon{display:grid;width:22px;height:22px;place-items:center;border-radius:50%;background:#e2eadd;color:#678168;font:.75rem Georgia,serif}
+body.admin-mode .giftcard-activity-icon.activity-redeemed{background:#e9e0ef;color:#86718e}
+body.admin-mode .giftcard-activity-icon.activity-refunded{background:#f3e4d9;color:#a27763}
+body.admin-mode .giftcard-activity-row>span:nth-child(2){display:grid;gap:3px;min-width:0}
+body.admin-mode .giftcard-activity-row strong{overflow:hidden;color:#4a423b;font:500 .72rem "Cormorant Garamond",Georgia,serif;text-overflow:ellipsis;white-space:nowrap}
+body.admin-mode .giftcard-activity-row small,body.admin-mode .giftcard-activity-row time{color:#82786d;font:.53rem "DM Sans",sans-serif;white-space:nowrap}
+body.admin-mode .giftcard-quick-card{background:linear-gradient(140deg,#f7e9e5,#faf3e8)}
+body.admin-mode .giftcard-quick-card h4{margin-bottom:8px}
+body.admin-mode .giftcard-quick-card>button,body.admin-mode .giftcard-quick-card>a{display:flex;width:100%;align-items:center;justify-content:space-between;gap:8px;padding:7px 4px;border:0;border-top:1px solid #eadbd2;background:transparent;color:#655b51;text-align:left;text-decoration:none;font:.65rem "DM Sans",sans-serif;cursor:pointer}
+body.admin-mode .giftcard-quick-card>button:hover,body.admin-mode .giftcard-quick-card>a:hover{color:#a36c68}
+body.admin-mode .giftcard-quick-card>button span,body.admin-mode .giftcard-quick-card>a span{font-size:1rem}
+body.admin-mode .giftcard-dialog{width:min(500px,calc(100vw - 28px));max-height:90dvh;overflow:auto;padding:0;border:1px solid #e3c9bf;border-radius:15px;background:#fcf9f2;color:#51483f;box-shadow:0 25px 80px #33271f45}
+body.admin-mode .giftcard-dialog::backdrop{background:#322b26a6;backdrop-filter:blur(3px)}
+body.admin-mode .giftcard-dialog form{display:grid;gap:12px;padding:20px}
+body.admin-mode .giftcard-dialog form>header{display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:9px;border-bottom:1px solid #ebddd4}
+body.admin-mode .giftcard-dialog h4{margin:4px 0 0;color:#413a34;font:500 1.55rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .giftcard-dialog form>header button{width:29px;height:29px;border:1px solid #e6d8cf;border-radius:50%;background:#fffaf5;color:#655b52;font:1.1rem Georgia,serif;cursor:pointer}
+body.admin-mode .giftcard-dialog form>label,.giftcard-form-row>label{display:grid;gap:5px;color:#6c665c;font:500 .68rem "DM Sans",sans-serif}
+body.admin-mode .giftcard-dialog input,body.admin-mode .giftcard-dialog select,body.admin-mode .giftcard-dialog textarea{width:100%;min-height:38px;padding:8px 10px;border:1px solid #ded4c9;border-radius:7px;background:#fffdf9;color:#493f37;font:400 .75rem "DM Sans",sans-serif}
+body.admin-mode .giftcard-dialog textarea{min-height:76px;resize:vertical}
+body.admin-mode .giftcard-form-row{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+body.admin-mode .giftcard-dialog form>footer{display:flex;justify-content:flex-end;gap:8px;padding-top:7px;border-top:1px solid #ebddd4}
+body.admin-mode .giftcard-dialog #giftCardFormMessage,body.admin-mode .giftcard-dialog #giftCardEditMessage{margin:0}
+body.admin-mode .giftcard-details-dialog{padding:20px}
+body.admin-mode .giftcard-detail-content h4{margin:8px 0 3px;font-size:1.5rem}
+body.admin-mode .giftcard-detail-code{margin:0 0 12px;color:#80675c;font:.8rem "DM Sans",sans-serif;letter-spacing:.1em}
+body.admin-mode .giftcard-detail-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+body.admin-mode .giftcard-detail-metrics>span{display:grid;gap:5px;padding:10px;border-radius:8px;background:#f2eee5;color:#72695e;font:.56rem "DM Sans",sans-serif}
+body.admin-mode .giftcard-detail-metrics strong{color:#423a34;font:500 .9rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .giftcard-detail-recipient,body.admin-mode .giftcard-detail-message{color:#665d53;font:.75rem/1.45 "Cormorant Garamond",Georgia,serif}
+body.admin-mode .giftcard-detail-content h5{margin:15px 0 5px;color:#554c43;font:500 1rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .giftcard-detail-timeline p{display:grid;grid-template-columns:1fr auto auto;gap:10px;padding:7px 0;border-top:1px solid #eee5dc;color:#62594f;font:.65rem "DM Sans",sans-serif}
+body.admin-mode .giftcard-details-dialog>.giftcard-primary-button{margin-top:12px;float:right}
+@media(max-width:1060px){body.admin-mode .giftcard-workspace{grid-template-columns:minmax(0,1fr)}body.admin-mode .giftcard-aside{grid-template-columns:repeat(2,minmax(0,1fr))}body.admin-mode .giftcard-create-card,body.admin-mode .giftcard-quick-card{grid-column:auto}}
+@media(max-width:760px){body.admin-mode .giftcard-stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}body.admin-mode .giftcard-aside{grid-template-columns:1fr}}
+@media(max-width:620px){body.admin-mode .giftcard-panel-heading{align-items:flex-start;flex-direction:column}body.admin-mode .giftcard-toolbar{grid-template-columns:1fr 1fr}body.admin-mode .giftcard-search{grid-column:1/-1}body.admin-mode .giftcard-pagination{flex-wrap:wrap;justify-content:center}body.admin-mode .giftcard-pagination>span{width:100%;text-align:center}body.admin-mode .giftcard-form-row{grid-template-columns:1fr}body.admin-mode .giftcard-detail-metrics{grid-template-columns:1fr}}
+
+body.admin-mode #adminPageNav a[data-admin-view="inventory"].active{background:#f0e8d5!important;color:#776947!important}
+body.admin-mode #adminPageNav a[data-admin-view="gift-cards"].active{background:#f3dedb!important;color:#865a58!important}
+body.admin-mode #adminPageNav a[data-admin-view="reviews"].active{background:#ebe5f0!important;color:#665a78!important}
+body.admin-mode #adminPageNav a[data-admin-view="customers"].active{background:#e3edf0!important;color:#526b73!important}
+body.admin-mode #adminPageNav a[data-admin-view="enquiries"].active{background:#e8eadf!important;color:#59684c!important}
+body.admin-mode #adminPageNav a[data-admin-view="offers"].active{background:#f3e4d5!important;color:#795d49!important}
+body.admin-mode #adminPageNav a[data-admin-view="settings"].active{background:#f0e8df!important;color:#6c5c4e!important}
+body.admin-mode .inventory-panel-heading h4 span svg,body.admin-mode .giftcard-panel-heading h4 span svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;vertical-align:-4px}
+body.admin-mode .giftcard-stat>i svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.55;stroke-linecap:round;stroke-linejoin:round}
+body.admin-mode .giftcard-side-bow{display:block;width:78px;height:65px}
+body.admin-mode .giftcard-side-bow svg{width:100%;height:100%;fill:none;stroke:#d58e8c;stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round}
+
+html body.admin-mode .admin-layout #adminPageNav a.active[data-admin-view="overview"]{background:#f2dedb!important;color:#765551!important}
+html body.admin-mode .admin-layout #adminPageNav a.active[data-admin-view="orders"]{background:#e4eadf!important;color:#54684f!important}
+html body.admin-mode .admin-layout #adminPageNav a.active[data-admin-view="completed"]{background:#e3edf0!important;color:#4e6871!important}
+html body.admin-mode .admin-layout #adminPageNav a.active[data-admin-view="inventory"]{background:#f0e8d5!important;color:#776947!important}
+html body.admin-mode .admin-layout #adminPageNav a.active[data-admin-view="products"]{background:#f3e5d9!important;color:#765b47!important}
+html body.admin-mode .admin-layout #adminPageNav a.active[data-admin-view="categories"]{background:#f1ebd9!important;color:#766a48!important}
+html body.admin-mode .admin-layout #adminPageNav a.active[data-admin-view="wishlist"]{background:#f5e1e2!important;color:#865d61!important}
+html body.admin-mode .admin-layout #adminPageNav a.active[data-admin-view="gift-cards"]{background:#f3dedb!important;color:#865a58!important}
+html body.admin-mode .admin-layout #adminPageNav a.active[data-admin-view="reviews"]{background:#ebe5f0!important;color:#665a78!important}
+html body.admin-mode .admin-layout #adminPageNav a.active[data-admin-view="customers"]{background:#e3edf0!important;color:#526b73!important}
+html body.admin-mode .admin-layout #adminPageNav a.active[data-admin-view="enquiries"]{background:#e8eadf!important;color:#59684c!important}
+html body.admin-mode .admin-layout #adminPageNav a.active[data-admin-view="offers"]{background:#f3e4d5!important;color:#795d49!important}
+html body.admin-mode .admin-layout #adminPageNav a.active[data-admin-view="settings"]{background:#f0e8df!important;color:#6c5c4e!important}
+html body.admin-mode .admin-layout #adminPageNav a.active .admin-nav-icon{background:#fff9f4!important;color:inherit!important}
+
+body.admin-mode .inventory-tabs{overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
+body.admin-mode .inventory-tabs::-webkit-scrollbar{display:none}
+@media(max-width:1180px){body.admin-mode .inventory-workspace,body.admin-mode .giftcard-workspace{grid-template-columns:minmax(0,1fr)}body.admin-mode .inventory-aside,body.admin-mode .giftcard-aside{grid-template-columns:repeat(2,minmax(0,1fr))}body.admin-mode .inventory-aside-note{grid-column:1/-1}}
+@media(max-width:700px){body.admin-mode .inventory-aside,body.admin-mode .giftcard-aside{grid-template-columns:1fr}body.admin-mode .inventory-aside-note{grid-column:auto}}
+
+body.admin-mode .inventory-pagination,body.admin-mode .giftcard-pagination{padding:9px 1px 0!important;background:transparent!important;border:0!important;min-height:0!important}
+body.admin-mode .giftcard-pagination{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:14px;padding:12px 14px!important;border-top:1px solid #e6ddd1!important;border-radius:0 0 13px 13px;background:linear-gradient(90deg,#f7f4ec,#f1f3e9)!important;color:#554b42!important;font:500 .72rem/1.3 'DM Sans',sans-serif!important}
+body.admin-mode .giftcard-pagination>#giftCardPageSummary{display:block;min-width:0;color:#554b42!important;font:500 .72rem/1.3 'DM Sans',sans-serif!important;white-space:nowrap}
+body.admin-mode .giftcard-pagination>div{display:flex;align-items:center;gap:5px;white-space:nowrap}
+body.admin-mode .giftcard-pagination #giftCardPageButtons{display:flex;align-items:center;gap:4px}
+body.admin-mode .giftcard-pagination button{min-width:30px;height:30px;border:1px solid #ddd7ca;border-radius:9px;background:#fffdf8;color:#5c5449;font:600 .74rem 'DM Sans',sans-serif;transition:background .16s,border-color .16s}
+body.admin-mode .giftcard-pagination button:hover:not(:disabled){border-color:#bfcbb4;background:#e8edde}
+body.admin-mode .giftcard-pagination button.is-current{border-color:#7c8b71;background:#7c8b71;color:#fff}
+body.admin-mode .giftcard-pagination button:disabled{opacity:.48}
+body.admin-mode .giftcard-pagination>label{display:flex;align-items:center;gap:7px;color:#554b42;font:500 .69rem 'DM Sans',sans-serif;white-space:nowrap}
+body.admin-mode .giftcard-pagination select{height:30px;min-width:54px;padding:0 7px;border-color:#d9d1c5;border-radius:8px;background:#fffdf8;color:#493f37;font:500 .72rem 'DM Sans',sans-serif}
+@media(max-width:760px){body.admin-mode .giftcard-pagination{grid-template-columns:1fr auto;gap:9px}body.admin-mode .giftcard-pagination>#giftCardPageSummary{grid-column:1/-1;white-space:normal}}
+body.admin-mode .inventory-dialog form>footer,body.admin-mode .giftcard-dialog form>footer{padding:7px 0 0!important;background:transparent!important}
+body.admin-mode .inventory-pagination>div{flex-shrink:0}
+body.admin-mode #inventoryPageButtons{display:flex;align-items:center;gap:3px;white-space:nowrap}
+
+/* Reviews management workspace */
+body.admin-mode .review-management{display:grid;gap:15px;color:#493f38}
+body.admin-mode .review-page-heading{position:relative;display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:120px;padding:20px 27px;border:1px solid #e9d6ca;border-radius:15px;background:linear-gradient(100deg,#f8ebe3 0%,#f6eee5 54%,#f1e4dc 100%);overflow:hidden}
+body.admin-mode .review-page-heading:after{position:absolute;content:"";right:4%;top:-40%;width:38%;height:180%;border-radius:50%;background:radial-gradient(ellipse at center,#f1d5ccaa 0,transparent 67%);pointer-events:none}
+body.admin-mode .review-page-heading h3{margin:5px 0;color:#322d29;font:500 clamp(1.8rem,3vw,2.65rem) "Cormorant Garamond",Georgia,serif;letter-spacing:-.025em}
+body.admin-mode .review-page-heading h3 span{color:#cc8d87}
+body.admin-mode .review-page-heading p{margin:0;color:#71665c;font:400 .79rem "DM Sans",sans-serif}
+body.admin-mode .review-hero-note{position:relative;z-index:1;margin:0 4% 0 0!important;color:#967a68!important;font:italic 1rem/1.3 "Cormorant Garamond",Georgia,serif!important;transform:rotate(-7deg)}
+body.admin-mode .review-stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+body.admin-mode .review-stat-card{display:flex;align-items:center;gap:13px;min-width:0;min-height:88px;padding:13px 16px;border:1px solid #e7ddd2;border-radius:10px;background:#fffaf3;box-shadow:0 4px 13px #56483c0a}
+body.admin-mode .review-stat-card:nth-child(1){background:#f6e7e3;border-color:#ead3cc}
+body.admin-mode .review-stat-card:nth-child(2){background:#e9eee4;border-color:#dce4d7}
+body.admin-mode .review-stat-card:nth-child(3){background:#eee8f1;border-color:#e2d9e8}
+body.admin-mode .review-stat-card:nth-child(4){background:#e7eff1;border-color:#d9e4e7}
+body.admin-mode .review-stat-icon{display:grid;flex:0 0 48px;width:48px;height:48px;place-items:center;border-radius:50%;background:#fff9f2;color:#bd827d;font:1.45rem Georgia,serif}
+body.admin-mode .review-stat-card:nth-child(2) .review-stat-icon{color:#7d9278}
+body.admin-mode .review-stat-card:nth-child(3) .review-stat-icon{color:#887b97}
+body.admin-mode .review-stat-card:nth-child(4) .review-stat-icon{color:#6f8991}
+body.admin-mode .review-stat-card>div{display:grid;gap:2px;min-width:0}
+body.admin-mode .review-stat-card small{color:#776d62;font:.62rem "DM Sans",sans-serif}
+body.admin-mode .review-stat-card strong{color:#382f2a;font:500 1.45rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .review-stat-card em{color:#82776c;font:normal .55rem "DM Sans",sans-serif}
+body.admin-mode .review-management>.store-message{margin:0}
+body.admin-mode .review-workspace{display:grid;grid-template-columns:minmax(0,1.75fr) minmax(285px,.92fr);align-items:start;gap:14px;min-width:0}
+body.admin-mode .review-table-panel,body.admin-mode .review-form-panel,body.admin-mode .review-side-card{min-width:0;border:1px solid #e5dbcf;border-radius:11px;background:#fbf8f0;box-shadow:0 5px 18px #52473c08}
+body.admin-mode .review-table-panel{overflow:hidden}
+body.admin-mode .review-panel-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px 9px}
+body.admin-mode .review-panel-heading h4,body.admin-mode .review-side-card h4{margin:0;color:#3c332d;font:500 1.2rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .review-panel-heading p{margin:2px 0 0;color:#84796d;font:.58rem "DM Sans",sans-serif}
+body.admin-mode .review-count-chip{padding:5px 9px;border-radius:99px;background:#eee8de;color:#71685e;font:.55rem "DM Sans",sans-serif;white-space:nowrap}
+body.admin-mode .review-toolbar{display:grid;grid-template-columns:minmax(190px,1fr) minmax(105px,.4fr) minmax(112px,.42fr);align-items:end;gap:8px;padding:5px 13px 12px}
+body.admin-mode .review-toolbar>label{display:grid;gap:4px;color:#71675d;font:.55rem "DM Sans",sans-serif}
+body.admin-mode .review-search{position:relative}
+body.admin-mode .review-search input,body.admin-mode .review-toolbar select{width:100%;height:34px;padding:0 10px;border:1px solid #e2d8cc;border-radius:6px;background:#fffdf8;color:#4c433a;font:.58rem "DM Sans",sans-serif;outline:none}
+body.admin-mode .review-search input{padding-right:31px}
+body.admin-mode .review-search>span:last-child{position:absolute;right:10px;bottom:7px;color:#83786b;font-size:1rem}
+body.admin-mode .review-search input:focus,body.admin-mode .review-toolbar select:focus,body.admin-mode .review-form-panel input:focus,body.admin-mode .review-form-panel select:focus,body.admin-mode .review-form-panel textarea:focus{border-color:#a1a88e;box-shadow:0 0 0 3px #a1a88e22;outline:0}
+body.admin-mode .review-table-wrap{width:100%;overflow-x:auto;border-top:1px solid #eee4d9}
+body.admin-mode .review-table{width:100%;min-width:830px;border-collapse:collapse;table-layout:fixed}
+body.admin-mode .review-table th{padding:8px 7px;background:#f3efe7;color:#70665b;text-align:left;font:500 .52rem "DM Sans",sans-serif;white-space:nowrap}
+body.admin-mode .review-table td{padding:8px 7px;border-top:1px solid #eee6dd;color:#51483f;vertical-align:middle;font:.57rem "DM Sans",sans-serif}
+body.admin-mode .review-table th:nth-child(1){width:17%}
+body.admin-mode .review-table th:nth-child(2){width:18%}
+body.admin-mode .review-table th:nth-child(3){width:10%}
+body.admin-mode .review-table th:nth-child(4){width:23%}
+body.admin-mode .review-table th:nth-child(5){width:10%}
+body.admin-mode .review-table th:nth-child(6){width:10%}
+body.admin-mode .review-table th:nth-child(7){width:22%}
+body.admin-mode .review-customer-cell{display:grid;gap:3px;min-width:0}
+body.admin-mode .review-customer-cell strong{overflow:hidden;color:#443a33;font:500 .75rem "Cormorant Garamond",Georgia,serif;text-overflow:ellipsis;white-space:nowrap}
+body.admin-mode .review-customer-cell small{overflow:hidden;color:#948779;font:.49rem "DM Sans",sans-serif;text-overflow:ellipsis;white-space:nowrap}
+body.admin-mode .review-cake-cell{display:flex;align-items:center;gap:7px;min-width:0}
+body.admin-mode .review-cake-cell img{width:37px;height:37px;flex:0 0 37px;object-fit:cover;border-radius:6px;background:#eee6db}
+body.admin-mode .review-cake-cell span{display:-webkit-box;overflow:hidden;color:#574c41;font:500 .68rem/1.15 "Cormorant Garamond",Georgia,serif;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+body.admin-mode .review-row-stars{color:#d7a94f;white-space:nowrap;letter-spacing:.02em}
+body.admin-mode .review-row-text{display:-webkit-box;overflow:hidden;color:#756b60;font:.58rem/1.35 "Cormorant Garamond",Georgia,serif;-webkit-box-orient:vertical;-webkit-line-clamp:3}
+body.admin-mode .review-status-pill{display:inline-flex;padding:4px 8px;border-radius:99px;font:.5rem "DM Sans",sans-serif;white-space:nowrap}
+body.admin-mode .review-status-pill.is-published{background:#e2eadf;color:#526d50}
+body.admin-mode .review-status-pill.is-hidden{background:#f1e5dc;color:#8a6852}
+body.admin-mode .review-action-group{display:flex;flex-wrap:wrap;gap:3px;min-width:120px}
+body.admin-mode .review-action-group button{padding:4px 6px;border:1px solid #e3d8cc;border-radius:99px;background:#fffdf8;color:#6c6258;font:.49rem "DM Sans",sans-serif;white-space:nowrap;cursor:pointer}
+body.admin-mode .review-action-group button:hover{border-color:#c99c93;background:#f8ebe7;color:#865956}
+body.admin-mode .review-action-group button[data-action="delete"]{color:#9a6965}
+body.admin-mode .review-action-group button:disabled{opacity:.55;cursor:wait}
+body.admin-mode .review-table-empty{padding:30px 14px!important;color:#8a7c6d!important;text-align:center!important}
+body.admin-mode .review-pagination{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 12px;background:transparent;border:0;color:#766d62;font:.54rem "DM Sans",sans-serif}
+body.admin-mode .review-pagination>div{display:flex;align-items:center;gap:3px;flex-shrink:0}
+body.admin-mode .review-pagination button{display:grid;min-width:25px;height:25px;place-items:center;padding:0 5px;border:0;border-radius:50%;background:transparent;color:#766d62;font:.6rem "DM Sans",sans-serif;cursor:pointer}
+body.admin-mode .review-pagination button.is-current{background:#87917a;color:#fff}
+body.admin-mode .review-pagination button:disabled{opacity:.4;cursor:default}
+body.admin-mode .review-pagination label{display:flex;align-items:center;gap:5px;white-space:nowrap}
+body.admin-mode .review-pagination select{height:27px;padding:2px 5px;border:1px solid #e2d8cc;border-radius:5px;background:#fffdf8;color:#60574d;font:.54rem "DM Sans",sans-serif}
+body.admin-mode .review-side-column{display:grid;gap:11px;min-width:0}
+body.admin-mode .review-insights-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:14px;align-items:start}
+body.admin-mode .review-form-panel{padding:13px;background:linear-gradient(155deg,#fffaf4,#f8f2e8)}
+body.admin-mode .review-form-panel>header{display:flex;align-items:center;gap:9px;margin-bottom:10px}
+body.admin-mode .review-form-panel>header>span{display:grid;width:35px;height:35px;place-items:center;border-radius:50%;background:#f2e2de;color:#c5857f;font:1.25rem Georgia,serif}
+body.admin-mode .review-form-panel h4{margin:0;color:#3d342e;font:500 1.15rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .review-form-panel header p{margin:2px 0 0;color:#8a7e71;font:.55rem "DM Sans",sans-serif}
+body.admin-mode .review-form-panel form{display:grid;gap:8px}
+body.admin-mode .review-form-panel form>label:not(.review-permission){display:grid;gap:4px;color:#71675c;font:.57rem "DM Sans",sans-serif}
+body.admin-mode .review-form-panel input:not([type="checkbox"]),body.admin-mode .review-form-panel select,body.admin-mode .review-form-panel textarea{width:100%;min-width:0;min-height:33px;padding:7px 9px;border:1px solid #e1d8cc;border-radius:6px;background:#fffdf9;color:#493f37;font:.6rem "DM Sans",sans-serif}
+body.admin-mode .review-form-panel textarea{min-height:75px;resize:vertical}
+body.admin-mode .review-form-panel label:has(.review-char-count){position:relative}
+body.admin-mode .review-char-count{justify-self:end;margin-top:-3px;color:#95897c;font:.49rem "DM Sans",sans-serif}
+body.admin-mode .review-permission{display:flex;align-items:flex-start;gap:7px;color:#776d62;font:.52rem/1.35 "DM Sans",sans-serif}
+body.admin-mode .review-permission input{margin:1px 0 0;accent-color:#89947b}
+body.admin-mode .review-default-status{margin:0;color:#887b6f;font:italic .57rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .review-form-actions{display:grid;gap:6px}
+body.admin-mode .review-primary-button{display:flex;align-items:center;justify-content:center;gap:7px;min-height:36px;padding:8px 13px;border:0;border-radius:99px;background:#89947b;color:#fffdf7;font:.62rem "DM Sans",sans-serif;cursor:pointer}
+body.admin-mode .review-primary-button:hover{background:#73806a}
+body.admin-mode .review-primary-button:disabled{opacity:.6;cursor:wait}
+body.admin-mode .review-secondary-button{min-height:31px;padding:6px 10px;border:1px solid #dfd2c6;border-radius:99px;background:#fffaf4;color:#6c6258;font:.57rem "DM Sans",sans-serif;cursor:pointer}
+body.admin-mode .review-side-card{padding:12px 13px}
+body.admin-mode .review-side-card>header{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:5px}
+body.admin-mode .review-side-card>header>span{color:#c48a83}
+body.admin-mode .review-recent-row{display:grid;grid-template-columns:1fr auto;gap:3px 8px;padding:7px 0;border-top:1px solid #eee5db}
+body.admin-mode .review-recent-row strong{overflow:hidden;color:#53483f;font:500 .68rem "Cormorant Garamond",Georgia,serif;text-overflow:ellipsis;white-space:nowrap}
+body.admin-mode .review-recent-row small{color:#8b7e72;font:.49rem "DM Sans",sans-serif}
+body.admin-mode .review-recent-row span{grid-column:1/-1;display:-webkit-box;overflow:hidden;color:#7e7267;font:.56rem/1.35 "Cormorant Garamond",Georgia,serif;-webkit-box-orient:vertical;-webkit-line-clamp:2}
+body.admin-mode .review-top-cake{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:7px;padding:6px 0;border-top:1px solid #eee5db}
+body.admin-mode .review-top-cake img{width:34px;height:34px;object-fit:cover;border-radius:6px;background:#eee6db}
+body.admin-mode .review-top-cake strong{display:block;overflow:hidden;color:#554b41;font:500 .68rem "Cormorant Garamond",Georgia,serif;text-overflow:ellipsis;white-space:nowrap}
+body.admin-mode .review-top-cake small{color:#8b7e72;font:.48rem "DM Sans",sans-serif}
+body.admin-mode .review-top-cake b{color:#c28a52;font:.58rem "DM Sans",sans-serif;white-space:nowrap}
+body.admin-mode .review-side-empty{margin:8px 0;color:#8b7e72;font:.58rem "DM Sans",sans-serif}
+body.admin-mode .review-details-dialog{width:min(520px,calc(100vw - 28px));max-height:85dvh;overflow:auto;padding:20px;border:1px solid #e2cfc2;border-radius:13px;background:#fcf9f2;color:#493f37;box-shadow:0 25px 80px #30251f45}
+body.admin-mode .review-details-dialog::backdrop{background:#342c26a6;backdrop-filter:blur(3px)}
+body.admin-mode .review-details-dialog h4{margin:0 0 4px;font:500 1.55rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode .review-details-dialog p{margin:8px 0;color:#71675c;font:.78rem/1.5 "DM Sans",sans-serif;white-space:pre-wrap}
+body.admin-mode .review-details-dialog small{color:#897d71;font:.63rem "DM Sans",sans-serif}
+body.admin-mode .review-details-dialog>.review-primary-button{width:100%;margin-top:16px}
+@media(max-width:1180px){body.admin-mode .review-workspace{grid-template-columns:minmax(0,1fr)}body.admin-mode .review-side-column{grid-template-columns:repeat(2,minmax(0,1fr))}body.admin-mode .review-form-panel{grid-row:span 2}}
+@media(max-width:760px){body.admin-mode .review-stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}body.admin-mode .review-side-column{grid-template-columns:1fr}body.admin-mode .review-insights-row{grid-template-columns:1fr}body.admin-mode .review-form-panel{grid-row:auto}body.admin-mode .review-toolbar{grid-template-columns:1fr 1fr}body.admin-mode .review-search{grid-column:1/-1}body.admin-mode .review-page-heading{min-height:100px;padding:16px}.review-hero-note{display:none}}
+@media(max-width:520px){body.admin-mode .review-stats-grid{gap:7px}body.admin-mode .review-stat-card{gap:8px;min-height:72px;padding:9px}body.admin-mode .review-stat-icon{width:37px;height:37px;flex-basis:37px}body.admin-mode .review-stat-card strong{font-size:1.2rem}body.admin-mode .review-panel-heading{align-items:flex-start;flex-direction:column}body.admin-mode .review-pagination{flex-wrap:wrap;justify-content:center}body.admin-mode .review-pagination>span{width:100%;text-align:center}}
+body.admin-mode .review-pagination{padding:8px 12px!important;background:transparent!important;border:0!important;min-height:0!important}
+body.admin-mode .review-pagination>span{color:#766d62!important;font:.54rem "DM Sans",sans-serif!important}
+body.admin-mode .review-cake-fallback{display:grid;width:37px;height:37px;flex:0 0 37px;place-items:center;border-radius:6px;background:#f3e6df;color:#c88b84;font:1.15rem Georgia,serif}
+body.admin-mode .review-top-cake .review-cake-fallback{width:34px;height:34px;flex-basis:34px;font:1rem Georgia,serif}
+html body.admin-mode .admin-layout #adminPageNav a.active[data-admin-view="reviews"]{background:#f3dedb!important;color:#865a58!important}
+body.admin-mode .review-table-panel{padding:0!important}
+body.admin-mode .review-table{min-width:100%}
+body.admin-mode .review-table th:nth-child(1){width:16%}
+body.admin-mode .review-table th:nth-child(2){width:16%}
+body.admin-mode .review-table th:nth-child(3){width:9%}
+body.admin-mode .review-table th:nth-child(4){width:18%}
+body.admin-mode .review-table th:nth-child(5){width:11%}
+body.admin-mode .review-table th:nth-child(6){width:12%}
+body.admin-mode .review-table th:nth-child(7){width:18%}
+body.admin-mode .review-action-group{flex-wrap:nowrap}
+body.admin-mode .review-action-group button{display:grid;width:22px;height:22px;flex:0 0 22px;place-items:center;padding:0;border-radius:50%;font-size:0}
+body.admin-mode .review-action-group button svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+body.admin-mode .review-table td:nth-child(7){padding-right:4px;padding-left:4px}
+body.admin-mode .gift-offer-admin-panel{margin:0 0 18px;padding:20px;border:1px solid #e7d8ca;border-radius:18px;background:linear-gradient(125deg,#fffaf5,#f4f3eb);box-shadow:0 8px 25px #6553440d}
+body.admin-mode .gift-offer-admin-panel>header{margin-bottom:15px}
+body.admin-mode .gift-offer-admin-panel h3{margin:4px 0;font:500 25px 'Cormorant Garamond',Georgia,serif;color:#493c34}
+body.admin-mode .gift-offer-admin-panel header p{margin:0;color:#827369;font:13px/1.5 'DM Sans',sans-serif}
+body.admin-mode .gift-offer-admin-form{display:grid;grid-template-columns:minmax(135px,1.1fr) minmax(145px,1fr) minmax(160px,1.1fr) minmax(100px,.65fr) auto auto;align-items:end;gap:10px;margin:15px 0}
+body.admin-mode .gift-offer-admin-form label{display:grid;gap:6px;color:#75665c;font:12px 'DM Sans',sans-serif}
+body.admin-mode .gift-offer-admin-form input,body.admin-mode .gift-offer-admin-form select{min-width:0;height:40px;padding:0 11px;border:1px solid #e3d5c9;border-radius:10px;background:#fffdf9;color:#493c34;font:13px 'DM Sans',sans-serif}
+body.admin-mode .gift-offer-admin-form .giftcard-primary-button,body.admin-mode .gift-offer-admin-form .giftcard-secondary-button{min-height:40px;padding:8px 14px;white-space:nowrap}
+body.admin-mode .gift-offer-admin-list-wrap{overflow:auto;border:1px solid #eadfd4;border-radius:12px;background:#fffdf9}
+body.admin-mode .gift-offer-admin-list{width:100%;border-collapse:collapse;font:13px 'DM Sans',sans-serif}
+body.admin-mode .gift-offer-admin-list th,body.admin-mode .gift-offer-admin-list td{padding:10px 12px;border-bottom:1px solid #efe7de;text-align:left}
+body.admin-mode .gift-offer-admin-list th{background:#f6f1e9;color:#827369;font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+body.admin-mode .gift-offer-admin-list tbody tr:last-child td{border-bottom:0}
+body.admin-mode .gift-offer-admin-list .giftcard-row-actions{justify-content:flex-start}
+@media(max-width:850px){body.admin-mode .gift-offer-admin-form{grid-template-columns:repeat(2,minmax(0,1fr))}body.admin-mode .gift-offer-admin-form button{grid-column:span 1}}
+@media(max-width:520px){body.admin-mode .gift-offer-admin-panel{padding:14px}body.admin-mode .gift-offer-admin-form{grid-template-columns:1fr}body.admin-mode .gift-offer-admin-form button{grid-column:auto}body.admin-mode .gift-offer-admin-list{min-width:740px}}
+@media(max-width:760px){body.admin-mode .review-table{min-width:670px}}
+/* Customer accounts: put search and account creation controls beneath the heading. */
+body.admin-mode #admin-customer-section .customer-admin-toolbar{display:flex;align-items:end;gap:10px;margin:14px 0 16px;padding:12px;border:1px solid #e8ded2;border-radius:13px;background:#f7f3eb}
+body.admin-mode #admin-customer-section .customer-search{display:grid;flex:1;gap:6px;min-width:min(100%,280px);color:#746b61;font:600 .68rem "DM Sans",sans-serif}
+body.admin-mode #admin-customer-section .customer-search input{width:100%;min-height:40px;padding:9px 13px;border:1px solid #e3d8cb;border-radius:10px;background:#fffdfa;color:#39342f;font:400 .78rem "DM Sans",sans-serif;box-shadow:0 2px 6px rgba(68,51,34,.035)}
+body.admin-mode #admin-customer-section .customer-search input:focus{outline:2px solid #dce5d6;outline-offset:1px;border-color:#89967e}
+body.admin-mode #admin-customer-section .customer-create-toggle{min-height:40px;padding:9px 16px;border:1px solid #cbd5c2;border-radius:10px;background:#e5ecdf;color:#53634f;font:600 .74rem "DM Sans",sans-serif;white-space:nowrap;box-shadow:none}
+body.admin-mode #admin-customer-section .customer-create-toggle:hover{background:#dbe5d3}
+body.admin-mode #admin-customer-section .customer-create-form{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0 0 16px;padding:16px;border:1px solid #e8ded2;border-radius:13px;background:#fffdfa}
+body.admin-mode #admin-customer-section .customer-create-form[hidden]{display:none!important}
+body.admin-mode #admin-customer-section .customer-form-intro{grid-column:1/-1;display:grid;gap:3px;padding-bottom:10px;border-bottom:1px solid #eee6dc}
+body.admin-mode #admin-customer-section .customer-form-intro strong{color:#3f3932;font:500 1.15rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode #admin-customer-section .customer-form-intro span,body.admin-mode #admin-customer-section .customer-create-form .admin-field small{color:#81766b;font:400 .69rem "DM Sans",sans-serif}
+body.admin-mode #admin-customer-section .customer-create-form .admin-field{display:grid;gap:6px;color:#665c52;font:600 .7rem "DM Sans",sans-serif}
+body.admin-mode #admin-customer-section .customer-create-form .admin-field input{min-height:39px;padding:9px 11px;border:1px solid #e7ddd2;border-radius:9px;background:#fff;color:#3c352e;font:400 .76rem "DM Sans",sans-serif}
+body.admin-mode #admin-customer-section .customer-create-form .admin-field input:focus{outline:2px solid #dce5d6;outline-offset:1px;border-color:#89967e}
+body.admin-mode #admin-customer-section .customer-create-form .admin-form-actions{grid-column:1/-1;display:flex;gap:9px;padding-top:3px}
+body.admin-mode #admin-customer-section .customer-create-form .admin-form-actions button{flex:0 0 auto;min-height:38px;padding:9px 16px;border-radius:10px}
+@media(max-width:620px){body.admin-mode #admin-customer-section .customer-admin-toolbar{align-items:stretch;flex-direction:column}body.admin-mode #admin-customer-section .customer-create-form{grid-template-columns:1fr}body.admin-mode #admin-customer-section .customer-form-intro,body.admin-mode #admin-customer-section .customer-create-form .admin-form-actions{grid-column:1}}
+/* Offers search refresh action, with a calm buttercream and sage accent. */
+body.admin-mode #admin-offer-section .promo-refresh-button{box-sizing:border-box;display:inline-flex;flex:0 0 96px;align-items:center;justify-content:center;gap:7px;width:96px;height:40px;padding:0 12px!important;border:1px solid #d9d9bd;border-radius:11px;background:linear-gradient(145deg,#f4f2df,#e8ead7);color:#5c6951;font:600 .72rem "DM Sans",sans-serif;box-shadow:0 3px 9px rgba(75,83,57,.07);transition:background .18s,border-color .18s,transform .18s,box-shadow .18s}
+body.admin-mode #admin-offer-section .promo-refresh-button svg{display:block;width:16px;height:16px;flex:0 0 16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s}
+body.admin-mode #admin-offer-section .promo-refresh-button:hover{border-color:#b9c4a9;background:linear-gradient(145deg,#e9eedc,#dfe8d4);box-shadow:0 5px 12px rgba(75,91,65,.12);transform:translateY(-1px)}
+body.admin-mode #admin-offer-section .promo-refresh-button:hover svg{transform:rotate(-35deg)}
+body.admin-mode #admin-offer-section .promo-refresh-button:focus-visible{outline:3px solid rgba(137,148,123,.22);outline-offset:2px}
+body.admin-mode #admin-offer-section .promo-refresh-button:disabled{opacity:.62;cursor:wait;transform:none}
+body.admin-mode #admin-offer-section .promo-campaign-panel{grid-column:1/-1;margin-top:2px;padding:20px;border-color:#dfe3d4;background:linear-gradient(145deg,#fbfaf2,#f2f4eb)}
+body.admin-mode #admin-offer-section .promo-campaign-heading{margin-bottom:14px}
+body.admin-mode #admin-offer-section .promo-campaign-heading h4{margin:4px 0;color:#3f3832;font:500 1.45rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode #admin-offer-section .promo-campaign-heading p{max-width:680px;margin:4px 0 0;color:#756d64;font:400 .76rem/1.5 "DM Sans",sans-serif}
+body.admin-mode #admin-offer-section .promo-campaign-form{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:end;gap:10px;padding:14px;border:1px solid #e4e3d5;border-radius:12px;background:#fffdf8}
+body.admin-mode #admin-offer-section .promo-campaign-form label{display:grid;gap:5px;color:#6d665b;font:600 .67rem "DM Sans",sans-serif}
+body.admin-mode #admin-offer-section .promo-campaign-form input{width:100%;min-width:0;min-height:38px;padding:8px 10px;border:1px solid #e2ddd0;border-radius:9px;background:#fff;color:#39342f;font:400 .75rem "DM Sans",sans-serif}
+body.admin-mode #admin-offer-section .promo-campaign-form input:focus{outline:2px solid #e2e8d9;outline-offset:1px;border-color:#89967e}
+body.admin-mode #admin-offer-section .promo-campaign-form button{grid-column:span 2;min-height:39px;padding:9px 15px;border:1px solid #cbd5c2;border-radius:10px;background:#e5ecdf;color:#53634f;font:600 .73rem "DM Sans",sans-serif}
+body.admin-mode #admin-offer-section .promo-campaign-form button:hover{background:#dbe5d3}
+body.admin-mode #admin-offer-section .promo-campaign-list{display:grid;gap:8px;margin-top:13px}
+body.admin-mode #admin-offer-section .promo-campaign-row{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:11px 13px;border:1px solid #e8e3d7;border-radius:10px;background:#fffdf9}
+body.admin-mode #admin-offer-section .promo-campaign-row>div{display:grid;gap:3px;min-width:0}
+body.admin-mode #admin-offer-section .promo-campaign-row strong{color:#423d35;font:500 1rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode #admin-offer-section .promo-campaign-row small{color:#81776b;font:400 .68rem/1.4 "DM Sans",sans-serif;overflow-wrap:anywhere}
+body.admin-mode #admin-offer-section .promo-campaign-row .promo-campaign-error{color:#a24a4a}
+body.admin-mode #admin-offer-section .promo-campaign-status{flex:0 0 auto;padding:5px 9px;border-radius:99px;background:#ece9df;color:#68645a;font:600 .62rem "DM Sans",sans-serif;text-transform:capitalize}
+body.admin-mode #admin-offer-section .promo-campaign-status.is-scheduled{background:#f5edce;color:#78653b}
+body.admin-mode #admin-offer-section .promo-campaign-status.is-sent{background:#e2eddf;color:#566b51}
+body.admin-mode #admin-offer-section .promo-campaign-status.is-failed{background:#f5e3df;color:#9b5149}
+@media(max-width:800px){body.admin-mode #admin-offer-section .promo-campaign-form{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){body.admin-mode #admin-offer-section .promo-campaign-panel{padding:14px}body.admin-mode #admin-offer-section .promo-campaign-form{grid-template-columns:1fr}body.admin-mode #admin-offer-section .promo-campaign-form button{grid-column:auto}body.admin-mode #admin-offer-section .promo-campaign-row{align-items:flex-start;flex-direction:column}}
+/* Compact promotions workspace: keep search, refresh, and creation actions together. */
+body.admin-mode #admin-offer-section .admin-offer-layout>.admin-subpanel{height:auto!important;align-self:start}
+body.admin-mode #admin-offer-section .admin-offer-layout>article:first-child{padding:18px;border-color:#e6ddd1;border-radius:15px;background:linear-gradient(150deg,#fffdf8,#f8f5ed)}
+body.admin-mode #admin-offer-section .admin-offer-layout>article:first-child>h4{margin:0 0 11px;color:#403a34;font:500 1.15rem "Cormorant Garamond",Georgia,serif}
+body.admin-mode #admin-offer-section .admin-offer-layout>article:first-child .admin-product-toolbar{display:flex;align-items:center;gap:7px;margin:0 0 11px;padding:9px;border:1px solid #e8e1d6;border-radius:12px;background:#f4f2ea}
+body.admin-mode #admin-offer-section .admin-offer-layout>article:first-child .admin-product-search{flex:1 1 auto;width:auto;min-width:0;min-height:38px;padding:8px 10px;border:1px solid #e3d9ce;border-radius:9px;background:#fffdfa;color:#403a34;font:400 .72rem "DM Sans",sans-serif}
+body.admin-mode #admin-offer-section .admin-offer-layout>article:first-child .admin-product-search:focus{outline:2px solid #e1e8d9;outline-offset:1px;border-color:#8d987f}
+body.admin-mode #admin-offer-section .admin-offer-layout>article:first-child .promo-refresh-button{flex:0 0 84px;width:84px;height:38px;padding:0 8px!important;border-radius:9px;font-size:.66rem}
+body.admin-mode #admin-offer-section .admin-offer-layout>article:first-child .promo-refresh-button svg{width:14px;height:14px;flex-basis:14px}
+body.admin-mode #admin-offer-section .admin-offer-layout>article:first-child .promo-add-button{display:inline-flex;flex:0 0 92px;align-items:center;justify-content:center;width:92px;min-height:38px;padding:8px 10px;border:1px solid #cbd5c2;border-radius:9px;background:#e5ecdf;color:#53634f;box-shadow:none;font:600 .68rem "DM Sans",sans-serif;white-space:nowrap}
+body.admin-mode #admin-offer-section .admin-offer-layout>article:first-child .promo-add-button:hover{background:#dbe5d3;transform:translateY(-1px)}
+body.admin-mode #admin-offer-section .admin-offer-layout>article:first-child #adminPromos{display:grid;gap:8px}
+body.admin-mode #admin-offer-section .admin-offer-layout>article:first-child #adminPromos>.admin-list-row{padding:10px 12px;border-color:#e9e0d4;border-radius:10px;background:#fffdfa}
+body.admin-mode #admin-offer-section .admin-offer-layout>article:first-child #adminPromos>p{margin:0;padding:10px 12px;border:1px dashed #ded8ca;border-radius:9px;background:#faf8f1;color:#82796e;font:400 .74rem "DM Sans",sans-serif}
+body.admin-mode #admin-offer-section .promo-offer-form{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start;gap:12px;margin:12px 0 15px;padding:14px;border:1px solid #e6dfd2;border-radius:12px;background:linear-gradient(145deg,#fbf8f0,#f1f4e9)}
+body.admin-mode #admin-offer-section .promo-offer-form label{display:grid;min-width:0;gap:5px;color:#6f685e;font:600 .68rem "DM Sans",sans-serif;letter-spacing:.015em}
+body.admin-mode #admin-offer-section .promo-offer-form input,body.admin-mode #admin-offer-section .promo-offer-form select{box-sizing:border-box;width:100%;min-width:0;height:38px;padding:8px 10px;border:1px solid #e3d9ce;border-radius:9px;background:#fffdfa;color:#403a34;font:400 .74rem "DM Sans",sans-serif}
+body.admin-mode #admin-offer-section .promo-offer-form input:focus,body.admin-mode #admin-offer-section .promo-offer-form select:focus{outline:2px solid #dfe8d7;outline-offset:1px;border-color:#8d987f}
+body.admin-mode #admin-offer-section .promo-offer-form label small{color:#8b8175;font-size:.62rem;font-weight:400;letter-spacing:0}
+body.admin-mode #admin-offer-section .promo-offer-form .promo-email-options{grid-column:1/-1;display:grid;gap:8px;min-width:0;margin:0;padding:12px;border:1px solid #dfe4d5;border-radius:10px;background:#f7f8f1}
+body.admin-mode #admin-offer-section .promo-offer-form .promo-email-options legend{padding:0 5px;color:#62705c;font:600 .68rem "DM Sans",sans-serif}
+body.admin-mode #admin-offer-section .promo-offer-form .promo-email-toggle{display:flex;align-items:center;gap:8px;font-weight:500}
+body.admin-mode #admin-offer-section .promo-offer-form .promo-email-toggle input{width:15px;height:15px;min-height:15px;margin:0;accent-color:#71816a}
+body.admin-mode #admin-offer-section .promo-offer-form .promo-email-options>small{color:#817a6e;font:400 .65rem/1.5 "DM Sans",sans-serif}
+body.admin-mode #admin-offer-section .promo-offer-form .promo-email-send-at{max-width:300px}
+body.admin-mode #admin-offer-section .promo-offer-form .promo-email-send-at[hidden]{display:none!important}
+body.admin-mode #admin-offer-section .promo-offer-form button{grid-column:1/-1;justify-self:start;min-height:38px;padding:9px 17px;border-radius:10px;background:#71816a;color:#fff;font-size:.72rem}
+body.admin-mode #admin-offer-section #adminPromos .admin-list-row>span{min-width:0}
+body.admin-mode #admin-offer-section #adminPromos .admin-list-row small{line-height:1.5;overflow-wrap:anywhere}
+body.admin-mode #admin-offer-section #adminPromos .admin-list-row strong{color:#443d34;letter-spacing:.035em}
+body.admin-mode #admin-offer-section .admin-load-more{min-height:36px;padding:8px 18px;border:1px solid #cbd5c2;border-radius:10px;background:#e7eddf;color:#596750;font:600 .7rem "DM Sans",sans-serif;box-shadow:0 3px 9px rgba(75,83,57,.06)}
+body.admin-mode #admin-offer-section .admin-load-more:hover{background:#dce6d4;transform:translateY(-1px)}
+body.admin-mode #admin-offer-section .admin-load-more[hidden]{display:none!important}
+@media(max-width:640px){body.admin-mode #admin-offer-section .admin-offer-layout>article:first-child .admin-product-toolbar{flex-wrap:wrap}body.admin-mode #admin-offer-section .admin-offer-layout>article:first-child .admin-product-search{flex-basis:100%}}
+@media(max-width:520px){body.admin-mode #admin-offer-section .promo-offer-form{grid-template-columns:1fr}body.admin-mode #admin-offer-section .promo-offer-form button{grid-column:1}}
+/* Keep the Customers refresh action beside search and before account creation. */
+body.admin-mode.admin-customers-view #refreshAdminOrders{display:none!important}
+body.admin-mode #admin-customer-section .customer-admin-toolbar{align-items:end}
+body.admin-mode #admin-customer-section .admin-customer-refresh{box-sizing:border-box;display:inline-flex;flex:0 0 96px;align-items:center;justify-content:center;gap:7px;width:96px;height:40px;padding:0 12px;border:1px solid #d9d9bd;border-radius:11px;background:linear-gradient(145deg,#f4f2df,#e8ead7);color:#5c6951;font:600 .72rem "DM Sans",sans-serif;box-shadow:0 3px 9px rgba(75,83,57,.07);transition:background .18s,border-color .18s,transform .18s,box-shadow .18s;white-space:nowrap}
+body.admin-mode #admin-customer-section .admin-customer-refresh svg{display:block;width:16px;height:16px;flex:0 0 16px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s}
+body.admin-mode #admin-customer-section .admin-customer-refresh:hover{border-color:#b9c4a9;background:linear-gradient(145deg,#e9eedc,#dfe8d4);box-shadow:0 5px 12px rgba(75,91,65,.12);transform:translateY(-1px)}
+body.admin-mode #admin-customer-section .admin-customer-refresh:hover svg{transform:rotate(-35deg)}
+body.admin-mode #admin-customer-section .admin-customer-refresh:focus-visible{outline:3px solid rgba(137,148,123,.22);outline-offset:2px}
+body.admin-mode #admin-customer-section .admin-customer-refresh:disabled{opacity:.62;cursor:wait;transform:none}
+@media(max-width:620px){body.admin-mode #admin-customer-section .customer-admin-toolbar{align-items:stretch;flex-direction:column}body.admin-mode #admin-customer-section .admin-customer-refresh,body.admin-mode #admin-customer-section .customer-create-toggle{width:100%;min-height:40px}}
+body.admin-mode .admin-chart-wide .popular-chart{display:block;min-height:0}
+body.admin-mode .top-cake-table{display:grid;gap:5px;width:100%}
+body.admin-mode .top-cake-table-head,body.admin-mode .top-cake-row{display:grid;grid-template-columns:32px minmax(150px,2.2fr) minmax(90px,1fr) minmax(75px,.8fr) minmax(90px,1fr);align-items:center;gap:12px}
+body.admin-mode .top-cake-table-head{padding:0 12px 6px;color:#81766b;font:600 .61rem "DM Sans",sans-serif;letter-spacing:.08em;text-transform:uppercase}
+body.admin-mode .top-cake-row{width:100%;min-height:48px;padding:7px 12px;border:1px solid #ebe1d6;border-radius:9px;background:#fffdf8;color:#51483f;text-align:left;font:500 .75rem "DM Sans",sans-serif;cursor:pointer;transition:background .16s,border-color .16s,transform .16s}
+body.admin-mode .top-cake-row:hover,body.admin-mode .top-cake-row:focus-visible{transform:translateY(-1px);border-color:#a5ad91;background:#f1f2e9;outline:none}
+body.admin-mode .top-cake-rank{display:grid;width:25px;height:25px;place-items:center;border-radius:50%;background:#e9ecdf;color:#626e57;font:600 .7rem "DM Sans",sans-serif}
+body.admin-mode .top-cake-name{display:grid;gap:2px;min-width:0}
+body.admin-mode .top-cake-name strong{overflow:hidden;color:#403931;font:500 .9rem/1.1 "Cormorant Garamond",Georgia,serif;text-overflow:ellipsis;white-space:nowrap}
+body.admin-mode .top-cake-name small{color:#7b7166;font:400 .63rem "DM Sans",sans-serif}
+body.admin-mode .top-cake-details-dialog{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(440px,calc(100vw - 28px));max-height:85dvh;margin:0;overflow:auto;padding:22px;border:1px solid #e3c9bf;border-radius:17px;background:#fcf9f2;color:#51483f;box-shadow:0 25px 80px #33271f45}
+body.admin-mode .top-cake-details-dialog::backdrop{background:#322b26a6;backdrop-filter:blur(3px)}
+body.admin-mode .top-cake-details-dialog h2{margin:5px 0 0;color:#413a34;font:500 1.7rem/1.1 "Cormorant Garamond",Georgia,serif}
+body.admin-mode .top-cake-detail-hero{display:grid;grid-template-columns:116px minmax(0,1fr);align-items:center;gap:16px;margin-bottom:16px}
+body.admin-mode .top-cake-detail-hero img{display:block;width:116px;height:116px;object-fit:cover;border:1px solid #e8dcd0;border-radius:12px;background:#eee7df}
+body.admin-mode .top-cake-detail-category{margin:4px 0 16px;color:#7a7064;font:.72rem "DM Sans",sans-serif}
+body.admin-mode .top-cake-detail-stats{display:grid;gap:8px;margin:0}
+body.admin-mode .top-cake-detail-stats>div{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 12px;border:1px solid #ebe1d6;border-radius:9px;background:#fffdf8}
+body.admin-mode .top-cake-detail-stats dt{color:#766c61;font:.7rem "DM Sans",sans-serif}
+body.admin-mode .top-cake-detail-stats dd{margin:0;color:#4b5842;font:600 .86rem "DM Sans",sans-serif}
+body.admin-mode .top-cake-detail-note{margin:13px 0;color:#7b7166;font:.65rem/1.5 "DM Sans",sans-serif}
+body.admin-mode .top-cake-details-close{width:100%;min-height:38px;border:1px solid #cbd2bd;border-radius:9px;background:#e9ecdf;color:#4e5a47;font:600 .72rem "DM Sans",sans-serif;cursor:pointer}
+@media(max-width:620px){body.admin-mode .top-cake-table-head,body.admin-mode .top-cake-row{grid-template-columns:26px minmax(110px,1.8fr) minmax(64px,.8fr) minmax(55px,.65fr);gap:7px;padding-inline:8px}body.admin-mode .top-cake-table-head span:nth-child(5),body.admin-mode .top-cake-row span:nth-child(5){display:none}}
+@media(max-width:420px){body.admin-mode .top-cake-detail-hero{grid-template-columns:84px minmax(0,1fr);gap:10px}body.admin-mode .top-cake-detail-hero img{width:84px;height:84px}}

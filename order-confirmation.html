@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff8f5">
+  <script src="preferences.js?v=20261101-sitewide"></script>
+  <title>Order Confirmed | Cakes of Paradise</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap"></noscript>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="account.css">
+  <link rel="stylesheet" href="cart.css">
+  <link rel="stylesheet" href="ui-polish.css?v=20261031-toast-right">
+  <style>
+    .confirmation-shell{width:min(960px,92vw);margin:130px auto 70px}.confirmation-card{overflow:hidden;border:1px solid #F4D9DF;border-radius:26px;background:#fff;box-shadow:0 20px 55px #4A2C2A18}.confirmation-head{padding:clamp(22px,5vw,42px);background:linear-gradient(135deg,#fff8f5,#fff);text-align:center}.confirmation-mark{display:grid;place-items:center;width:56px;height:56px;margin:0 auto 13px;border-radius:50%;background:#FFF0F2;color:#E0587D;font-size:1.8rem;font-weight:700}.confirmation-head h1{margin:0;color:#4A2C2A;font:700 clamp(1.8rem,5vw,2.7rem) 'Playfair Display',Georgia,serif}.confirmation-head p{margin:8px 0 0;color:#4A2C2A}.confirmation-number{display:inline-block;margin-top:14px;padding:8px 14px;border-radius:999px;background:#FFF0F2;color:#4A2C2A;font-weight:700}.confirmation-images{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;padding:0 clamp(18px,4vw,34px) 24px}.confirmation-image{margin:0;overflow:hidden;border-radius:15px;background:#fff8f5}.confirmation-image img{display:block;width:100%;height:190px;object-fit:cover}.confirmation-image figcaption{padding:9px 11px;color:#4A2C2A;font-size:.78rem;font-weight:600}.confirmation-details{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:0 clamp(18px,4vw,34px) 32px}.confirmation-detail{padding:15px;border:1px solid #F4D9DF;border-radius:14px;color:#4A2C2A}.confirmation-detail span{display:block;margin-bottom:5px;color:#745754;font-size:.72rem}.confirmation-detail strong{display:block;overflow-wrap:anywhere}.confirmation-total{color:#C8466B!important;font-size:1.2rem}.confirmation-actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;padding:0 18px 30px}.confirmation-actions .btn{padding:12px 20px}.confirmation-empty{padding:25px;text-align:center;color:#4A2C2A}@media(max-width:600px){.confirmation-shell{margin-top:100px}.confirmation-details{grid-template-columns:1fr}.confirmation-image img{height:160px}}
+  </style>
+  <link rel="stylesheet" href="paradise-theme.css">
+  <link rel="stylesheet" href="shared-footer.css?v=20261031-newsletter-polish">
+  <link rel="stylesheet" href="site-navigation.css?v=20261031-global-nav">
+  <link rel="stylesheet" href="shared-navigation.css?v=20261031-account-shortcuts">
+  <link rel="stylesheet" href="preferences.css?v=20261101-sitewide">
+</head>
+<body class="account-page">
+  <header class="account-topbar">
+    <a class="account-brand" href="index.html"><img class="brand-logo" src="logo.jpg" alt=""><span>Cakes of Paradise<small>Handcrafted in Surathkal</small></span></a>
+    <nav aria-label="Order confirmation navigation"><a class="account-cart-link" href="cart.html" aria-label="Cart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 8.5h11l1.2 12H5.3l1.2-12Z"/><path d="M9 9V6.5a3 3 0 0 1 6 0V9"/></svg>Cart <span id="navCartCount">0</span></a><a href="orders.html">Your orders</a><a href="index.html#shop">Shop cakes</a></nav>
+  </header>
+  <main class="confirmation-shell">
+    <article class="confirmation-card" id="confirmationCard" hidden>
+      <section class="confirmation-head"><span class="confirmation-mark" aria-hidden="true">✓</span><h1>Your order is confirmed!</h1><p>Thank you for celebrating with Cakes of Paradise.</p><span class="confirmation-number" id="confirmationNumber"></span></section>
+      <div class="confirmation-images" id="confirmationImages" aria-label="Cakes in your order"></div>
+      <section class="confirmation-details" aria-label="Order details">
+        <div class="confirmation-detail"><span>Items</span><strong id="confirmationItems"></strong></div>
+        <div class="confirmation-detail"><span>Total</span><strong class="confirmation-total" id="confirmationTotal"></strong></div>
+        <div class="confirmation-detail"><span>Payment method</span><strong id="confirmationPayment"></strong></div>
+        <div class="confirmation-detail"><span>Delivery / pickup details</span><strong id="confirmationDelivery"></strong></div>
+      </section>
+      <div class="confirmation-actions"><a class="btn btn-primary" href="orders.html">Track this order</a><a class="text-link" href="index.html#shop">Continue shopping</a></div>
+    </article>
+    <article class="confirmation-card confirmation-empty" id="confirmationMissing" hidden><h1>Order details are unavailable</h1><p>Sign in and open Your orders to view the latest order details.</p><a class="btn btn-primary" href="orders.html">Your orders</a></article>
+  </main>
+  <script src="cart-storage.js"></script>
+  <script src="order-confirmation.js"></script>
+  <script src="shared-footer.js?v=20261031-home-footer-title" defer></script>
+  <script src="shared-navigation.js?v=20261101-role-aware" defer></script>
+  <script src="site-navigation.js?v=20261101-role-aware" defer></script>
+</body>
+</html>

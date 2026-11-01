@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff8f5">
+  <script src="preferences.js?v=20261101-sitewide"></script>
+  <title>My Account | Cakes of Paradise</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&amp;family=DM+Sans:wght@400;500;600&amp;family=Great+Vibes&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&amp;family=DM+Sans:wght@400;500;600&amp;family=Great+Vibes&amp;display=swap"></noscript>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap"></noscript>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="store.css">
+  <link rel="stylesheet" href="account.css?v=20261031-favorites-gap">
+  <link rel="stylesheet" href="ui-polish.css?v=20261031-toast-right">
+  <link rel="stylesheet" href="paradise-theme.css">
+  <link rel="stylesheet" href="shared-footer.css?v=20261031-newsletter-polish">
+  <link rel="stylesheet" href="site-navigation.css?v=20261031-global-nav">
+  <link rel="stylesheet" href="shared-navigation.css?v=20261031-account-signout">
+  <link rel="stylesheet" href="preferences.css?v=20261101-sitewide">
+</head>
+<body class="account-page profile-editorial">
+  <header class="account-topbar">
+    <a class="account-brand" href="index.html"><img class="brand-logo" src="logo.jpg" alt=""><span>Cakes of Paradise<small>Handcrafted in Surathkal</small></span></a>
+    <nav aria-label="Account navigation"><a href="index.html">Home</a><a href="shop.html">Shop</a><a href="custom.html">Custom Cakes</a></nav>
+    <div class="account-topbar-actions"><a href="wishlist.html" aria-label="My wishlist">♡</a><a class="account-cart-link" href="cart.html" aria-label="Shopping bag"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 8.5h11l1.2 12H5.3l1.2-12Z"/><path d="M9 9V6.5a3 3 0 0 1 6 0V9"/></svg></a></div>
+  </header>
+
+  <main class="account-shell">
+    <p id="pageMessage" class="account-message" role="status" aria-live="polite"></p>
+
+    <div class="profile-layout">
+      <aside class="profile-sidebar">
+        <span class="sidebar-bow" aria-hidden="true">୨୧</span>
+        <div class="account-avatar" id="accountAvatar" aria-hidden="true">C</div>
+        <h1 id="accountWelcome">Welcome back</h1><p id="accountEmail">Your orders, details, and rewards in one place.</p>
+        <span class="sidebar-heart" aria-hidden="true">♡</span>
+        <nav class="profile-menu" aria-label="Your account sections">
+          <a class="is-current" href="#profile"><span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.7-3.2 3.2-5 7-5s6.3 1.8 7 5"/></svg></span>Profile info</a>
+          <a href="#account-orders"><span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 4h10l2 3v13H5V7l2-3Z"/><path d="M8 4v4h8V4M8 12h8M8 16h5"/></svg></span>My orders</a>
+          <a href="wishlist.html"><span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.4 8.8c0 4.4-8.4 10-8.4 10s-8.4-5.6-8.4-10A4.3 4.3 0 0 1 12 6.3a4.3 4.3 0 0 1 8.4 2.5Z"/></svg></span>My wishlist</a>
+          <a href="#saved-addresses"><span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 10c0 5-7 11-7 11S5 15 5 10a7 7 0 1 1 14 0Z"/><circle cx="12" cy="10" r="2.2"/></svg></span>My addresses</a>
+          <a href="#occasions"><span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="15" rx="2"/><path d="M8 3v6M16 3v6M4 11h16M8 15h2M14 15h2"/></svg></span>Celebrations</a>
+          <a href="#rewards"><span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 10h16v10H4zM3 7h18v4H3zM12 7v13M12 7H8.5a2.3 2.3 0 1 1 2.3-2.3C10.8 6 12 7 12 7Zm0 0h3.5a2.3 2.3 0 1 0-2.3-2.3C13.2 6 12 7 12 7Z"/></svg></span>Rewards &amp; gifts</a>
+          <a href="#gift-wallet"><span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H20v16H6.5A2.5 2.5 0 0 1 4 17.5z"/><path d="M4 7h16M15 13h5"/><circle cx="15" cy="13" r=".6"/></svg></span>Redeem a gift code</a>
+          <button id="logoutButton" type="button"><span class="sidebar-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M10 4H5v16h5M13 8l4 4-4 4M8 12h9"/></svg></span>Log out</button>
+        </nav>
+        <p class="sidebar-note">More cake,<br>more happiness ♡</p>
+      </aside>
+
+      <section class="account-card profile-card" id="profile">
+        <div class="account-card-heading"><div><span class="account-kicker">A LITTLE ABOUT YOU</span><h2><span aria-hidden="true">♥</span> Profile Information</h2><p class="profile-intro">Update your details to keep your account up to date.</p></div></div>
+        <form id="profileForm" class="account-form profile-form">
+          <div class="profile-photo-picker"><div class="account-avatar" id="profileAvatarPreview" aria-hidden="true">୨୧</div><label class="photo-change-button" for="avatarFile">Change photo</label><input id="avatarFile" type="file" accept="image/jpeg,image/png,image/webp" aria-label="Choose profile photo"></div>
+          <div class="profile-fields">
+            <label>Full name <span aria-hidden="true">♡</span><input name="name" autocomplete="name" required maxlength="100"></label>
+            <label>Email address <span aria-hidden="true">♡</span><input name="email" type="email" autocomplete="email" readonly></label>
+            <label>Phone number <span aria-hidden="true">♡</span><input name="phone" type="tel" autocomplete="tel" maxlength="24" placeholder="Add a contact number"></label>
+            <label>Date of birth <span aria-hidden="true">♡</span><input name="dateOfBirth" type="date" autocomplete="bday"><small>Optional. Add your own birthday here; you can leave it blank.</small></label>
+          </div>
+          <button class="account-button primary profile-save-button" type="submit">Save changes <span aria-hidden="true">→</span></button>
+        </form>
+        <p id="profileMessage" class="form-message" role="status"></p>
+        <details class="password-details"><summary>Change password</summary><form id="passwordForm" class="account-form password-form"><label>Current password<input name="currentPassword" type="password" autocomplete="current-password" required></label><label>New password<input name="newPassword" type="password" minlength="6" maxlength="12" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9\s]).{6,12}" title="Use 6–12 characters with uppercase and lowercase letters, a number, and a symbol." autocomplete="new-password" required></label><label>Confirm new password<input name="confirmPassword" type="password" minlength="6" maxlength="12" autocomplete="new-password" required></label><small>6–12 characters, with an uppercase letter, lowercase letter, number, and symbol.</small><button class="account-button secondary" type="submit">Update password</button></form></details>
+      </section>
+    </div>
+
+    <section class="account-overview" aria-label="Rewards overview">
+      <article class="overview-card overview-points"><span>REWARD BALANCE</span><strong id="loyaltyBalance">0 points</strong><small>100 points = ₹1</small></article>
+      <article class="overview-card overview-points"><span>GIFT WALLET</span><strong id="giftWalletBalance">₹0</strong><small>Use your balance on cake orders</small></article>
+      <article class="overview-card"><span>YOUR REFERRAL CODE</span><div class="referral-code-row"><strong id="referralCode">—</strong><button type="button" id="copyReferralCode" class="account-button secondary">Copy</button></div><small id="referralSummary">Share a little sweetness with a friend.</small></article>
+      <article class="overview-card"><span>ORDERS PLACED</span><strong id="orderCount">0</strong><small>Track your cake from kitchen to celebration</small></article>
+    </section>
+
+    <div class="account-columns">
+      <div class="account-column">
+        <section class="account-card" id="saved-addresses">
+          <div class="account-card-heading"><div><span class="account-kicker">DELIVERY</span><h2>Saved addresses</h2></div></div>
+          <div id="savedAddresses" class="account-list"><p class="empty-account">Loading addresses…</p></div>
+          <details class="address-details"><summary>Add an address</summary><form id="addressForm" class="account-form address-form"><label>Label<input name="label" maxlength="40" placeholder="Home"></label><label>Recipient name<input name="recipientName" maxlength="100"></label><label>Phone<input name="phone" type="tel" maxlength="24"></label><label>Area or locality<input name="area" maxlength="80" required></label><label>City<input name="city" maxlength="80" required></label><label>PIN code<input name="postalCode" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required></label><label class="full-field">Full address<textarea name="address" minlength="8" maxlength="400" required></textarea></label><button class="account-button primary" type="submit">Save address</button></form></details>
+          <p id="addressMessage" class="form-message" role="status"></p>
+        </section>
+
+        <section class="account-card" id="favorites">
+          <div class="account-card-heading"><div><span class="account-kicker">MADE FOR YOU</span><h2>Favourite cakes</h2></div><a href="shop.html" class="text-link">Explore the catalogue</a></div>
+          <div id="favoriteCakes" class="account-list"><p class="empty-account">Loading favourites…</p></div>
+        </section>
+      </div>
+
+      <div class="account-column">
+        <section class="account-card" id="account-orders">
+          <div class="account-card-heading"><div><span class="account-kicker">YOUR CELEBRATIONS</span><h2>Order history</h2></div><a href="index.html#shop" class="text-link">Order a cake</a></div>
+          <div id="pastOrders" class="account-orders"><p class="empty-account">Loading orders…</p></div>
+        </section>
+
+        <section class="account-card" id="rewards">
+          <div class="account-card-heading"><div><span class="account-kicker">LOYALTY</span><h2>Reward activity</h2></div></div>
+          <p class="account-muted">Earn 1 point for every ₹1 on completed orders. Redeem in 100-point steps; 100 points = ₹1, up to 20% of an order.</p>
+          <div id="loyaltyHistory" class="account-list"><p class="empty-account">Loading reward activity…</p></div>
+          <details class="referral-reward-details"><summary>Referral rewards</summary><p id="referralTerms" class="account-muted referral-terms"></p></details>
+        </section>
+
+        <section class="account-card celebrations-card" id="occasions">
+          <div class="account-card-heading"><div><span class="account-kicker">YOUR CELEBRATIONS</span><h2>Occasion reminders</h2></div></div>
+          <div id="occasionList" class="account-list"><p class="empty-account">Loading reminders…</p></div>
+          <form id="addOccasionForm" class="account-form occasion-form">
+            <label>Person’s name<input name="personName" maxlength="100" placeholder="Enter their name" required></label>
+            <label>Relationship<select name="relationship" required><option value="">Choose relationship</option><option>Partner</option><option>Parent</option><option>Child</option><option>Sibling</option><option>Friend</option><option>Relative</option><option>Other</option></select></label>
+            <label>Occasion<select name="type"><option>Birthday</option><option>Anniversary</option><option>Wedding</option><option>Graduation</option><option>Baby shower</option><option value="custom">Custom occasion</option></select></label>
+            <label id="customOccasionWrap" hidden>Occasion name<input name="customTitle" maxlength="60" placeholder="Enter occasion name"></label>
+            <label>Date<input name="date" type="date" required></label>
+            <label class="consent-line"><input name="reminderOptIn" type="checkbox"> Email me a reminder for this occasion</label>
+            <button class="account-button secondary" type="submit">Add occasion</button>
+          </form>
+          <div class="occasion-save-row"><p id="occasionMessage" class="form-message" role="status"></p><button id="saveOccasions" class="account-button primary" type="button">Save reminders</button></div>
+        </section>
+
+        <section class="account-card" id="gift-wallet">
+          <div class="account-card-heading"><div><span class="account-kicker">A LITTLE SOMETHING LOVELY</span><h2>Gift wallet &amp; redeem a code</h2></div></div>
+          <p class="account-muted">Redeem a gift card code to add its remaining balance to your wallet.</p>
+          <form id="giftCardForm" class="gift-check-form"><label for="giftCardCode">Your gift card code</label><div><input id="giftCardCode" name="code" maxlength="40" autocomplete="off" placeholder="Enter the code from your gift email" required><button class="account-button secondary" type="submit">Redeem to wallet</button></div></form>
+          <p id="giftCardMessage" class="form-message" role="status"></p><details class="wallet-activity-details"><summary>Wallet activity</summary><div id="giftCardHistory" class="account-list"><p class="empty-account">Loading wallet activity…</p></div></details>
+        </section>
+
+      </div>
+    </div>
+  </main>
+  
+<footer class="site-footer" id="siteFooter">
+  <div class="footer-wrap">
+    <div class="footer-col footer-col-brand">
+      <a class="footer-brand" href="index.html" aria-label="Cakes of Paradise home">
+        <img src="logo.jpg" alt="Cakes of Paradise Logo" class="footer-logo-img">
+        <span>Cakes of Paradise</span>
+      </a>
+      <p>Handcrafted artisan cakes made fresh with love in Surathkal. Celebrating birthdays, weddings, anniversaries, and sweet milestones across Mangaluru.</p>
+      <div class="footer-a11y-quick">
+        <a href="settings.html" class="footer-a11y-link" title="Accessibility & Settings">♿ Accessibility</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#cakes">Cake Categories</a></li>
+        <li><a href="index.html#shop">Shop Collection</a></li>
+        <li><a href="custom.html">Custom Cakes</a></li>
+        <li><a href="gallery.html">Bakery Gallery</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact &amp; Enquiries</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Customer Care</h4>
+      <ul>
+        <li><a href="cart.html">View Cart</a></li>
+        <li><a href="orders.html">Track Orders</a></li>
+        <li><a href="account.html">My Account &amp; Rewards</a></li>
+        <li><a href="settings.html">Settings &amp; Accessibility</a></li>
+        <li><a href="login.html">Sign In / Register</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Visit &amp; Connect</h4>
+      <ul class="footer-contact-list">
+        <li><span>💬 WhatsApp / Call:</span> <a href="tel:7019994145" class="footer-contact-link">7019994145</a></li>
+        <li><span>📸 Instagram:</span> <a href="https://instagram.com/_cakes_of_paradise/" target="_blank" rel="noreferrer" class="footer-contact-link">_cakes_of_paradise</a></li>
+        <li><span>📍 Location:</span> Surathkal, Mangaluru, Karnataka</li>
+        <li><span>🚚 Free Delivery:</span> All orders within Surathkal</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <p>© 2026 Cakes of Paradise. All rights reserved. Handcrafted with 🤎 in Surathkal.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="api-config.js" defer></script>
+  <script src="account.js?v=20261031-occasion-people" defer></script>
+<script src="motion.js" defer></script>
+  <script src="shared-footer.js?v=20261031-home-footer-title" defer></script>
+  <script src="shared-navigation.js?v=20261101-role-aware" defer></script>
+  <script src="site-navigation.js?v=20261101-role-aware" defer></script>
+</body>
+</html>

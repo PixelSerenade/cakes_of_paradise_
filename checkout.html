@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff8f5">
+  <script src="preferences.js?v=20261101-sitewide"></script>
+  <title>Checkout | Cakes of Paradise</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap"></noscript>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=DM+Sans:wght@400;500;600;700&amp;family=Great+Vibes&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=DM+Sans:wght@400;500;600;700&amp;family=Great+Vibes&amp;display=swap"></noscript>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="store.css">
+  <link rel="stylesheet" href="account.css">
+  <link rel="stylesheet" href="cart.css">
+  <link rel="stylesheet" href="ui-polish.css?v=20261031-toast-right">
+  <link rel="stylesheet" href="paradise-theme.css">
+  <link rel="stylesheet" href="cart-redesign.css">
+  <link rel="stylesheet" href="shared-footer.css?v=20261031-newsletter-polish">
+  <link rel="stylesheet" href="site-navigation.css?v=20261031-global-nav">
+  <link rel="stylesheet" href="shared-navigation.css?v=20261031-account-signout">
+  <link rel="stylesheet" href="preferences.css?v=20261101-sitewide">
+</head>
+<body class="account-page cart-page checkout-page">
+  <header class="account-topbar">
+    <a class="account-brand" href="index.html"><span class="cart-brand-mark" aria-hidden="true">✧</span><span>Cakes of Paradise<small>CAKES · SWEET MOMENTS</small></span></a>
+    <nav aria-label="Checkout navigation"><a href="index.html">Home</a><a href="shop.html">Cakes</a><a href="custom.html">Custom Cakes</a><a href="gallery.html">Sweet Moments</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a class="cart-profile-link" href="account.html" aria-label="My account">♙</a><a class="account-cart-link" href="cart.html" aria-label="Cart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 8.5h11l1.2 12H5.3l1.2-12Z"/><path d="M9 9V6.5a3 3 0 0 1 6 0V9"/></svg><span id="navCartCount">0</span></a><a href="orders.html" hidden>Your orders</a><a href="settings.html" hidden>Settings</a><button id="cartSignOut" type="button">Sign out</button></nav>
+  </header>
+  <section class="cart-editorial-hero checkout-editorial-hero" aria-labelledby="cartHeroTitle">
+    <div class="cart-hero-copy"><div class="cart-breadcrumb"><a href="index.html">Home</a><span>›</span><span>Checkout</span></div><p class="cart-kicker">YOUR CELEBRATION, ALMOST READY</p><h1 id="cartHeroTitle">Checkout</h1><p class="cart-hero-script">Good things are on their way <span aria-hidden="true">♡</span></p><p class="cart-hero-description">Fill in your details and we’ll take care of the rest.</p></div>
+    <div class="cart-hero-visual"><img id="cartHeroImage" src="/public/images/hero-artisan-cake-optimized.jpg" alt="A handcrafted celebration cake" loading="eager"><div class="cart-hero-caption"><strong>Freshly baked</strong><span>Made for your moment</span></div><button class="cart-hero-arrow previous" type="button" id="cartHeroPrevious" aria-label="Previous cake photo">←</button><button class="cart-hero-arrow next" type="button" id="cartHeroNext" aria-label="Next cake photo">→</button><div class="cart-hero-dots" id="cartHeroDots" aria-label="Choose a cake photo"></div></div>
+    <span class="cart-hero-note" aria-hidden="true">A little<br>step closer<br>to happiness</span>
+  </section>
+  <main class="checkout-page-shell" id="checkout">
+    <p id="cartPageMessage" class="account-message" role="status" aria-live="polite"></p>
+    <div id="cartEmptyState" class="cart-empty-state" hidden><h2>Your cart is waiting for something sweet.</h2><p>Add a cake before checking out.</p><a class="btn btn-primary" href="index.html#shop">Explore cakes →</a></div>
+    <section id="cartCheckoutSection" class="cart-checkout-section" aria-labelledby="cartCheckoutHeading">
+      <nav class="checkout-steps" aria-label="Checkout progress"><span class="is-current"><i>1</i>Delivery details</span><b aria-hidden="true"></b><span><i>2</i>Payment</span><b aria-hidden="true"></b><span><i>3</i>Order confirmation</span></nav>
+      <h1 class="checkout-page-title" id="cartCheckoutHeading">Complete your order</h1>
+      <form id="cartCheckoutForm" class="cart-checkout-form">
+        <section class="cart-checkout-card checkout-delivery-card" aria-labelledby="deliveryDetailsHeading"><div class="checkout-card-heading"><div><h2 id="deliveryDetailsHeading">Delivery Details</h2><p>Please fill in your details for delivery.</p></div><span aria-hidden="true">✧</span></div>
+          <div class="checkout-form-section"><h3><span aria-hidden="true">♙</span> Contact information</h3><div class="checkout-fields-grid">
+            <label class="cart-form-field">Full name<input name="name" required maxlength="100" autocomplete="name" placeholder="Enter your full name"></label>
+            <label class="cart-form-field">Phone number<input name="phone" required maxlength="24" type="tel" autocomplete="tel" placeholder="+91 98765 43210"></label>
+            <label class="cart-form-field checkout-full-field">Email address<input name="email" type="email" readonly placeholder="Your account email"></label>
+          </div></div>
+          <div class="checkout-form-section"><h3><span aria-hidden="true">⌖</span> Delivery address</h3>
+            <label class="cart-form-field checkout-full-field" id="savedAddressField" hidden>Use a saved address<select id="savedAddressSelect"><option value="">Enter a new address</option></select></label>
+            <label class="cart-form-field checkout-full-field">Fulfilment<select name="deliveryType"><option value="delivery">Deliver to my address</option><option value="pickup">Pick up from bakery · Free</option></select></label>
+            <div id="cartDeliveryFields" class="cart-delivery-fields checkout-fields-grid">
+              <label class="cart-form-field">Area or locality<input name="area" required maxlength="80" autocomplete="address-level3" placeholder="Surathkal"></label>
+              <label class="cart-form-field">City<input name="city" required maxlength="80" autocomplete="address-level2" placeholder="Mangaluru"></label>
+              <label class="cart-form-field">PIN code<input name="postalCode" required inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="postal-code" placeholder="6-digit PIN code"></label>
+              <p id="deliveryQuoteMessage" class="checkout-hint checkout-full-field" role="status">Enter your PIN to estimate the delivery fee. Delivery within Surathkal is free.</p>
+              <label class="cart-form-field checkout-full-field">Address line 1<textarea name="address" required minlength="8" maxlength="260" autocomplete="street-address" placeholder="House / Flat / Building name, street"></textarea></label>
+              <label class="cart-form-field checkout-full-field">Address line 2 <span class="optional-label">(optional)</span><input name="addressLine2" maxlength="120" placeholder="Area / Landmark"></label>
+              <label class="cart-save-address checkout-full-field"><input type="checkbox" name="saveAddress" value="yes"> Save this address to my account</label>
+            </div>
+          </div>
+          <div class="checkout-form-section"><h3><span aria-hidden="true">♧</span> Delivery options</h3><div class="checkout-fields-grid">
+            <label class="cart-form-field">Delivery date<input name="deliveryDate" type="date" required></label>
+            <label class="cart-form-field">Requested delivery / pickup time<input name="deliveryTime" type="time" required><small class="checkout-hint">The bakery will confirm the requested time.</small></label>
+            <label class="cart-form-field checkout-full-field">Message for the baker <span class="optional-label">(optional)</span><textarea name="notes" maxlength="300" placeholder="Cake message or delivery notes"></textarea></label>
+          </div></div>
+          <a class="checkout-back-link" href="cart.html">← &nbsp; Back to cart</a>
+        </section>
+        <aside class="cart-checkout-card checkout-order-card" aria-labelledby="checkoutOrderSummaryTitle"><div class="checkout-summary-heading"><h2 id="checkoutOrderSummaryTitle">Order Summary</h2><span>Same cake,<br>new memories ♡</span></div>
+          <div class="checkout-cart-items-heading">Your cakes <span id="cartPageCount">0</span><a href="cart.html">Edit cart</a></div>
+          <div id="cartLines" class="cart-page-lines checkout-cart-lines" aria-live="polite"><p class="empty-account">Loading your order…</p></div>
+          <div class="cart-price-breakdown"><div><span>Subtotal</span><strong id="checkoutSubtotal">₹0</strong></div><div><span>Delivery charges</span><strong id="checkoutDelivery">To be calculated</strong></div><div><span>Discount</span><strong id="checkoutDiscount">−₹0</strong></div><div><span>Gift card</span><strong id="checkoutGift">−₹0</strong></div><div><span>Reward points</span><strong id="checkoutPoints">−₹0</strong></div><div><span>Gift wallet</span><strong id="checkoutWallet">−₹0</strong></div><div class="cart-grand-total"><span>Total amount</span><strong id="checkoutTotal">₹0</strong></div></div>
+          <div class="checkout-benefits"><h3>Offers &amp; rewards</h3>
+            <label class="cart-form-field">Discount or friend referral code <span class="optional-label">(optional)</span><div class="cart-inline-field"><input id="promoCode" maxlength="24" placeholder="Enter a code, e.g. DIWALI10" autocomplete="off"><button id="applyPromo" type="button" class="account-button secondary">Apply</button></div></label>
+            <label class="cart-form-field">Gift card<div class="cart-inline-field"><input id="giftCardCode" maxlength="40" placeholder="Enter gift card code"><button id="applyGiftCard" type="button" class="account-button secondary">Check</button></div></label>
+            <div id="giftCardHistory" class="cart-gift-history"></div>
+            <label class="cart-form-field">Redeem reward points <span class="optional-label">(100 points = ₹1 · redeem in 100-point steps)</span><input id="loyaltyPointsToRedeem" name="loyaltyPoints" type="number" min="0" step="100" value="0"></label>
+            <label class="cart-form-field">Use gift wallet <span class="optional-label" id="giftWalletAvailable">₹0 available</span><input id="giftWalletToRedeem" name="giftWalletAmount" type="number" min="0" value="0"></label>
+            <p id="benefitMessage" class="checkout-hint" role="status"></p>
+          </div>
+          <label class="cart-form-field checkout-payment-field">Payment method<select name="paymentMethod"><option value="razorpay">Online payment (Razorpay)</option><option value="pay-at-pickup">Pay at pickup</option><option value="pay-on-delivery">Pay on delivery</option></select><small class="checkout-hint">Offline payments remain unpaid until confirmed by the bakery.</small></label>
+          <button class="btn btn-primary cart-place-order" id="placeOrderButton" type="submit">Continue to payment <span aria-hidden="true">→</span></button>
+          <p class="checkout-hint checkout-secure-note">Online checkout opens Razorpay’s secure payment window.</p>
+          <a class="cart-custom-callout" href="custom.html"><span class="cart-callout-icon" aria-hidden="true">♧</span><span><strong>Want a custom cake?</strong><small>Let us create something special for you.</small><em>Enquire now →</em></span><span class="cart-callout-spark" aria-hidden="true">✧</span></a>
+        </aside>
+        <a id="emptyCartShop" class="btn btn-primary checkout-hidden-link" href="index.html#shop" hidden>Explore cakes</a>
+      </form>
+    </section>
+    <section class="cart-service-strip checkout-service-strip" aria-label="Our bakery promises"><div><span aria-hidden="true">♧</span><p>Freshly baked<br>& delivered</p></div><div><span aria-hidden="true">♡</span><p>Premium<br>ingredients</p></div><div><span aria-hidden="true">☆</span><p>Custom orders<br>available</p></div></section>
+  </main>
+  <section id="orderSuccess" class="order-success" role="dialog" aria-modal="true" aria-live="assertive" aria-labelledby="orderSuccessTitle" aria-describedby="orderSuccessDetail" hidden>
+    <div id="orderConfetti" class="order-confetti" aria-hidden="true"></div>
+    <div class="order-success-card">
+      <div class="order-success-art" aria-hidden="true">
+        <span class="success-spark success-spark-one">✦</span><span class="success-spark success-spark-two">✧</span><span class="success-heart">♥</span>
+        <svg class="success-cake" viewBox="0 0 360 300" role="presentation">
+          <ellipse cx="180" cy="268" rx="116" ry="15" fill="#713d4b" opacity=".12"/>
+          <path d="M81 171h198l-14 74c-2 11-13 19-25 19h-120c-12 0-23-8-25-19z" fill="#fffaf5" stroke="#713d4b" stroke-width="5"/>
+          <ellipse cx="180" cy="171" rx="99" ry="24" fill="#fffaf5" stroke="#713d4b" stroke-width="5"/>
+          <path d="M84 180q16 22 32 0t32 0 32 0 32 0 32 0 32 0 32 0" fill="none" stroke="#e66a8c" stroke-width="10" stroke-linecap="round"/>
+          <path d="M111 107h138l-9 54c-2 9-10 15-19 15h-82c-9 0-17-6-19-15z" fill="#ffe9e8" stroke="#713d4b" stroke-width="5"/>
+          <ellipse cx="180" cy="107" rx="69" ry="19" fill="#fffaf5" stroke="#713d4b" stroke-width="5"/>
+          <path d="M126 109q11 16 22 0t22 0 22 0 22 0 22 0" fill="none" stroke="#f1c16e" stroke-width="6" stroke-linecap="round"/>
+          <path d="M180 73V43" stroke="#e66a8c" stroke-width="8" stroke-linecap="round"/><path d="M180 41c-17-13-9-29 0-37 9 10 17 24 0 37" fill="#f1b95f" stroke="#bf8045" stroke-width="2"/>
+          <circle cx="147" cy="139" r="7" fill="#da5477"/><circle cx="180" cy="146" r="7" fill="#f1b95f"/><circle cx="213" cy="139" r="7" fill="#da5477"/>
+          <path d="M137 94c-19-20-1-33 11-14 12-19 30-6 11 14z" fill="#da5477"/><path d="M201 94c-19-20-1-33 11-14 12-19 30-6 11 14z" fill="#da5477"/>
+        </svg>
+      </div>
+      <div class="order-success-copy">
+        <span class="success-status"><span aria-hidden="true">✓</span> ORDER PLACED</span>
+        <span class="account-kicker">A LITTLE JOY IS ON ITS WAY</span>
+        <h2 id="orderSuccessTitle" tabindex="-1">Your order is confirmed!</h2>
+        <p id="orderSuccessDetail">Your celebration cake is on its way to the bakery team.</p>
+        <p id="orderSuccessNumber" class="order-success-number"></p>
+        <p class="success-next-step">We’ve saved your order. You can follow its progress any time from your orders page.</p>
+        <div class="success-actions"><a class="btn btn-primary" href="orders.html">Track this order <span aria-hidden="true">→</span></a><a class="success-secondary" href="index.html#shop">Back to the shop</a></div>
+        <small>Thank you for letting us be part of your celebration.</small>
+      </div>
+    </div>
+  </section>
+  
+<footer class="site-footer" id="siteFooter">
+  <div class="footer-wrap">
+    <div class="footer-col footer-col-brand">
+      <a class="footer-brand" href="index.html" aria-label="Cakes of Paradise home">
+        <img src="logo.jpg" alt="Cakes of Paradise Logo" class="footer-logo-img">
+        <span>Cakes of Paradise</span>
+      </a>
+      <p>Handcrafted artisan cakes made fresh with love in Surathkal. Celebrating birthdays, weddings, anniversaries, and sweet milestones across Mangaluru.</p>
+      <div class="footer-a11y-quick">
+        <a href="settings.html" class="footer-a11y-link" title="Accessibility & Settings">♿ Accessibility</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#cakes">Cake Categories</a></li>
+        <li><a href="index.html#shop">Shop Collection</a></li>
+        <li><a href="custom.html">Custom Cakes</a></li>
+        <li><a href="gallery.html">Bakery Gallery</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact &amp; Enquiries</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Customer Care</h4>
+      <ul>
+        <li><a href="cart.html">View Cart</a></li>
+        <li><a href="orders.html">Track Orders</a></li>
+        <li><a href="account.html">My Account &amp; Rewards</a></li>
+        <li><a href="settings.html">Settings &amp; Accessibility</a></li>
+        <li><a href="login.html">Sign In / Register</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Visit &amp; Connect</h4>
+      <ul class="footer-contact-list">
+        <li><span>💬 WhatsApp / Call:</span> <a href="tel:7019994145" class="footer-contact-link">7019994145</a></li>
+        <li><span>📸 Instagram:</span> <a href="https://instagram.com/_cakes_of_paradise/" target="_blank" rel="noreferrer" class="footer-contact-link">_cakes_of_paradise</a></li>
+        <li><span>📍 Location:</span> Surathkal, Mangaluru, Karnataka</li>
+        <li><span>🚚 Free Delivery:</span> All orders within Surathkal</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <p>© 2026 Cakes of Paradise. All rights reserved. Handcrafted with 🤎 in Surathkal.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="api-config.js" defer></script>
+<script src="cart-storage.js" defer></script>
+<script src="cart-banner.js" defer></script>
+<script src="cart.js?v=20261031-points100" defer></script>
+<script src="motion.js" defer></script>
+  <script src="shared-footer.js?v=20261031-home-footer-title" defer></script>
+  <script src="shared-navigation.js?v=20261101-role-aware" defer></script>
+  <script src="site-navigation.js?v=20261101-role-aware" defer></script>
+</body>
+</html>

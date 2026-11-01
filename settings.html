@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff8f5">
+  <script src="preferences.js?v=20261101-sitewide"></script>
+  <title>Settings & Accessibility | Cakes of Paradise</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'"><noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap"></noscript>
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="store.css">
+  <link rel="stylesheet" href="account.css?v=20261031-sidebar-palette">
+  <link rel="stylesheet" href="ui-polish.css?v=20261031-toast-right">
+  <link rel="stylesheet" href="paradise-theme.css">
+  <link rel="stylesheet" href="shared-footer.css?v=20261031-newsletter-polish">
+  <link rel="stylesheet" href="site-navigation.css?v=20261031-global-nav">
+  <link rel="stylesheet" href="shared-navigation.css?v=20261031-account-signout">
+  <link rel="stylesheet" href="preferences.css?v=20261101-sitewide">
+</head>
+<body class="account-page">
+  <header class="account-topbar">
+    <a class="account-brand" href="index.html"><img class="brand-logo" src="logo.jpg" alt=""><span>Cakes of Paradise<small>Handcrafted in Surathkal</small></span></a>
+    <nav aria-label="Settings navigation"><a data-customer-nav href="account.html">My account</a><a data-customer-nav class="account-cart-link" href="cart.html">Cart <span id="settingsCartCount">0</span></a><a data-admin-nav href="index.html#admin-overview" hidden>Dashboard</a><a href="index.html">Home</a><button id="settingsSignOut" type="button">Sign out</button></nav>
+  </header>
+  <main class="account-shell settings-shell">
+    <section class="account-welcome"><div class="account-avatar" aria-hidden="true">⚙</div><div><span class="account-kicker">PERSONALISE YOUR EXPERIENCE</span><h1>Settings & accessibility</h1><p>Choose the appearance and reading options that work best for you.</p></div></section>
+    <p id="settingsMessage" class="account-message" role="status" aria-live="polite">Your preferences are saved on this device.</p>
+    <form id="preferencesForm" class="settings-grid">
+      <section class="account-card settings-card">
+        <div class="account-card-heading"><div><span class="account-kicker">APPEARANCE</span><h2>Colour theme</h2></div></div>
+        <p class="account-muted">Choose a light or dark look, or follow your device setting.</p>
+        <label class="settings-field" for="themePreference">Theme<select id="themePreference" name="theme"><option value="light">Light</option><option value="dark">Dark</option><option value="system">Use device setting</option></select></label>
+        <fieldset class="accent-picker"><legend>Pastel accent</legend><div class="accent-options">
+          <label><input type="radio" name="accent" value="sage"><span class="accent-swatch swatch-sage" aria-hidden="true"></span><span>Sage</span></label>
+          <label><input type="radio" name="accent" value="blush"><span class="accent-swatch swatch-blush" aria-hidden="true"></span><span>Blush</span></label>
+          <label><input type="radio" name="accent" value="butter"><span class="accent-swatch swatch-butter" aria-hidden="true"></span><span>Butter</span></label>
+          <label><input type="radio" name="accent" value="sky"><span class="accent-swatch swatch-sky" aria-hidden="true"></span><span>Sky</span></label>
+          <label><input type="radio" name="accent" value="lilac"><span class="accent-swatch swatch-lilac" aria-hidden="true"></span><span>Lilac</span></label>
+        </div></fieldset>
+      </section>
+      <section class="account-card settings-card">
+        <div class="account-card-heading"><div><span class="account-kicker">READABILITY</span><h2>Text size</h2></div></div>
+        <p class="account-muted">Adjust text throughout the shop, account, and sign-in pages.</p>
+        <label class="settings-field" for="textSizePreference">Text size<select id="textSizePreference" name="textSize"><option value="small">Small</option><option value="standard">Standard</option><option value="large">Large</option><option value="largest">Extra large</option></select></label>
+        <label class="settings-check"><input type="checkbox" name="readableFont"> Use a simple, easy-to-read font</label>
+      </section>
+      <section class="account-card settings-card">
+        <div class="account-card-heading"><div><span class="account-kicker">ACCESSIBILITY</span><h2>Display options</h2></div></div>
+        <label class="settings-check"><input type="checkbox" name="grayscale"> Black &amp; white (grayscale) mode</label>
+        <label class="settings-check"><input type="checkbox" name="highContrast"> Increase contrast and focus outlines</label>
+        <label class="settings-check"><input type="checkbox" name="reduceMotion"> Reduce animations and motion</label>
+      </section>
+      <div class="settings-actions"><button class="account-button primary" type="submit">Save preferences</button><button class="account-button secondary" id="resetPreferences" type="button">Reset to defaults</button></div>
+    </form>
+  </main>
+  
+<footer class="site-footer" id="siteFooter">
+  <div class="footer-wrap">
+    <div class="footer-col footer-col-brand">
+      <a class="footer-brand" href="index.html" aria-label="Cakes of Paradise home">
+        <img src="logo.jpg" alt="Cakes of Paradise Logo" class="footer-logo-img">
+        <span>Cakes of Paradise</span>
+      </a>
+      <p>Handcrafted artisan cakes made fresh with love in Surathkal. Celebrating birthdays, weddings, anniversaries, and sweet milestones across Mangaluru.</p>
+      <div class="footer-a11y-quick">
+        <a href="settings.html" class="footer-a11y-link" title="Accessibility & Settings">♿ Accessibility</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#cakes">Cake Categories</a></li>
+        <li><a href="index.html#shop">Shop Collection</a></li>
+        <li><a href="custom.html">Custom Cakes</a></li>
+        <li><a href="gallery.html">Bakery Gallery</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact &amp; Enquiries</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Customer Care</h4>
+      <ul>
+        <li><a href="cart.html">View Cart</a></li>
+        <li><a href="orders.html">Track Orders</a></li>
+        <li><a href="account.html">My Account &amp; Rewards</a></li>
+        <li><a href="settings.html">Settings &amp; Accessibility</a></li>
+        <li><a href="login.html">Sign In / Register</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Visit &amp; Connect</h4>
+      <ul class="footer-contact-list">
+        <li><span>💬 WhatsApp / Call:</span> <a href="tel:7019994145" class="footer-contact-link">7019994145</a></li>
+        <li><span>📸 Instagram:</span> <a href="https://instagram.com/_cakes_of_paradise/" target="_blank" rel="noreferrer" class="footer-contact-link">_cakes_of_paradise</a></li>
+        <li><span>📍 Location:</span> Surathkal, Mangaluru, Karnataka</li>
+        <li><span>🚚 Free Delivery:</span> All orders within Surathkal</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-bottom-inner">
+      <p>© 2026 Cakes of Paradise. All rights reserved. Handcrafted with 🤎 in Surathkal.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="settings.js?v=20261031-pastel-accent" defer></script>
+<script src="motion.js" defer></script>
+  <script src="shared-footer.js?v=20261031-home-footer-title" defer></script>
+  <script src="shared-navigation.js?v=20261101-role-aware" defer></script>
+  <script src="site-navigation.js?v=20261101-role-aware" defer></script>
+</body>
+</html>

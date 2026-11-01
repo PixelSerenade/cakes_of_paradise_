@@ -1,0 +1,365 @@
+/* Editorial storefront structure inspired by the supplied visual references. */
+body:has(.hero) { --cream:#f5f0e8; --dark-brown:#332b26; --text-brown:#5f574f; --primary-pink:#89947b; --primary-pink-deep:#68745f; --light-pink:#e9e6dc; --white:#fffdf9; --gold:#aa8a5c; font-family:"DM Sans",Poppins,sans-serif; background:#f5f0e8; }
+body:has(.hero) h1, body:has(.hero) h2, body:has(.hero) h3, body:has(.hero) h4 { font-family:"Cormorant Garamond",Georgia,serif; font-weight:500; letter-spacing:-.025em; }
+body:has(.hero) > header { background:rgba(250,247,241,.96); border-bottom:1px solid #e8e0d6; box-shadow:none; }
+body:has(.hero) .nav-wrap { min-height:68px; max-width:1480px; padding:8px clamp(20px,5vw,78px); }
+body:has(.hero) .logo-group { gap:0; }
+body:has(.hero) .logo-group img { display:none; }
+body:has(.hero) .logo-text { font:italic 600 2rem/1 "Cormorant Garamond",Georgia,serif; letter-spacing:-.04em; color:#332b26; }
+body:has(.hero) .logo-text::after { content:"CAKES · SWEET MOMENTS"; display:block; margin-top:4px; font:600 .48rem/1 "DM Sans",sans-serif; letter-spacing:.24em; text-align:center; }
+body:has(.hero) nav ul { gap:clamp(16px,3vw,42px); }
+body:has(.hero) nav ul li a { font:500 .86rem "DM Sans",sans-serif; }
+body:has(.hero) .nav-cta { gap:12px; }
+body:has(.hero) #navOrderLink { padding:10px 18px!important; border-radius:999px; font-size:.76rem!important; }
+
+body:has(.hero) .hero { min-height:0; padding:68px clamp(22px,6vw,88px) 34px; background:#e9e3d9!important; overflow:hidden; }
+body:has(.hero) .hero-inner { max-width:1500px; grid-template-columns:minmax(0,.86fr) minmax(0,1.14fr); gap:clamp(30px,6vw,88px); }
+body:has(.hero) .hero-text { padding:38px 0 35px; }
+body:has(.hero) .hero .eyebrow { font:600 .68rem "DM Sans",sans-serif; letter-spacing:.22em; color:#655b51!important; }
+body:has(.hero) .hero-text h1 { max-width:680px; margin:12px 0 16px; font:500 clamp(3rem,5.2vw,5.2rem)/.88 "Cormorant Garamond",Georgia,serif; letter-spacing:-.045em; color:#27231f!important; }
+body:has(.hero) .hero-text h1 em { display:inline-block; color:#34302b!important; font-style:italic; font-weight:400; }
+body:has(.hero) .hero-text p { max-width:460px; margin:24px 0 25px; color:#665c53!important; font-size:.92rem; line-height:1.8; }
+body:has(.hero) .hero-cta-group { gap:10px; }
+body:has(.hero) .hero-cta-group .btn { min-height:43px; padding:12px 22px; font-size:.72rem; letter-spacing:.08em; text-transform:uppercase; box-shadow:none; }
+body:has(.hero) .hero-cta-group .btn-outline { border-color:#837a6d; }
+body:has(.hero) .hero-stats { display:none; }
+body:has(.hero) .hero-photo-wrap { width:100%; max-width:none; height:clamp(300px,34vw,475px); border:0; border-radius:46% 2px 2px 38%; box-shadow:0 20px 54px #51453b1c; transform:rotate(1deg); }
+body:has(.hero) .hero-cake-photo { width:100%; height:100%; object-position:right center; border:0; border-radius:inherit; box-shadow:none; animation:none; }
+body:has(.hero) .hero-floating-tag { left:auto; right:14px; bottom:14px; width:max-content; max-width:calc(100% - 28px); padding:11px 15px; border:1px solid #fff9; border-radius:2px; background:#f8f4eced; box-shadow:none; }
+body:has(.hero) .hero-floating-tag .tag-icon { display:none; }
+body:has(.hero) .tag-title { font:600 .74rem "DM Sans",sans-serif; color:#332b26; }
+body:has(.hero) .tag-sub { font:400 .65rem "DM Sans",sans-serif; color:#746a60; }
+body:has(.hero) .hero .blob, body:has(.hero) .hero .sparkle, body:has(.hero) .hero .heart-float, body:has(.hero) .hero-visual .halo { display:none; }
+
+.category-ribbon { position:relative; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); align-items:center; gap:18px; padding:22px clamp(30px,7vw,110px) 20px; background:#f8f5ee; border-bottom:1px solid #e6dfd5; }
+.category-orbit { display:grid; justify-items:center; gap:8px; color:#38332e!important; text-align:center; font-size:.66rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; }
+.category-orbit-image { display:block; width:clamp(92px,9vw,132px); aspect-ratio:1; padding:6px; border-radius:50%; background:var(--category-tint,#e4cfba); overflow:hidden; transition:transform .25s ease,box-shadow .25s ease; }
+.category-orbit-image img { width:100%; height:100%; border-radius:50%; object-fit:cover; }
+.category-orbit:hover .category-orbit-image,.category-orbit:focus-visible .category-orbit-image { transform:translateY(-4px); box-shadow:0 12px 24px #473d3220; }
+.category-orbit i { font-style:normal; font-size:1rem; line-height:.8; }
+
+body:has(.hero) #cakes { padding:54px clamp(22px,6vw,88px) 38px; background:#efede6!important; }
+body:has(.hero) #cakes .section-head { max-width:1400px; margin:0 auto 18px; text-align:left; }
+body:has(.hero) #cakes .section-head .eyebrow { margin-bottom:0; color:#62584e; font-size:.65rem; letter-spacing:.2em; }
+body:has(.hero) #cakes .section-head h2 { margin:0; font:500 clamp(2.2rem,3.5vw,3.5rem)/1.05 "Cormorant Garamond",Georgia,serif; }
+body:has(.hero) #cakes .section-head p { display:none; }
+.title-swish { display:inline-block; margin-left:8px; color:#948779; font:400 2.4rem "Cormorant Garamond",serif; transform:rotate(-16deg); }
+body:has(.hero) .featured-cakes-grid { max-width:1400px; grid-template-columns:repeat(5,minmax(0,1fr)); gap:16px; }
+body:has(.hero) .featured-cake-card { padding:0; overflow:hidden; border:1px solid #e4ddd3; border-radius:7px; background:#fffdf9; box-shadow:0 3px 12px #51483c0c!important; text-align:left; }
+body:has(.hero) .featured-cake-card .cake-card-thumb-wrap { height:clamp(142px,15vw,205px); border-radius:0; }
+body:has(.hero) .featured-cake-card .cake-card-thumb { object-fit:cover; }
+body:has(.hero) .featured-cake-card .cake-card-body { display:grid; gap:3px; padding:12px 13px 13px; }
+body:has(.hero) .featured-cake-card .product-category { order:0; margin:0; font-size:.56rem; letter-spacing:.12em; color:#8b7765; }
+body:has(.hero) .featured-cake-card h3 { margin:0; font:600 1.2rem/1.1 "Cormorant Garamond",Georgia,serif; }
+body:has(.hero) .featured-cake-rating { font-size:.61rem; color:#867a6d; }
+body:has(.hero) .featured-cake-card .price-tag { margin:3px 0; color:#332b26; font:600 .77rem "DM Sans",sans-serif; }
+body:has(.hero) .featured-cake-card .btn { width:100%; justify-content:center; padding:7px 12px; border-radius:999px; box-shadow:none; font-size:.6rem; letter-spacing:.09em; text-transform:uppercase; }
+body:has(.hero) .featured-cake-card:nth-child(5n+2) .btn { background:#aab09a!important; }
+body:has(.hero) .featured-cake-card:nth-child(5n+3) .btn { background:#9ebbc1!important; }
+body:has(.hero) .featured-cake-card:nth-child(5n+4) .btn { background:#e6d9b9!important; color:#4f473b!important; }
+body:has(.hero) .featured-cake-card:nth-child(5n+5) .btn { background:#cdbda9!important; color:#4f473b!important; }
+body:has(.hero) .featured-cake-card:nth-child(5n+1) .btn { background:#d8c8ae!important; color:#4f473b!important; }
+body:has(.hero) .featured-cake-card:nth-child(5n+2) .btn { background:#aab09a!important; color:#3f473a!important; }
+body:has(.hero) .featured-cake-card:nth-child(5n+3) .btn { background:#b8cbd0!important; color:#39484a!important; }
+body:has(.hero) .featured-cakes-footer { max-width:1400px; margin:16px auto 0; text-align:right; }
+body:has(.hero) .featured-cakes-footer .btn { padding:7px 15px; border-color:#aaa093; font-size:.68rem; }
+
+body:has(.hero) .shop-section { padding:64px clamp(22px,6vw,88px) 76px; background:#f8f5ee!important; }
+body:has(.hero) .shop-section .section-head { max-width:1400px; margin:0 auto 25px; text-align:left; }
+body:has(.hero) .shop-section .section-head .eyebrow { color:#766957; font-size:.65rem; letter-spacing:.2em; }
+body:has(.hero) .shop-section .section-head h2 { font:500 clamp(2.5rem,4vw,4rem)/.98 "Cormorant Garamond",Georgia,serif; }
+body:has(.hero) .shop-section .section-head p { max-width:580px; margin-left:0; font-size:.85rem; }
+body:has(.hero) .shop-toolbar { max-width:1400px; grid-template-columns:minmax(250px,1fr) 170px 180px; gap:12px; margin-bottom:16px; }
+body:has(.hero) .shop-toolbar .catalog-category-control { position:absolute!important; width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
+body:has(.hero) .shop-toolbar label { color:#63594f; font-size:.68rem; letter-spacing:.03em; }
+body:has(.hero) .shop-toolbar input,body:has(.hero) .shop-toolbar select { min-height:42px; border:1px solid #e2dbd1; border-radius:3px; background:#fffdf9; font:400 .75rem "DM Sans",sans-serif; }
+body:has(.hero) #catalogMessage { max-width:1400px; margin:0 auto 12px; font-size:.7rem; }
+body:has(.hero) .shop-layout { max-width:1400px; grid-template-columns:190px minmax(0,1fr); gap:24px; }
+.collection-sidebar { position:sticky; top:92px; display:grid; align-content:start; gap:2px; padding:17px 14px; border:1px solid #e7dfd4; background:#f3eee5; }
+.collection-sidebar h3 { margin:0 0 9px; font:600 1.15rem "Cormorant Garamond",Georgia,serif; }
+.collection-sidebar .select-category-btn { min-height:34px; padding:7px 10px; border:0; border-radius:2px; background:transparent; color:#655b52; text-align:left; font:500 .71rem "DM Sans",sans-serif; cursor:pointer; }
+.collection-sidebar .select-category-btn:hover,.collection-sidebar .select-category-btn.is-selected { background:#e4ddd3; color:#332b26; }
+.collection-custom-link { margin-top:14px; padding:13px 10px 2px; border-top:1px solid #ddd4c8; color:#70675e!important; font:italic 500 .85rem/1.35 "Cormorant Garamond",Georgia,serif; }
+.collection-custom-link span { float:right; font:normal .8rem "DM Sans",sans-serif; }
+.collection-results { min-width:0; }
+.collection-sort-note { display:flex; justify-content:space-between; align-items:center; min-height:30px; margin-bottom:8px; color:#81766b; font-size:.62rem; letter-spacing:.08em; text-transform:uppercase; }
+body:has(.hero) .product-grid { grid-template-columns:repeat(3,minmax(0,1fr)); gap:15px; }
+body:has(.hero) .product-card { border:1px solid #e7dfd5; border-radius:5px; background:#fffdf9!important; box-shadow:0 4px 15px #52483d0a!important; }
+body:has(.hero) .product-photo { height:clamp(150px,18vw,235px); }
+body:has(.hero) .product-content { padding:14px; gap:5px; }
+body:has(.hero) .product-meta { margin:0; }
+body:has(.hero) .product-category { color:#877562; font-size:.58rem; letter-spacing:.1em; }
+body:has(.hero) .product-rating { font-size:.64rem; }
+body:has(.hero) .product-content h3 { margin:0; color:#332b26!important; font:600 1.35rem/1 "Cormorant Garamond",Georgia,serif; }
+body:has(.hero) .product-content .product-description { min-height:0; margin:0 0 5px; font-size:.69rem; line-height:1.45; }
+body:has(.hero) .product-content label { display:grid; grid-template-columns:56px minmax(0,1fr); align-items:center; gap:6px; margin:0; font-size:.59rem; }
+body:has(.hero) .product-content select { min-height:32px; padding:5px 8px; border-color:#e6dfd6; border-radius:3px; font-size:.66rem; }
+body:has(.hero) .product-content .allergen-note,body:has(.hero) .product-content .dietary-tags { margin:2px 0; padding:7px; background:#f6f2ec; font-size:.59rem; }
+body:has(.hero) .product-buy-row { flex-wrap:wrap; gap:7px; margin-top:6px; }
+body:has(.hero) .product-price { color:#332b26; font:600 .8rem "DM Sans",sans-serif; }
+body:has(.hero) .product-buy-row .btn { flex:1 1 100%; min-height:32px; justify-content:center; padding:7px 10px; border-radius:999px; background:#d8c8ae!important; color:#4f473b!important; box-shadow:none; font-size:.6rem; letter-spacing:.1em; text-transform:uppercase; }
+body:has(.hero) .favorite-toggle { padding:5px 8px; border-color:#e6dfd6; font-size:.62rem; }
+body:has(.hero) .product-reviews-link { margin:4px 0 0!important; color:#75695c; font-size:.64rem; }
+
+body:has(.hero) #siteFooter { padding:38px clamp(22px,6vw,88px) 15px; background:#f1ede5; color:#63594f; border-top:1px solid #e4ddd3; }
+body:has(.hero) #siteFooter .footer-wrap { max-width:1400px; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:34px; margin-bottom:26px; }
+body:has(.hero) #siteFooter .footer-brand img { display:none; }
+body:has(.hero) #siteFooter .footer-brand span { color:#332b26; font:italic 600 2rem/1 "Cormorant Garamond",Georgia,serif; }
+body:has(.hero) #siteFooter h4 { color:#332b26; font:600 1.05rem "Cormorant Garamond",Georgia,serif; }
+body:has(.hero) #siteFooter p,body:has(.hero) #siteFooter a,body:has(.hero) #siteFooter li { color:#6f665c; font-size:.74rem; }
+body:has(.hero) #siteFooter .footer-bottom { border-color:#ddd5c9; color:#84796d; font-size:.65rem; }
+
+@media(max-width:1000px) {
+  body:has(.hero) .featured-cakes-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  body:has(.hero) .product-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  body:has(.hero) .shop-toolbar { grid-template-columns:minmax(0,1fr) 150px 155px; }
+}
+@media(max-width:760px) {
+  body:has(.hero) .hero { padding-top:88px; }
+  body:has(.hero) .hero-inner { grid-template-columns:1fr; gap:10px; }
+  body:has(.hero) .hero-text { padding:16px 0 8px; text-align:left; }
+  body:has(.hero) .hero-text h1 { font-size:clamp(3rem,12vw,5rem); }
+  body:has(.hero) .hero-text p { margin:16px 0; }
+  body:has(.hero) .hero-photo-wrap { grid-row:1; height:clamp(240px,60vw,390px); border-radius:42% 2px 2px 2px; }
+  .category-ribbon { display:flex; justify-content:flex-start; gap:17px; overflow-x:auto; padding:18px 20px; scroll-snap-type:x mandatory; }
+  .category-orbit { min-width:100px; scroll-snap-align:center; font-size:.57rem; }
+  .category-orbit-image { width:88px; }
+  body:has(.hero) #cakes { padding-top:38px; }
+  body:has(.hero) .featured-cakes-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  body:has(.hero) .featured-cake-card:last-child:nth-child(odd) { display:none; }
+  body:has(.hero) .shop-toolbar { grid-template-columns:1fr 1fr; }
+  body:has(.hero) .shop-toolbar .shop-search { grid-column:1/-1; }
+  body:has(.hero) .shop-layout { grid-template-columns:1fr; gap:10px; }
+  .collection-sidebar { position:static; display:flex; gap:5px; overflow:auto; padding:7px; white-space:nowrap; }
+  .collection-sidebar h3,.collection-custom-link { display:none; }
+  .collection-sidebar .select-category-btn { flex:none; }
+}
+@media(max-width:760px) { body:has(.hero) #siteFooter .footer-wrap { grid-template-columns:1fr 1fr; gap:22px; } }
+@media(max-width:520px) {
+  body:has(.hero) .product-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; }
+  body:has(.hero) .product-photo { height:clamp(125px,39vw,190px); }
+  body:has(.hero) .product-content { padding:10px; }
+  body:has(.hero) .product-content label { grid-template-columns:1fr; gap:3px; }
+  body:has(.hero) .product-content .product-description { display:none; }
+  body:has(.hero) .product-content .allergen-note,body:has(.hero) .product-content .dietary-tags { display:none; }
+  .collection-sort-note span:last-child { display:none; }
+}
+@media(prefers-reduced-motion:reduce) { .category-orbit-image { transition:none; } }
+
+/* Let the scrapbook artwork read as one continuous hero, with the cake on the right. */
+body:has(.hero) .hero { min-height:0; padding:68px clamp(24px,6vw,88px) 28px; overflow:hidden; }
+body:has(.hero) .hero-inner { position:relative; display:block; width:100%; max-width:1500px; min-height:clamp(350px,31vw,455px); }
+body:has(.hero) .hero-text { position:relative; z-index:2; width:min(44%,600px); padding:40px 0 28px; }
+body:has(.hero) .hero-visual { position:absolute; z-index:0; inset:0; display:block; pointer-events:none; }
+body:has(.hero) .hero-visual::after { position:absolute; inset:0; content:""; background:linear-gradient(90deg,#e9e3d9 0%,#e9e3d9e8 22%,#e9e3d97a 37%,transparent 55%); }
+body:has(.hero) .hero-photo-wrap { position:absolute; inset:0; width:100%; height:100%; max-width:none; border:0; border-radius:0; background:transparent; box-shadow:none; transform:none; overflow:visible; }
+body:has(.hero) .hero-cake-photo { width:100%; max-width:none; height:100%; object-fit:cover; object-position:center; border:0; border-radius:0; background:transparent; box-shadow:none; animation:none; }
+body:has(.hero) .hero-floating-tag { display:none; }
+@media(max-width:760px) {
+  body:has(.hero) .hero { min-height:0; padding:76px 20px 24px; }
+  body:has(.hero) .hero-inner { min-height:clamp(430px,112vw,570px); }
+  body:has(.hero) .hero-text { width:min(100%,540px); padding:24px 4px; }
+  body:has(.hero) .hero-visual { inset:0 -20px; opacity:.62; }
+  body:has(.hero) .hero-visual::after { background:linear-gradient(90deg,#e9e3d9eb 0%,#e9e3d9c7 52%,#e9e3d93b 100%); }
+  body:has(.hero) .hero-cake-photo { object-position:67% center; }
+}
+
+/* Let the cake artwork flow into the hero instead of sitting in a rigid photo box. */
+body:has(.hero) section#home.hero { position:relative!important; background:#e9e3d9!important; }
+body:has(.hero) section#home .hero-inner { position:relative!important; display:block!important; min-height:clamp(350px,27vw,410px)!important; }
+body:has(.hero) section#home .hero-text { position:relative!important; z-index:2!important; width:min(44%,610px)!important; }
+body:has(.hero) section#home .hero-visual { position:absolute!important; z-index:1!important; top:0!important; right:-6vw!important; bottom:0!important; left:28%!important; display:block!important; width:auto!important; height:auto!important; opacity:1!important; pointer-events:none!important; }
+body:has(.hero) section#home .hero-visual::after { position:absolute!important; inset:0!important; content:""!important; background:linear-gradient(90deg,#e9e3d9 0%,#e9e3d9b8 15%,#e9e3d900 42%)!important; pointer-events:none; }
+body:has(.hero) section#home .hero-photo-wrap { position:absolute!important; inset:0!important; width:100%!important; max-width:none!important; height:100%!important; overflow:hidden!important; border:0!important; border-radius:0!important; background:transparent!important; box-shadow:none!important; transform:none!important; -webkit-clip-path:url(#heroFlowClip)!important; clip-path:url(#heroFlowClip)!important; }
+body:has(.hero) section#home .hero-cake-photo { display:block!important; width:100%!important; max-width:none!important; height:100%!important; object-fit:cover!important; object-position:right center!important; -webkit-clip-path:url(#heroFlowClip)!important; clip-path:url(#heroFlowClip)!important; border:0!important; border-radius:0!important; background:transparent!important; box-shadow:none!important; animation:none!important; }
+body:has(.hero) section#home .hero-floating-tag { display:none!important; }
+@media(max-width:760px) {
+  body:has(.hero) section#home .hero-inner { min-height:clamp(420px,105vw,550px)!important; }
+  body:has(.hero) section#home .hero-text { width:min(100%,540px)!important; padding:24px 4px!important; }
+  body:has(.hero) section#home .hero-visual { top:8%!important; right:-12vw!important; bottom:-3%!important; left:8%!important; opacity:.78!important; }
+  body:has(.hero) section#home .hero-visual::after { background:linear-gradient(90deg,#e9e3d9 0%,#e9e3d9d9 18%,#e9e3d966 43%,transparent 72%)!important; }
+  body:has(.hero) section#home .hero-cake-photo { object-position:right center!important; }
+}
+
+/* Keep the full catalogue on its dedicated Shop page, while retaining the hidden
+   catalogue markup on Home for shared cart/account script initialization. */
+body.home-page #shop.shop-section { padding:0!important; margin:0!important; background:transparent!important; }
+body.home-page #shop > .section-head,
+body.home-page #shop > .category-banner,
+body.home-page #shop > .shop-toolbar,
+body.home-page #shop > #catalogMessage,
+body.home-page #shop > .shop-layout,
+body.home-page #shop > .shop-load-more-wrap { display:none!important; }
+
+/* Keep category chips coordinated with the category color story. */
+body:has(.hero) .featured-cake-card .product-category { display:inline-flex; width:max-content; padding:3px 9px; border-radius:999px; background:color-mix(in srgb,var(--cake-accent) 72%,white); color:#433c35; font-size:.56rem; letter-spacing:.08em; }
+body:has(.hero) .featured-cake-card .cake-card-thumb-wrap { position:relative; }
+body:has(.hero) .featured-bestseller-badge { position:absolute; top:10px; left:10px; padding:5px 10px; border:1px solid #fff9; border-radius:999px; background:#f4ead2; color:#574b36; font:600 .58rem/1 "DM Sans",sans-serif; letter-spacing:.08em; text-transform:uppercase; }
+body:has(.hero) .featured-bestseller-badge[hidden] { display:none; }
+body:has(.hero) .featured-cake-card:nth-child(6n+1) .btn { background:#edcaca!important; color:#473d39!important; }
+body:has(.hero) .featured-cake-card:nth-child(6n+2) .btn { background:#cbd5bd!important; color:#3f473a!important; }
+body:has(.hero) .featured-cake-card:nth-child(6n+3) .btn { background:#c9dce2!important; color:#39484a!important; }
+body:has(.hero) .featured-cake-card:nth-child(6n+4) .btn { background:#d9cde4!important; color:#49424e!important; }
+body:has(.hero) .featured-cake-card:nth-child(6n+5) .btn { background:#eadbb8!important; color:#4f473b!important; }
+body:has(.hero) .featured-cake-card:nth-child(6n+6) .btn { background:#e4cfba!important; color:#4f473b!important; }
+
+/* Gallery filters use the bakery's soft neutral, sage, blue, lilac and butter palette. */
+.gallery-filter-btn { --filter-accent:#cbd5bd; background:#fffdf9!important; border:1px solid #ded8cd!important; color:#51483f!important; box-shadow:none!important; }
+.gallery-filter-btn:nth-child(2) { --filter-accent:#c9dce2; }
+.gallery-filter-btn:nth-child(3) { --filter-accent:#cbd5bd; }
+.gallery-filter-btn:nth-child(4) { --filter-accent:#d9cde4; }
+.gallery-filter-btn:nth-child(5) { --filter-accent:#eadbb8; }
+.gallery-filter-btn:hover,.gallery-filter-btn.active { background:var(--filter-accent)!important; border-color:var(--filter-accent)!important; color:#433c35!important; box-shadow:0 3px 10px #51483d12!important; }
+
+/* Keep the story and footer on the same warm, readable bakery palette. */
+body:has(.hero) #about { background:#f4f0e8!important; color:#332b26!important; }
+body:has(.hero) #about .about-photo { padding:16px; border-radius:18px; background:#e8e2d7; box-shadow:0 12px 32px #51483d12; }
+body:has(.hero) #about .about-photo img { display:block; width:100%; height:clamp(300px,34vw,440px); object-fit:cover; object-position:center; border-radius:12px!important; box-shadow:none; }
+body:has(.hero) #about .about-text .eyebrow { color:#68745f!important; }
+body:has(.hero) #about .about-text h2 { color:#332b26!important; }
+body:has(.hero) #about .about-text p { color:#5f574f!important; }
+body:has(.hero) #about .about-quote { color:#75836a!important; }
+body:has(.hero) #about .highlight-card { border:1px solid #e5ddd0; background:#fffdf9!important; box-shadow:0 5px 18px #51483d0b; }
+body:has(.hero) #about .highlight-card h4 { color:#3e3831!important; }
+body:has(.hero) #about .highlight-card p { color:#665d53!important; }
+body:has(.hero) #siteFooter { background:#eee9df!important; color:#433b33!important; border-top:1px solid #ded6c9!important; }
+body:has(.hero) #siteFooter h4,body:has(.hero) #siteFooter .footer-brand span { color:#332b26!important; }
+body:has(.hero) #siteFooter p,body:has(.hero) #siteFooter a,body:has(.hero) #siteFooter li,body:has(.hero) #siteFooter li span { color:#5f574f!important; }
+body:has(.hero) #siteFooter .footer-bottom { background:#e5dfd4!important; border-color:#d8d0c3!important; color:#5f574f!important; }
+body:has(.hero) #siteFooter .footer-bottom p { color:#5f574f!important; }
+
+/* Homepage occasion categories page through every catalogue category. */
+.category-ribbon { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); position:relative; padding-inline:clamp(56px,7vw,106px); overflow:hidden; }
+.category-page-arrow { position:absolute; z-index:3; top:50%; display:grid; width:38px; height:38px; place-items:center; padding:0; transform:translateY(-50%); border:1px solid #dcd5c8; border-radius:50%; background:#fffdf9; color:#51483f; box-shadow:0 3px 12px #51483d12; font:500 1.1rem/1 "DM Sans",sans-serif; cursor:pointer; transition:background .2s ease,opacity .2s ease,transform .2s ease; }
+.category-page-arrow.previous { left:14px; }
+.category-page-arrow.next { right:14px; }
+.category-page-arrow:hover:not(:disabled) { transform:translateY(-50%) scale(1.06); background:#e3e8dc; }
+.category-page-arrow:disabled { opacity:.35; cursor:default; box-shadow:none; }
+.category-page-arrow:focus-visible { outline:2px solid #89927b; outline-offset:3px; }
+body:has(.hero) section#home .hero-cake-photo { transition:opacity .52s ease!important; }
+body:has(.hero) section#home .hero-cake-photo.is-fading { opacity:0!important; }
+/* Every slide uses the same artwork window and crop; only the photo changes. */
+body:has(.hero) section#home .hero-cake-photo { object-fit:cover!important; }
+/* Featured cards follow the shop catalogue's compact typography and pastel labels. */
+body:has(.hero) #cakes .featured-cakes-grid { gap:18px; }
+body:has(.hero) #cakes .featured-cake-card { cursor:pointer; transition:transform .18s ease,box-shadow .18s ease; }
+body:has(.hero) #cakes .featured-cake-card:hover { transform:translateY(-3px); box-shadow:0 8px 20px #51483c16!important; }
+body:has(.hero) #cakes .featured-cake-card:focus-visible { outline:2px solid #89927b; outline-offset:3px; }
+body:has(.hero) #cakes .featured-cake-card .cake-card-thumb-wrap { height:clamp(158px,17vw,220px); }
+body:has(.hero) #cakes .featured-cake-card .cake-card-body { gap:5px; padding:11px 12px 12px; }
+body:has(.hero) #cakes .featured-cake-card h3 { color:#332b26!important; font-size:1rem; font-weight:500; line-height:1.15; }
+body:has(.hero) #cakes .featured-cake-card .product-category { font-size:.58rem; }
+body:has(.hero) #cakes .featured-bestseller-badge { border-color:#c3d2d7; background:#d8e5e8; color:#35484b; }
+body:has(.hero) #cakes .featured-cake-card:nth-child(6n+1) .btn { background:#edcaca!important; color:#473d39!important; }
+body:has(.hero) #cakes .featured-cake-card:nth-child(6n+2) .btn { background:#cbd5bd!important; color:#3f473a!important; }
+body:has(.hero) #cakes .featured-cake-card:nth-child(6n+3) .btn { background:#c9dce2!important; color:#39484a!important; }
+body:has(.hero) #cakes .featured-cake-card:nth-child(6n+4) .btn { background:#d9cde4!important; color:#49424e!important; }
+body:has(.hero) #cakes .featured-cake-card:nth-child(6n+5) .btn { background:#eadbb8!important; color:#4f473b!important; }
+body:has(.hero) #cakes .featured-cake-card:nth-child(6n+6) .btn { background:#e4cfba!important; color:#4f473b!important; }
+@media(max-width:760px) {
+  .category-ribbon { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px 8px; padding-inline:44px; overflow:hidden; }
+  .category-page-arrow { width:34px; height:34px; }
+  .category-page-arrow.previous { left:5px; }
+  .category-page-arrow.next { right:5px; }
+}
+@media(max-width:520px) {
+  .category-ribbon { grid-template-columns:repeat(2,minmax(0,1fr)); padding:18px 42px; }
+  .category-orbit-image { width:clamp(74px,22vw,96px); }
+}
+
+/* The original hero photo stays in place until a visitor chooses another slide. */
+body:has(.hero) section#home .hero-carousel-controls { position:absolute; z-index:5; right:clamp(28px,6vw,92px); bottom:17px; display:flex; align-items:center; justify-content:center; gap:13px; pointer-events:auto; }
+body:has(.hero) section#home .hero-carousel-controls>button { display:grid; place-items:center; width:28px; height:28px; padding:0; border:0; border-radius:50%; background:#332b2670; color:#fff!important; font:500 1rem/1 "DM Sans",sans-serif; text-shadow:0 1px 5px #1d1714a8; cursor:pointer; transition:background .2s,transform .2s; }
+body:has(.hero) section#home .hero-carousel-controls>button:hover { transform:scale(1.08); background:#332b26a0; }
+body:has(.hero) section#home .hero-carousel-controls>button:focus-visible,.hero-carousel-dot:focus-visible { outline:2px solid #fff; outline-offset:3px; }
+body:has(.hero) section#home .hero-carousel-dots { display:flex; align-items:center; gap:8px; }
+body:has(.hero) section#home .hero-carousel-dot { width:7px; height:7px; padding:0; border:1px solid #ffffffbd; border-radius:50%; background:#ffffff70; box-shadow:0 1px 5px #1d17145c; cursor:pointer; transition:width .2s,background .2s; }
+body:has(.hero) section#home .hero-carousel-dot[aria-pressed="true"] { width:20px; border-radius:99px; background:#fff; }
+@media(max-width:760px) {
+  body:has(.hero) section#home .hero-carousel-controls { right:50%; bottom:12px; transform:translateX(50%); }
+}
+@media(prefers-reduced-motion:reduce) {
+  body:has(.hero) section#home .hero-cake-photo,.hero-carousel-controls>button,.hero-carousel-dot { transition:none!important; }
+}
+
+/* Add a little more pastel variety while keeping ink and interaction states readable. */
+:root {
+  --bakery-butter:#eadbb8;
+  --bakery-violet:#d9cde4;
+  --bakery-sky:#c9dce2;
+}
+body:has(.hero) #custom { background:#f1eadb!important; }
+body:has(.hero) #custom .custom-text > .btn-primary {
+  background:var(--bakery-butter)!important;
+  border-color:#ddcda7!important;
+  color:#493f33!important;
+  box-shadow:0 5px 14px #8270521c!important;
+}
+body:has(.hero) #custom .custom-text > .btn-primary:hover { background:#e2d0a6!important; }
+body:has(.hero) #contact { background:#edf1ee!important; }
+body:has(.hero) #contactForm > .btn-primary,
+body:has(.hero) #enquiryConfirmationOk {
+  background:var(--bakery-violet)!important;
+  border-color:#cbbdd8!important;
+  color:#413847!important;
+  box-shadow:0 5px 14px #675b7020!important;
+}
+body:has(.hero) #contactForm > .btn-primary:hover,
+body:has(.hero) #enquiryConfirmationOk:hover { background:#cfc1da!important; }
+body:has(.hero) .product-card:nth-child(6n+1) .product-buy-row .btn { background:#e7c2c0!important; border-color:#dfb1af!important; color:#473d39!important; }
+body:has(.hero) .product-card:nth-child(6n+2) .product-buy-row .btn { background:#cbd5bd!important; border-color:#bdc9ad!important; color:#3f473a!important; }
+body:has(.hero) .product-card:nth-child(6n+3) .product-buy-row .btn { background:var(--bakery-sky)!important; border-color:#b7cfd2!important; color:#39484a!important; }
+body:has(.hero) .product-card:nth-child(6n+4) .product-buy-row .btn { background:var(--bakery-violet)!important; border-color:#cbbdd8!important; color:#49424e!important; }
+body:has(.hero) .product-card:nth-child(6n+5) .product-buy-row .btn { background:var(--bakery-butter)!important; border-color:#ddcda7!important; color:#4f473b!important; }
+body:has(.hero) .product-card:nth-child(6n+6) .product-buy-row .btn { background:#e4cfba!important; border-color:#d7bea5!important; color:#4f473b!important; }
+body:has(.hero) .product-buy-row .btn:hover:not(:disabled) { filter:brightness(.96); }
+
+/* Keep category menus floating over the storefront instead of reserving page height. */
+@media (min-width: 841px) {
+  body:has(.nav-item-dropdown:hover),
+  body:has(.nav-item-dropdown:focus-within),
+  body.cakes-menu-open {
+    padding-top: 0 !important;
+  }
+  body > header {
+    position: relative;
+    z-index: 1001;
+  }
+  body > header nav li.nav-item-dropdown > ul.nav-compact-dropdown {
+    position: absolute !important;
+    top: 100% !important;
+    left: 0 !important;
+    margin-top: 0 !important;
+    max-height: min(72vh, 440px);
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 840px) {
+  body.mobile-nav-open,
+  body.mobile-nav-open.cakes-menu-open {
+    padding-top: 0 !important;
+  }
+}
+
+/* Homepage bestseller scroller: reveal more sold-through cakes with clear edge controls. */
+body:has(.hero) .featured-cakes-controls{max-width:1400px;margin:0 auto 12px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+body:has(.hero) .featured-cakes-controls button{width:38px;height:38px;display:grid;place-items:center;border:1px solid #d8cdbd;border-radius:50%;background:#fffdf8;color:#5d6653;font:22px/1 'DM Sans',sans-serif;cursor:pointer;box-shadow:0 4px 12px rgba(75,62,45,.08);transition:transform .18s ease,background .18s ease,opacity .18s ease}
+body:has(.hero) .featured-cakes-controls button:hover:not(:disabled){transform:translateY(-2px);background:#eef0e8}
+body:has(.hero) .featured-cakes-controls button:disabled{opacity:.38;cursor:default;box-shadow:none}
+body:has(.hero) .featured-cakes-controls button[hidden]{display:none!important}
+body:has(.hero) .featured-cakes-grid{display:grid;grid-auto-flow:column;grid-auto-columns:calc((100% - 64px)/5);grid-template-columns:none!important;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;overscroll-behavior-x:contain;padding:2px 2px 12px}
+body:has(.hero) .featured-cakes-grid::-webkit-scrollbar{display:none}
+body:has(.hero) .featured-cake-card{min-width:0;scroll-snap-align:start}
+@media(max-width:1100px){body:has(.hero) .featured-cakes-grid{grid-auto-columns:calc((100% - 32px)/3)}}
+@media(max-width:640px){body:has(.hero) .featured-cakes-controls{margin-bottom:8px}body:has(.hero) .featured-cakes-controls button{width:34px;height:34px}body:has(.hero) .featured-cakes-grid{grid-auto-columns:74%;gap:14px}}
+
+/* Keep the home hero compact and let its image and text share one clean height. */
+@media (min-width: 761px) {
+  body:has(.hero) section#home.hero { padding-block:24px !important; }
+  body:has(.hero) section#home .hero-inner { min-height:clamp(340px,27vw,390px) !important; }
+}
+@media (max-width: 760px) {
+  body:has(.hero) section#home.hero { padding:24px 16px 18px !important; }
+  body:has(.hero) section#home .hero-inner { min-height:clamp(390px,112vw,510px) !important; }
+}

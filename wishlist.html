@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f8f5ee">
+  <script src="preferences.js?v=20261101-sitewide"></script>
+  <title>My Wishlist | Cakes of Paradise</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;600&family=Great+Vibes&display=swap">
+  <link rel="stylesheet" href="site-navigation.css?v=20261031-global-nav"><link rel="stylesheet" href="shared-navigation.css?v=20261031-account-shortcuts">
+  <link rel="stylesheet" href="wishlist.css?v=20261031-toast-right">
+  <link rel="stylesheet" href="shared-footer.css?v=20261031-newsletter-polish">
+  <link rel="stylesheet" href="preferences.css?v=20261101-sitewide">
+</head>
+<body class="wishlist-page">
+  <header class="site-header"><div class="nav-wrap">
+    <a class="logo-group" href="index.html" aria-label="Cakes of Paradise home"><img src="logo.jpg" alt=""><div class="logo-text">Cakes of Paradise</div></a>
+    <nav aria-label="Main navigation"><ul id="wishlistNavLinks">
+      <li><a href="index.html">Home</a></li>
+      <li class="nav-item-dropdown"><div class="nav-cakes-control"><a href="#wishlistCakeMenu" class="nav-link-dropdown" aria-haspopup="true" aria-expanded="false">Cakes</a><button class="nav-category-toggle" type="button" aria-label="Open cake categories" aria-expanded="false" aria-controls="wishlistCakeMenu"><span aria-hidden="true">▾</span></button></div><ul class="nav-compact-dropdown" id="wishlistCakeMenu"><li><a href="shop.html?category=All">All Cakes</a></li><li><a href="shop.html?category=Birthday%20Cakes">Birthday Cakes</a></li><li><a href="shop.html?category=Wedding%20Cakes">Wedding Cakes</a></li><li><a href="shop.html?category=Anniversary%20Cakes">Anniversary Cakes</a></li><li><a href="shop.html?category=Cupcakes%20%26%20Jars">Cupcakes &amp; Jars</a></li><li><a href="shop.html?category=Theme%20Cakes">Theme Cakes</a></li><li><a href="shop.html?category=Photo%20Cakes">Photo Cakes</a></li></ul></li>
+      <li><a href="custom.html">Custom Cakes</a></li><li><a href="gallery.html">Sweet Moments</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li>
+    </ul></nav>
+    <div class="nav-cta"><a id="navCartLink" class="nav-cart-link" href="cart.html" aria-label="Cart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 8.5h11l1.2 12H5.3l1.2-12Z"/><path d="M9 9V6.5a3 3 0 0 1 6 0V9"/></svg><span id="navCartCount" class="nav-cart-count">0</span></a><a href="shop.html" class="nav-order-link">Order Now</a><a href="login.html" class="nav-sign-in">Sign In</a><button class="hamburger" id="wishlistHamburger" type="button" aria-label="Menu" aria-controls="wishlistNavLinks" aria-expanded="false"><span></span><span></span><span></span></button></div>
+  </div></header>
+  <main>
+    <section class="wishlist-hero"><div class="wishlist-hero-inner"><span class="wishlist-bow" aria-hidden="true"><svg viewBox="0 0 96 70"><path d="M47 31C34 10 11 5 7 20c-4 15 16 18 39 13M49 31C62 10 85 5 89 20c4 15-16 18-39 13M47 30 37 64l12-9 11 9-11-34M46 31h5"/></svg></span><div class="wishlist-title-copy"><span class="wishlist-script">A little love note</span><h1>My Wishlist</h1><p>A thoughtful collection of cakes for your sweetest moments.</p></div></div><div class="wishlist-hero-foot"><span>Handpicked just for you</span><span aria-hidden="true">✦</span><span id="wishlistHeroCount">0 sweet favorites</span></div></section>
+    <p id="wishlistMessage" class="wishlist-message" role="status" aria-live="polite">Gathering your favorite cakes…</p>
+    <section id="wishlistItems" class="wishlist-list" aria-label="Saved cakes"></section>
+    <section id="wishlistEmpty" class="wishlist-empty" hidden><span aria-hidden="true">♡</span><h2>Your wishlist is waiting for a little sweetness</h2><p>Tap the heart on any cake to save it here.</p><a class="wishlist-shop-link" href="shop.html">Explore the cakes <span>→</span></a></section>
+  </main>
+  <footer class="wishlist-footer"><a href="index.html">Cakes of Paradise</a><nav><a href="shop.html">Shop</a><a href="about.html">About Us</a><a href="contact.html">Contact</a><a href="faq.html">FAQs</a></nav><span>© 2026 Cakes of Paradise</span></footer>
+  <script src="api-config.js?v=20261030-same-origin"></script>
+  <script src="cart-storage.js"></script>
+  <script src="shared-navigation.js?v=20261101-role-aware"></script><script src="site-navigation.js?v=20261101-role-aware" defer></script>
+  <script src="wishlist.js?v=20261031-toast-right"></script>
+  <script src="shared-footer.js?v=20261031-home-footer-title" defer></script>
+</body>
+</html>

@@ -1,0 +1,211 @@
+.sweet-announcement,.gallery-announcement{min-height:31px;display:flex;align-items:center;justify-content:center;gap:10px;padding:5px 14px;background:#eee5d9;color:#514b42;font:500 .76rem/1.2 'Cormorant Garamond',Georgia,serif;letter-spacing:.045em;text-align:center}
+html,body{max-width:100%;overflow-x:clip}
+.sweet-announcement>span:first-child,.sweet-announcement>span:last-child,.gallery-announcement>span{color:#b7797b;font-size:.9rem}
+.sweet-announcement i,.gallery-announcement i{color:#92785f;font-style:normal}
+html body > footer#siteFooter.sweet-footer{position:relative!important;box-sizing:border-box!important;overflow:hidden!important;width:100%!important;max-width:100%!important;margin:0!important;padding:37px clamp(14px,3vw,40px) 9px!important;background:#f7f2e9!important;color:#514a42!important;border:0!important;border-top:3px solid #d9a9a1!important;font-family:'Cormorant Garamond',Georgia,serif!important}
+.sweet-footer,.sweet-footer *{box-sizing:border-box}
+.sweet-footer::before{content:'';position:absolute;top:29px;left:0;right:0;height:9px;background:radial-gradient(ellipse 12px 7px at 12px 7px,transparent 58%,#89947b 63% 76%,transparent 81%) 0 0/24px 9px repeat-x;opacity:.72}
+.sweet-footer-top-bow{position:absolute;top:2px;left:50%;transform:translateX(-50%);color:#d99496!important;font:2.55rem/1 'Cormorant Garamond',serif!important;text-shadow:0 2px 0 #fff8}
+.sweet-footer-main{position:relative;display:grid;grid-template-columns:minmax(140px,1.15fr) repeat(4,minmax(70px,.72fr)) minmax(155px,1.15fr);max-width:1480px;margin:0 auto;padding:8px 0 7px;align-items:stretch}
+.sweet-footer-brand,.sweet-footer-column,.sweet-footer-newsletter{min-width:0;padding:5px clamp(8px,1vw,15px);border-right:1px solid #decac0}
+.sweet-footer .visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
+.sweet-footer-brand{display:flex!important;flex-direction:column;justify-content:center;padding-left:0;text-decoration:none!important}
+.sweet-footer .sweet-footer-wordmark{color:#7c8871!important;font:600 clamp(2.15rem,3.2vw,3.15rem)/.88 'Cormorant Garamond',Georgia,serif!important;letter-spacing:-.045em}
+.sweet-footer .sweet-footer-wordmark>span{color:#d39a95!important}
+.sweet-footer .sweet-footer-tagline{margin-top:8px;color:#6f7965!important;font:italic 500 .98rem 'Cormorant Garamond',Georgia,serif!important}
+.sweet-footer-column{display:flex;flex-direction:column;align-items:flex-start;gap:5px}
+.sweet-footer .sweet-footer-column h2{margin:0 0 4px;color:#68745f!important;font:italic 600 1.08rem 'Cormorant Garamond',Georgia,serif!important;white-space:nowrap}
+.sweet-footer-column h2:first-letter{color:#d49b95!important}
+.sweet-footer .sweet-footer-column a{--footer-underline:#dfaaa5;position:relative;width:max-content;max-width:100%;padding:1px 0;color:#514b43!important;text-decoration:none!important;font:500 .94rem/1.25 'Cormorant Garamond',Georgia,serif!important;opacity:1!important;transform:none!important;transition:color .18s ease;display:block!important}
+.sweet-footer-column a::after{content:'';position:absolute;right:0;bottom:-1px;left:0;height:1px;background:var(--footer-underline);transform:scaleX(0);transform-origin:left;transition:transform .2s ease}
+.sweet-footer-column a:hover::after,.sweet-footer-column a:focus-visible::after{transform:scaleX(1)}
+.sweet-footer .sweet-footer-column a:hover,.sweet-footer .sweet-footer-column a:focus-visible{color:#48433c!important;outline:none}
+.sweet-footer-shop a:nth-of-type(1){--footer-underline:#dea9a2}.sweet-footer-shop a:nth-of-type(2){--footer-underline:#c7b5d9}.sweet-footer-shop a:nth-of-type(3){--footer-underline:#c5d3b6}
+.sweet-footer-about a:nth-of-type(1){--footer-underline:#e8c99b}.sweet-footer-about a:nth-of-type(2){--footer-underline:#aecdd2}.sweet-footer-account a:nth-of-type(1){--footer-underline:#d8b2c6}.sweet-footer-account a:nth-of-type(2){--footer-underline:#c8b9a5}.sweet-footer-account a:nth-of-type(3){--footer-underline:#bbd2c4}.sweet-footer-help a:nth-of-type(1){--footer-underline:#dfb4ae}.sweet-footer-help a:nth-of-type(2){--footer-underline:#b9c6a8}.sweet-footer-help a:nth-of-type(3){--footer-underline:#b5cfd7}
+.sweet-footer-newsletter{position:relative;display:flex;flex-direction:column;justify-content:center;gap:7px;padding-right:0;border-right:0}
+.sweet-footer .sweet-footer-social{width:max-content;color:#6f7d63!important;font:2.15rem/1 Arial,sans-serif!important;text-decoration:none!important;opacity:1!important;transition:color .18s,transform .18s}.sweet-footer .sweet-footer-social:hover,.sweet-footer .sweet-footer-social:focus-visible{color:#b87578!important;transform:translateY(-2px);outline:none}
+.sweet-footer .sweet-footer-newsletter h2{margin:0;color:#68745f!important;font:italic 600 clamp(1.2rem,1.8vw,1.5rem)/1.15 'Cormorant Garamond',Georgia,serif!important}
+.sweet-newsletter-form{display:flex;min-height:40px;overflow:hidden;border:1px solid #c9c9b7;border-radius:99px;background:#fbf8f0}
+.sweet-newsletter-form input{width:100%;min-width:0;padding:10px 15px;border:0;outline:none;background:transparent;color:#514a42;font:400 1rem 'Cormorant Garamond',Georgia,serif}
+.sweet-newsletter-form input::placeholder{color:#756e64}
+.sweet-newsletter-form button{width:50px;flex:0 0 50px;border:0;border-radius:50%;background:#89957b!important;color:#fffdf7!important;font:1.4rem Georgia,serif!important;cursor:pointer;transition:background .18s,transform .18s}
+.sweet-newsletter-form button:hover{background:#6f7d63!important;transform:scale(.96)}
+.sweet-newsletter-form button:disabled{opacity:.6;cursor:wait}
+.sweet-newsletter-form button:focus-visible{outline:2px solid #d79f9a;outline-offset:-4px}
+.sweet-newsletter-consent{display:flex;align-items:flex-start;gap:7px;color:#726b61;font:11px/1.4 Arial,sans-serif;cursor:pointer}.sweet-newsletter-consent input{width:13px;height:13px;flex:0 0 13px;margin:1px 0 0;accent-color:#89957b}
+.sweet-footer .sweet-newsletter-status{min-height:1.35em;margin:0;color:#68735d!important;font:500 .9rem/1.35 'Cormorant Garamond',Georgia,serif!important}
+.sweet-footer .sweet-newsletter-status.is-error{color:#a24f54!important}.sweet-footer .sweet-newsletter-status.is-pending{color:#827a6e!important}
+.sweet-footer-bottom{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;max-width:1100px;margin:4px auto 0}
+.sweet-footer-rule{height:1px;background:#e2c9bd}
+.sweet-footer-bottom-bow{color:#d79796!important;font:1.7rem/1 'Cormorant Garamond',serif!important}
+.sweet-footer .sweet-footer-bottom p{grid-column:1/-1;margin:0;text-align:center;color:#6f7965!important;font:500 .9rem 'Cormorant Garamond',Georgia,serif!important}
+@media(max-width:1200px){.sweet-footer-main{grid-template-columns:minmax(0,1.2fr) repeat(2,minmax(0,1fr));gap:12px}.sweet-footer-brand{grid-row:span 2}.sweet-footer-shop{grid-column:2}.sweet-footer-about{grid-column:3;border-right:0}.sweet-footer-account{grid-column:2}.sweet-footer-help{grid-column:3;border-right:0}.sweet-footer-newsletter{grid-column:2/4;padding:14px 0 0;border:0;border-top:1px solid #decac0}}
+@media(max-width:600px){html body > footer#siteFooter.sweet-footer{padding:42px 18px 11px!important}.sweet-footer::before{top:34px}.sweet-footer-main{grid-template-columns:1fr 1fr;padding-top:15px;gap:0}.sweet-footer-brand{grid-column:1/-1;grid-row:auto;align-items:center;padding:6px 0 12px;border:0;border-bottom:1px solid #decac0}.sweet-footer-wordmark{font-size:2.7rem}.sweet-footer-column{padding:10px 10px;border-right:1px solid #decac0!important;border-bottom:1px solid #decac0}.sweet-footer-shop,.sweet-footer-account{grid-column:1}.sweet-footer-about,.sweet-footer-help{grid-column:2;border-right:0!important}.sweet-footer-newsletter{grid-column:1/-1;padding:12px 8px 0;border:0}.sweet-footer-social{font-size:1.9rem}.sweet-footer-bottom{gap:8px}.sweet-footer-bottom-bow{font-size:1.8rem}.sweet-footer-bottom p{font-size:.88rem}}
+
+/* A cleaner shared footer with balanced columns and no clipped scallop ornaments. */
+html body>footer#siteFooter.sweet-footer{padding:28px clamp(20px,4vw,58px) 14px!important;border-top:1px solid #d9c6ba!important;background:linear-gradient(135deg,#edf0e6 0%,#e3e8d9 54%,#dce3d2 100%)!important;color:#4f5147!important;box-shadow:0 -10px 32px #5c55410a}
+.sweet-footer::before,.sweet-footer-top-bow,.sweet-footer-bottom-bow{display:none!important}
+.sweet-footer-main{grid-template-columns:minmax(180px,1.35fr) repeat(4,minmax(90px,.72fr)) minmax(210px,1.5fr);gap:0;max-width:1380px;padding:8px 0 22px}
+.sweet-footer-brand,.sweet-footer-column,.sweet-footer-newsletter{border:0!important;padding:8px clamp(10px,1.6vw,23px)}
+.sweet-footer-brand{padding-left:0}
+.sweet-footer-column,.sweet-footer-newsletter{border-left:1px solid #d1d6c7!important}
+.sweet-footer .sweet-footer-wordmark{font-size:clamp(2rem,3vw,2.8rem);color:#75816c!important}
+.sweet-footer .sweet-footer-tagline{font-size:.9rem}
+.sweet-footer .sweet-footer-column h2{margin-bottom:8px;color:#63705a!important;font-size:1.02rem}
+.sweet-footer .sweet-footer-column a{padding:3px 0;font-size:.9rem;color:#514d45!important}
+.sweet-footer .sweet-footer-newsletter h2{font-size:clamp(1.1rem,1.5vw,1.35rem)}
+.sweet-footer .sweet-footer-social{display:grid;width:34px;height:34px;place-items:center;border:1px solid #cbd3c0;border-radius:50%;background:#f8f7ef;color:#748169!important;font-size:1.2rem!important}
+.sweet-newsletter-form{min-height:42px;border-color:#c7cdbd;background:#faf9f3;box-shadow:0 3px 10px #4e53420c}
+.sweet-newsletter-form button{width:40px;flex-basis:40px;margin:3px;border-radius:50%;font-size:1.15rem!important}
+.sweet-footer-bottom{display:flex;justify-content:center;max-width:1380px;margin:0 auto;padding-top:12px;border-top:1px solid #d1d6c7}
+.sweet-footer-rule{display:none}
+.sweet-footer .sweet-footer-bottom p{margin:0;color:#6b7560!important;font-size:.82rem}
+@media(max-width:1100px){.sweet-footer-main{grid-template-columns:minmax(170px,1.1fr) repeat(2,minmax(0,1fr));gap:0}.sweet-footer-brand{grid-column:1;grid-row:span 2;align-items:flex-start;justify-content:center}.sweet-footer-shop{grid-column:2;grid-row:1}.sweet-footer-about{grid-column:3;grid-row:1}.sweet-footer-account{grid-column:2;grid-row:2}.sweet-footer-help{grid-column:3;grid-row:2}.sweet-footer-newsletter{grid-column:1/-1;grid-row:3;margin-top:14px;padding:15px 0 0;border-left:0!important;border-top:1px solid #d1d6c7!important}}
+@media(max-width:640px){html body>footer#siteFooter.sweet-footer{padding:20px 18px 14px!important}.sweet-footer-main{grid-template-columns:1fr 1fr;padding:0 0 16px}.sweet-footer-brand{grid-column:1/-1;grid-row:auto;align-items:center;padding:8px 0 15px;border-bottom:1px solid #d1d6c7!important}.sweet-footer-column{padding:12px 9px;border:0!important}.sweet-footer-shop,.sweet-footer-account{grid-column:1}.sweet-footer-about,.sweet-footer-help{grid-column:2;border-left:1px solid #d1d6c7!important}.sweet-footer-shop,.sweet-footer-about{border-bottom:1px solid #d1d6c7!important}.sweet-footer-account,.sweet-footer-help{grid-row:auto}.sweet-footer-newsletter{grid-column:1/-1;grid-row:auto;margin-top:8px;padding:14px 8px 0;border-top:1px solid #d1d6c7!important}.sweet-footer-bottom{padding-top:10px}.sweet-footer .sweet-footer-bottom p{font-size:.76rem}}
+
+/* Keep the shared footer readable against site-wide legacy footer rules. */
+.sweet-footer .sweet-newsletter-consent,
+.sweet-footer .sweet-newsletter-consent span{color:#555c4d!important;font:500 .76rem/1.45 'DM Sans',Arial,sans-serif!important}
+.sweet-footer .sweet-newsletter-consent{align-items:flex-start;gap:9px}
+.sweet-footer .sweet-newsletter-consent input{margin-top:2px}
+.sweet-footer .sweet-footer-social svg{display:block;width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.sweet-footer .sweet-footer-social svg .instagram-flash{fill:currentColor;stroke:none}
+.sweet-footer .sweet-footer-newsletter{display:grid;grid-template-columns:36px minmax(0,1fr);align-items:center;gap:11px 10px;padding:16px!important;border:1px solid #d1d6c7!important;border-radius:18px;background:linear-gradient(145deg,#f8f8f0 0%,#f0f3e9 100%);box-shadow:0 8px 22px rgba(72,78,62,.07)}
+.sweet-footer .sweet-footer-social{grid-column:1;grid-row:1;width:36px;height:36px;border-color:#d6dacd;background:#fffdf7}
+.sweet-footer .sweet-footer-newsletter h2{grid-column:2;grid-row:1;font-size:clamp(1.05rem,1.35vw,1.22rem);line-height:1.2}
+.sweet-footer .sweet-newsletter-form,.sweet-footer .sweet-newsletter-consent,.sweet-footer .sweet-newsletter-status{grid-column:1/-1;width:100%}
+.sweet-footer .sweet-newsletter-form{min-height:44px;border-color:#d5d8cb;background:#fffefa;box-shadow:0 2px 8px rgba(72,78,62,.05)}
+.sweet-footer .sweet-newsletter-form input{padding:10px 14px;font-size:.94rem}
+.sweet-footer .sweet-newsletter-form button{width:36px;height:36px;flex-basis:36px;margin:3px;font-size:1.05rem!important}
+.sweet-footer .sweet-newsletter-consent{max-width:34rem;gap:8px}
+@media(max-width:640px){.sweet-footer .sweet-footer-newsletter{gap:11px 10px;padding:15px!important}.sweet-footer .sweet-footer-newsletter h2{font-size:1.18rem}}
+
+/* Shared newsletter card finish used across every storefront page. */
+.sweet-footer .sweet-footer-newsletter {
+  isolation:isolate;
+  overflow:hidden;
+  border-color:#cbd2c2!important;
+  border-radius:20px;
+  background:radial-gradient(ellipse at 100% 0%,rgba(221,190,181,.28),transparent 45%),linear-gradient(145deg,#faf9f2 0%,#edf1e7 100%);
+  box-shadow:0 12px 28px rgba(72,78,62,.09);
+}
+.sweet-footer .sweet-footer-newsletter::after {
+  position:absolute;
+  z-index:-1;
+  top:-25px;
+  right:-15px;
+  width:96px;
+  height:96px;
+  border:1px solid rgba(193,151,140,.22);
+  border-radius:50%;
+  content:"";
+  pointer-events:none;
+}
+.sweet-footer .sweet-footer-social {
+  border-color:#cbd3c0;
+  box-shadow:0 3px 8px rgba(71,78,63,.06);
+}
+.sweet-footer .sweet-footer-newsletter h2 { color:#596852!important; }
+.sweet-footer .sweet-newsletter-form {
+  min-height:46px;
+  border-color:#c9d0c2;
+  background:rgba(255,254,250,.9);
+  box-shadow:0 4px 12px rgba(66,72,56,.07);
+  transition:border-color .18s ease,box-shadow .18s ease;
+}
+.sweet-footer .sweet-newsletter-form:focus-within {
+  border-color:#89957b;
+  box-shadow:0 0 0 3px rgba(137,149,123,.14),0 5px 13px rgba(66,72,56,.08);
+}
+.sweet-footer .sweet-newsletter-form input { font-size:.98rem; }
+.sweet-footer .sweet-newsletter-form button {
+  box-shadow:0 2px 5px rgba(57,68,51,.18);
+}
+.sweet-footer .sweet-newsletter-consent,
+.sweet-footer .sweet-newsletter-consent span { color:#58604f!important; }
+.sweet-footer .sweet-newsletter-consent input { accent-color:#748268; }
+@media(max-width:640px) {
+  .sweet-footer .sweet-footer-newsletter { border-radius:17px; }
+  .sweet-footer .sweet-newsletter-form { min-height:44px; }
+}
+
+/* One shared footer frame and column width on every page. */
+html body>footer#siteFooter.sweet-footer {
+  box-sizing:border-box!important;
+  display:block!important;
+  width:100%!important;
+  max-width:none!important;
+  min-width:0!important;
+  height:auto!important;
+  margin:0!important;
+}
+.sweet-footer-main,.sweet-footer-bottom {
+  box-sizing:border-box;
+  width:min(100%,1380px);
+  margin-right:auto;
+  margin-left:auto;
+}
+.sweet-footer-main { align-items:stretch; }
+
+/* Compact, coordinated newsletter card shared by every page footer. */
+.sweet-footer .sweet-footer-newsletter {
+  align-self:center;
+  grid-template-columns:32px minmax(0,1fr);
+  gap:8px 9px;
+  padding:13px!important;
+  border-radius:18px;
+  box-shadow:0 8px 20px rgba(72,78,62,.075);
+}
+.sweet-footer .sweet-footer-social {
+  width:32px;
+  height:32px;
+  font-size:1.1rem!important;
+}
+.sweet-footer .sweet-footer-newsletter h2 {
+  font-size:clamp(1.05rem,1.35vw,1.2rem);
+  letter-spacing:.01em;
+}
+.sweet-footer .sweet-newsletter-form {
+  min-height:42px;
+  border-radius:999px;
+}
+.sweet-footer .sweet-newsletter-form input {
+  padding:9px 13px;
+  font-size:.92rem;
+}
+.sweet-footer .sweet-newsletter-form button {
+  width:34px;
+  height:34px;
+  flex-basis:34px;
+  margin:3px;
+}
+.sweet-footer .sweet-newsletter-consent,
+.sweet-footer .sweet-newsletter-consent span {
+  font-size:.7rem!important;
+  line-height:1.4!important;
+}
+@media(max-width:640px) {
+  .sweet-footer .sweet-footer-newsletter { padding:14px!important; }
+  .sweet-footer .sweet-footer-newsletter h2 { font-size:1.16rem; }
+}
+
+/* Match the roomier newsletter card used on the other polished pages. */
+.home-page .sweet-footer .sweet-footer-newsletter {
+  align-self:stretch;
+  grid-template-columns:36px minmax(0,1fr);
+  gap:11px 10px;
+  padding:16px!important;
+  border-radius:18px;
+}
+.home-page .sweet-footer .sweet-footer-social { width:36px;height:36px;font-size:1.2rem!important; }
+.home-page .sweet-footer .sweet-footer-social svg { width:20px;height:20px;stroke-width:2.1; }
+.home-page .sweet-footer .sweet-footer-newsletter h2 { font-size:1.05rem;line-height:1.12; }
+.home-page .sweet-footer .sweet-newsletter-form { min-height:44px; }
+.home-page .sweet-footer .sweet-newsletter-form input { padding:10px 14px;font-size:.94rem; }
+.home-page .sweet-footer .sweet-newsletter-form button { width:36px;height:36px;flex-basis:36px; }
+.home-page .sweet-footer .sweet-newsletter-consent,
+.home-page .sweet-footer .sweet-newsletter-consent span { font-size:.76rem!important; }
+@media(max-width:640px) {
+  .home-page .sweet-footer .sweet-footer-newsletter { padding:15px!important; }
+  .home-page .sweet-footer .sweet-footer-newsletter h2 { font-size:1.08rem; }
+}

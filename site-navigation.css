@@ -1,0 +1,108 @@
+/* Shared storefront navigation used by Home, Custom Cakes, and About. */
+.nav-wishlist-link{display:inline-grid;place-items:center;width:42px;height:42px;flex:0 0 42px;border:1px solid #e7dfd5;border-radius:50%;background:#fffdf9;color:#594b44;text-decoration:none;font:400 1.55rem/1 Georgia,serif;transition:background .18s,color .18s,transform .18s}
+.nav-wishlist-link:hover{transform:translateY(-1px);background:#f4e8e3;color:#a46f6b}
+.nav-wishlist-link[hidden]{display:none!important}
+@media(max-width:840px){.nav-wishlist-link{width:38px;height:38px;flex-basis:38px;font-size:1.4rem}}
+@media(max-width:520px){.nav-wishlist-link{width:35px;height:35px;flex-basis:35px;font-size:1.25rem}}
+body > header.site-header{z-index:1001;background:rgba(250,247,241,.97);border-bottom:1px solid #e8e0d6;box-shadow:none;color:#332b26}
+.site-header .nav-wrap{display:grid;grid-template-columns:minmax(180px,max-content) minmax(0,1fr) max-content;align-items:center;gap:clamp(14px,1.6vw,22px);min-height:68px;max-width:1480px;margin:0 auto;padding:8px clamp(20px,5vw,78px)}
+.site-header .logo-group{display:flex;align-items:center;justify-self:start;min-width:200px;gap:0;color:#332b26;text-decoration:none}
+.site-header .logo-group img{display:none}
+.site-header .logo-text{font:italic 600 2rem/1 'Cormorant Garamond',Georgia,serif;letter-spacing:-.04em;color:#332b26;white-space:nowrap}
+.site-header .logo-text::after{content:'CAKES · SWEET MOMENTS';display:block;margin-top:4px;text-align:center;font:600 .48rem/1 'DM Sans',sans-serif;letter-spacing:.24em}
+.site-header nav{display:flex;justify-content:center;justify-self:center;min-width:0}
+.site-header .nav-wrap nav>ul{display:flex;align-items:center;justify-content:center;gap:clamp(16px,2.6vw,38px);margin:0;padding:0;list-style:none}
+.site-header .nav-wrap nav>ul>li{position:relative;display:flex;align-items:center;white-space:nowrap}
+.site-header .nav-wrap nav>ul>li>a,.site-header .nav-cakes-control>a{position:relative;padding:8px 2px;color:#554d45;text-decoration:none;font:500 .86rem/1.2 'DM Sans',sans-serif;transition:color .2s ease}
+.site-header .nav-wrap nav>ul>li>a::after,.site-header .nav-cakes-control>a::after{content:'';position:absolute;left:2px;right:2px;bottom:1px;height:1px;background:var(--nav-accent,#d6a39e);transform:scaleX(0);transform-origin:left;transition:transform .2s ease}
+.site-header .nav-wrap nav>ul>li>a:hover,.site-header .nav-cakes-control>a:hover,.site-header .nav-wrap nav>ul>li>a:focus-visible,.site-header .nav-cakes-control>a:focus-visible,.site-header .nav-wrap nav>ul>li>a.active{color:#554d45}
+.site-header .nav-wrap nav>ul>li>a:hover::after,.site-header .nav-cakes-control>a:hover::after,.site-header .nav-wrap nav>ul>li>a.active::after,.site-header .nav-wrap nav>ul>li>a:focus-visible::after{transform:scaleX(1)}
+.site-header .nav-cakes-control{position:relative;display:flex;align-items:center;justify-content:center;gap:0}
+.site-header .nav-category-toggle{display:inline-flex;align-items:center;justify-content:center;flex:0 0 18px;width:18px;min-width:18px;height:35px;min-height:35px;margin-left:2px;padding:0;border:0;border-radius:7px;background:transparent;color:#625a50;font:inherit;cursor:pointer;line-height:1}
+.site-header .nav-category-toggle span{display:inline-block;font-size:11px;transition:transform .2s ease}
+.site-header .nav-item-dropdown.open .nav-category-toggle span,.site-header .nav-item-dropdown:hover .nav-category-toggle span,.site-header .nav-item-dropdown:focus-within .nav-category-toggle span{transform:rotate(180deg)}
+.site-header .nav-compact-dropdown{display:none;position:absolute;top:calc(100% + 8px);left:-14px;z-index:1002;width:218px;margin:0;padding:8px;list-style:none;border:1px solid #e6ddd1;border-radius:12px;background:#fffdf8;box-shadow:0 14px 30px rgba(57,43,30,.14)}
+.site-header .nav-item-dropdown.open>.nav-compact-dropdown,.site-header .nav-item-dropdown:hover>.nav-compact-dropdown,.site-header .nav-item-dropdown:focus-within>.nav-compact-dropdown{display:grid;gap:2px}
+.site-header .nav-compact-dropdown li{display:block}
+.site-header .nav-compact-dropdown li a{display:block;padding:10px 11px!important;border-radius:7px;color:#554d45;font:500 .8rem 'DM Sans',sans-serif;text-decoration:none}
+.site-header .nav-compact-dropdown li a::after{display:none}
+.site-header .nav-compact-dropdown li a:hover,.site-header .nav-compact-dropdown li a:focus-visible{background:var(--category-bg,#f2eee6);color:#554d45;outline:none}
+.site-header .nav-cta{display:flex;align-items:center;justify-self:end;justify-content:flex-end;gap:clamp(14px,1.25vw,18px);min-width:max-content}
+.site-header .nav-cart-link{position:relative;display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;margin:0;border:1px solid #e7dfd5;border-radius:50%;background:#fffdf9;color:#332b26;text-decoration:none;flex:none}
+.site-header .nav-cart-link svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.site-header .nav-cart-count{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 4px;display:grid;place-items:center;border:2px solid #fffdf9;border-radius:99px;background:#292824;color:#fff;font:700 .62rem 'DM Sans',sans-serif}
+.site-header .nav-order-link,.site-header .nav-sign-in{box-sizing:border-box;display:inline-flex;align-items:center;justify-content:center;height:40px;min-height:40px;padding:0 12px;border-radius:999px;text-decoration:none;white-space:nowrap;font:600 .76rem/1 'DM Sans',sans-serif;flex:0 0 auto}
+.site-header .nav-order-link{width:108px}
+.site-header .nav-sign-in{width:84px}
+.site-header .nav-order-link{border:1px solid #68745f;background:#68745f;color:#fff}
+.site-header .nav-order-link:hover{background:#58644f;color:#fff}
+.site-header .nav-sign-in{border:1px solid #c98c7f;background:#fffdf9;color:#332b26}
+.site-header .nav-sign-in:hover{background:#f7eee8;color:#332b26}
+/* The Shop page uses a plain header element; keep its center navigation from touching wishlist controls too. */
+body.shop-page > header:not(.site-header) .nav-wrap{display:grid;grid-template-columns:minmax(190px,max-content) minmax(0,1fr) max-content;align-items:center;gap:clamp(14px,1.6vw,22px)}
+body.shop-page > header:not(.site-header) .logo-group{min-width:190px}
+body.shop-page > header:not(.site-header) nav{min-width:0;justify-self:center}
+body.shop-page > header:not(.site-header) nav ul{gap:clamp(12px,1.8vw,26px)}
+body.shop-page > header:not(.site-header) .nav-cta{min-width:max-content;gap:clamp(14px,1.25vw,18px)}
+@media(max-width:1200px){body.shop-page > header:not(.site-header) .nav-wrap{grid-template-columns:minmax(165px,max-content) minmax(0,1fr) max-content;gap:12px}.shop-page > header:not(.site-header) .logo-group{min-width:165px}.shop-page > header:not(.site-header) nav ul{gap:clamp(10px,1.5vw,16px)}.shop-page > header:not(.site-header) .nav-cta{gap:10px}}
+.site-header .hamburger{display:none;flex-direction:column;align-items:center;justify-content:center;gap:5px;width:36px;height:40px;padding:6px;border:0;border-radius:8px;background:transparent;cursor:pointer}
+.site-header .hamburger span{display:block;width:21px;height:2px;border-radius:2px;background:#332b26}
+.site-header a:focus-visible,.site-header button:focus-visible{outline:2px solid #849176;outline-offset:3px}
+/* A calm, editorial selected state keeps the current page clear without a solid block. */
+html body[class] > header .nav-wrap nav ul#navLinks > li > a.active,
+html body[class] > header .nav-wrap nav ul#navLinks > li > .nav-cakes-control > a.active {
+  padding:8px 2px !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  color:#554d45 !important;
+  box-shadow:none !important;
+}
+html body[class] > header .nav-wrap nav ul#navLinks > li > a.active::after,
+html body[class] > header .nav-wrap nav ul#navLinks > li > .nav-cakes-control > a.active::after {
+  right:2px;
+  left:2px;
+  height:2px;
+  border-radius:2px;
+  background:var(--nav-accent,#d6a39e);
+}
+/* Each primary navigation item gets its own soft underline. */
+.site-header nav ul>li:nth-child(1)>a{--nav-accent:#d6a39e}
+.site-header nav ul>li:nth-child(2)>.nav-cakes-control>a{--nav-accent:#c4a8d1}
+.site-header nav ul>li:nth-child(3)>a{--nav-accent:#e3b89c}
+.site-header nav ul>li:nth-child(4)>a{--nav-accent:#d7a9b6}
+.site-header nav ul>li:nth-child(5)>a{--nav-accent:#c6c99d}
+.site-header nav ul>li:nth-child(6)>a{--nav-accent:#a8c7c8}
+/* Category backgrounds echo the pastel category tiles on Home. */
+.site-header .nav-compact-dropdown li:nth-child(1) a{--category-bg:#f3eee5}
+.site-header .nav-compact-dropdown li:nth-child(2) a{--category-bg:#edcaca}
+.site-header .nav-compact-dropdown li:nth-child(3) a{--category-bg:#cbd5bd}
+.site-header .nav-compact-dropdown li:nth-child(4) a{--category-bg:#e8c9cf}
+.site-header .nav-compact-dropdown li:nth-child(5) a{--category-bg:#e9d9aa}
+.site-header .nav-compact-dropdown li:nth-child(6) a{--category-bg:#d9c8e5}
+.site-header .nav-compact-dropdown li:nth-child(7) a{--category-bg:#c5dce0}
+body[data-cake-category="all"] { --cake-nav-accent:#ded3c2; }
+body[data-cake-category="birthday"] { --cake-nav-accent:#edcaca; }
+body[data-cake-category="wedding"] { --cake-nav-accent:#cbd5bd; }
+body[data-cake-category="anniversary"] { --cake-nav-accent:#e8c9cf; }
+body[data-cake-category="cupcakes-jars"] { --cake-nav-accent:#e9d9aa; }
+body[data-cake-category="theme"] { --cake-nav-accent:#d9c8e5; }
+body[data-cake-category="photo"] { --cake-nav-accent:#c5dce0; }
+body[data-cake-category="all"] .nav-compact-dropdown a[data-category="All"],
+body[data-cake-category="birthday"] .nav-compact-dropdown a[data-category="Birthday Cakes"],
+body[data-cake-category="wedding"] .nav-compact-dropdown a[data-category="Wedding Cakes"],
+body[data-cake-category="anniversary"] .nav-compact-dropdown a[data-category="Anniversary Cakes"],
+body[data-cake-category="cupcakes-jars"] .nav-compact-dropdown a[data-category="Cupcakes & Jars"],
+body[data-cake-category="theme"] .nav-compact-dropdown a[data-category="Theme Cakes"],
+body[data-cake-category="photo"] .nav-compact-dropdown a[data-category="Photo Cakes"] {
+  background:var(--category-bg,#f2eee6);
+  color:#554d45;
+}
+html body[data-cake-category] > header .nav-wrap nav ul#navLinks > li > .nav-cakes-control > a.active::after {
+  background:var(--cake-nav-accent,#87947b);
+  box-shadow:0 1px 5px color-mix(in srgb,var(--cake-nav-accent,#87947b) 34%,transparent);
+}
+@media(max-width:1200px){.site-header .nav-wrap{grid-template-columns:minmax(165px,max-content) minmax(0,1fr) max-content;gap:12px;padding-inline:22px}.site-header .logo-group{flex-basis:180px;min-width:165px}.site-header .logo-text{font-size:1.75rem}.site-header .nav-wrap nav>ul{gap:clamp(11px,1.5vw,17px)}.site-header .nav-wrap nav>ul>li>a,.site-header .nav-cakes-control>a{font-size:.78rem}.site-header .nav-cta{gap:10px}.site-header .nav-order-link,.site-header .nav-sign-in{padding-inline:11px}}
+@media(min-width:841px){.site-header .nav-category-toggle{position:static;transform:none}.site-header .nav-item-dropdown.open .nav-category-toggle span,.site-header .nav-item-dropdown:hover .nav-category-toggle span,.site-header .nav-item-dropdown:focus-within .nav-category-toggle span{transform:rotate(180deg)}}
+@media(max-width:840px){body > header.site-header{position:sticky;top:0}.site-header .nav-wrap{display:flex;position:relative;min-height:64px;flex-wrap:wrap;gap:8px;padding:8px 16px}.site-header .logo-group{flex:1 1 auto;min-width:0}.site-header .logo-text{font-size:1.72rem}.site-header .nav-cta{flex:0 0 auto;gap:10px}.site-header .nav-order-link,.site-header .nav-sign-in{min-height:38px;padding:8px 12px;font-size:.68rem}.site-header .nav-cart-link{width:38px;height:38px}.site-header .hamburger{display:flex}.site-header .nav-wrap>nav{display:none;position:absolute;top:100%;left:0;right:0;z-index:1001;width:100%;max-height:calc(100vh - 64px);overflow:auto;padding:8px 18px 16px;border-top:1px solid #e8e0d6;background:#faf7f1;box-shadow:0 12px 22px rgba(57,43,30,.1)}.site-header .nav-wrap>nav:has(>ul.open){display:block}.site-header .nav-wrap nav>ul,.site-header .nav-wrap nav>ul.open{display:flex;align-items:stretch;flex-direction:column;gap:2px}.site-header .nav-wrap nav>ul>li{display:flex;flex-direction:column;align-items:stretch;white-space:normal}.site-header .nav-wrap nav>ul>li>a,.site-header .nav-cakes-control>a{display:block;padding:11px 10px;font-size:.85rem}.site-header .nav-cakes-control{width:100%}.site-header .nav-cakes-control>a{flex:1}.site-header .nav-category-toggle{min-width:42px;min-height:42px}.site-header .nav-compact-dropdown,.site-header .nav-item-dropdown.open>.nav-compact-dropdown,.site-header .nav-item-dropdown:hover>.nav-compact-dropdown,.site-header .nav-item-dropdown:focus-within>.nav-compact-dropdown{position:static;width:100%;padding:3px 0 5px 12px;border:0;border-radius:0;background:transparent;box-shadow:none}.site-header .nav-compact-dropdown li a{padding:9px 12px!important}}
+@media(max-width:520px){.site-header .nav-wrap{padding-inline:12px}.site-header .logo-text{font-size:1.45rem}.site-header .logo-text::after{font-size:.42rem}.site-header .nav-cta{gap:7px}.site-header .nav-order-link,.site-header .nav-sign-in{min-height:36px;padding:7px 9px;font-size:.62rem}.site-header .nav-cart-link{width:35px;height:35px}.site-header .nav-cart-link svg{width:18px;height:18px}}

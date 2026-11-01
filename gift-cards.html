@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="preferences.js?v=20261101-sitewide"></script><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Gift Cards | Cakes of Paradise</title>
+  <link rel="stylesheet" href="site-navigation.css?v=20261031-wallet-points-fix"><link rel="stylesheet" href="shared-navigation.css?v=20261031-account-shortcuts"><link rel="stylesheet" href="shared-footer.css?v=20261031-newsletter-polish"><link rel="stylesheet" href="gift-cards.css?v=20261031-wallet-points-fix">
+  <script src="api-config.js"></script><script src="https://checkout.razorpay.com/v1/checkout.js" defer></script><script src="gift-cards.js?v=20261031-wallet-points-fix" defer></script><script src="shared-navigation.js?v=20261101-role-aware" defer></script><script src="site-navigation.js?v=20261101-role-aware" defer></script><script src="shared-footer.js?v=20261031-home-footer-title" defer></script>
+  <link rel="stylesheet" href="preferences.css?v=20261101-sitewide">
+</head>
+<body class="gift-page">
+  <header class="site-header"><div class="nav-wrap">
+    <a class="logo-group" href="index.html" aria-label="Cakes of Paradise home"><img src="logo.jpg" alt=""><div class="logo-text">Cakes of Paradise</div></a>
+    <nav><ul id="navLinks"><li><a href="index.html">Home</a></li><li class="nav-item-dropdown"><div class="nav-cakes-control"><a href="shop.html" class="nav-link-dropdown" aria-haspopup="true" aria-expanded="false">Cakes</a><button class="nav-category-toggle" type="button" aria-label="Open cake categories" aria-expanded="false" aria-controls="cakeCategoryMenu"><span aria-hidden="true">▾</span></button></div><ul class="nav-compact-dropdown" id="cakeCategoryMenu"><li><a href="shop.html">All Cakes</a></li><li><a href="shop.html?category=Birthday%20Cakes">Birthday Cakes</a></li><li><a href="shop.html?category=Wedding%20Cakes">Wedding Cakes</a></li></ul></li><li><a href="custom.html">Custom Cakes</a></li><li><a href="gallery.html">Sweet Moments</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul></nav>
+    <div class="nav-cta"><a class="nav-wishlist-link" href="wishlist.html" aria-label="Your wishlist"><span aria-hidden="true">♡</span></a><a class="nav-cart-link" href="cart.html" aria-label="Your bag"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 8.5h11l1.2 12H5.3l1.2-12Z"/><path d="M9 9V6.5a3 3 0 0 1 6 0V9"/></svg></a><a class="nav-order-link" href="shop.html">Shop cakes</a><a class="nav-sign-in" href="login.html">Sign In</a><button class="hamburger" id="hamburger" aria-label="Menu" aria-controls="navLinks" aria-expanded="false"><span></span><span></span><span></span></button></div>
+  </div></header>
+  <main>
+    <section class="gift-hero"><div><span>Share the sweetness ♡</span><h1>Gift Cards</h1><p>The perfect little treat for every occasion.</p></div><div class="gift-hero-note">Instant delivery<br>Beautifully designed<br>Valid for one year</div></section>
+    <section class="gift-builder" aria-label="Purchase a gift card">
+      <div class="gift-design-panel"><h2><span>୨୧</span> Choose your gift card</h2><p class="gift-offer-intro">Choose a card created by our bakery. Each offer shows its design and price.</p><div id="giftCardOffers" class="gift-designs" role="radiogroup" aria-label="Available gift cards"><p class="gift-offer-loading">Loading gift cards…</p></div><div class="gift-promises" aria-label="Gift card benefits"><div class="gift-promise"><span class="gift-promise-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 9.5h17v11h-17zM2.5 6.5h19v3h-19zM12 6.5v14M12 6.5H8.2a2.1 2.1 0 1 1 2.1-2.1c0 1.2 1.7 2.1 1.7 2.1Zm0 0h3.8a2.1 2.1 0 1 0-2.1-2.1c0 1.2-1.7 2.1-1.7 2.1Z"/></svg></span><strong>Made to give</strong><small>Use on any cake<br>in our shop</small></div><div class="gift-promise"><span class="gift-promise-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20.8 8.8c0 5.3-8.8 11-8.8 11s-8.8-5.7-8.8-11a4.7 4.7 0 0 1 8.8-2.2 4.7 4.7 0 0 1 8.8 2.2Z"/></svg></span><strong>A personal touch</strong><small>Add your own<br>little note</small></div><div class="gift-promise"><span class="gift-promise-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7.5h10v10H4zM14 11h3.5l2.5 2.5v4H14zM7.5 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Zm10 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"/></svg></span><strong>Sent by email</strong><small>Delivered after<br>payment confirms</small></div></div></div>
+      <form id="giftPurchaseForm" class="gift-form" novalidate>
+        <h2><span>୨୧</span> Purchase gift card</h2>
+        <div id="selectedGiftOffer" class="selected-gift-offer"><span>Selected gift card</span><strong id="giftSelectedName">Choose a card</strong><b id="giftSelectedAmount">—</b></div>
+        <label>Recipient name <small>(optional · included in their gift email)</small><input name="recipientName" maxlength="100" autocomplete="name" placeholder="Who is this sweet surprise for?"></label>
+        <label>Recipient’s email <em>*</em><input name="recipientEmail" type="email" required maxlength="200" autocomplete="email" placeholder="Enter recipient’s email"></label>
+        <label>Your message for them <small>(optional)</small><textarea name="message" maxlength="200" rows="3" placeholder="Write a little note to make their day…"></textarea><span class="gift-count">0 / 200</span></label>
+        <fieldset class="gift-payment-methods">
+          <legend>Choose how to pay</legend>
+          <label class="gift-payment-option"><input type="radio" name="paymentMethod" value="upi" checked><span><strong>UPI</strong><small>Pay securely with UPI</small></span></label>
+          <label class="gift-payment-option" id="giftWalletOption"><input type="radio" name="paymentMethod" value="wallet"><span><strong>Gift wallet</strong><small id="giftWalletHint">Sign in to pay from your gift wallet</small></span></label>
+        </fieldset>
+        <p class="gift-error" id="giftFormMessage" role="status" aria-live="polite"></p>
+        <button class="gift-submit" type="submit" disabled><span aria-hidden="true">♡</span> Continue to secure payment · <strong>Choose a gift card</strong></button>
+        <p class="gift-terms" id="giftPaymentTerms">UPI or your available gift wallet balance. Your gift card will be emailed after payment is confirmed.</p>
+      </form>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 450" width="600" height="450">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#FFF8F4"/>
+      <stop offset="50%" stop-color="#FDF2EE"/>
+      <stop offset="100%" stop-color="#F8E5E7"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#D4A774"/>
+      <stop offset="100%" stop-color="#B8834D"/>
+    </linearGradient>
+    <filter id="softShadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#5A2E2E" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="450" fill="url(#bgGrad)"/>
+  
+  <!-- Outer subtle border -->
+  <rect x="18" y="18" width="564" height="414" rx="20" fill="none" stroke="#F3DADD" stroke-width="2"/>
+  
+  <!-- Inner delicate border -->
+  <rect x="28" y="28" width="544" height="394" rx="14" fill="none" stroke="#C99562" stroke-width="1" stroke-dasharray="4 6" opacity="0.6"/>
+
+  <!-- Brand badge -->
+  <text x="300" y="70" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-size="13" font-weight="600" letter-spacing="3" fill="#694332">CAKES OF PARADISE</text>
+  <text x="300" y="88" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="10" letter-spacing="1" fill="#8C6A58">SURATHKAL · ARTISAN BAKERY</text>
+
+  <!-- Central Icon Plate -->
+  <g filter="url(#softShadow)" transform="translate(300, 205)">
+    <circle cx="0" cy="0" r="62" fill="#FFFFFF" stroke="#F3DADD" stroke-width="2"/>
+    <circle cx="0" cy="0" r="54" fill="#FFF8F4"/>
+    
+  <g transform="translate(-24, -26)">
+    <!-- Frame -->
+    <rect x="10" y="8" width="28" height="24" rx="2" fill="#FFFFFF" stroke="#C99562" stroke-width="2"/>
+    <circle cx="24" cy="17" r="4.5" fill="#F3DADD"/>
+    <path d="M16 28 C18 24 30 24 32 28 Z" fill="#694332"/>
+    <!-- Cake Base -->
+    <rect x="4" y="32" width="40" height="20" rx="3" fill="#FFF8F4" stroke="#694332" stroke-width="1.5"/>
+    <line x1="2" y1="52" x2="46" y2="52" stroke="#38231F" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  </g>
+
+  <!-- Category Title & Subtitle -->
+  <text x="300" y="320" text-anchor="middle" font-family="'Playfair Display', Georgia, serif" font-size="24" font-weight="600" fill="#38231F">Edible Photo Print Cake</text>
+  <text x="300" y="348" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="13" font-weight="500" fill="#694332">Personalised Memory on Cake</text>
+
+  <!-- Tag / Status -->
+  <g transform="translate(300, 385)">
+    <rect x="-100" y="-14" width="200" height="28" rx="14" fill="#FFFFFF" stroke="#E6C8BD" stroke-width="1"/>
+    <text x="0" y="4" text-anchor="middle" font-family="'Poppins', sans-serif" font-size="11" font-weight="500" fill="#8C6A58">✨ Fresh Bake · Photo Coming Soon</text>
+  </g>
+</svg>

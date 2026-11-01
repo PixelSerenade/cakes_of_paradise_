@@ -1,0 +1,326 @@
+html[data-text-size="small"]{font-size:90%}
+html[data-text-size="standard"]{font-size:100%}
+html[data-text-size="large"]{font-size:112.5%}
+html[data-text-size="largest"]{font-size:125%}
+html[data-readable-font="true"] body,html[data-readable-font="true"] body *{font-family:Arial,Verdana,sans-serif!important;letter-spacing:.015em;line-height:1.65}
+
+html[data-theme="dark"]{color-scheme:dark;--dark-brown:#f4ece4;--text-brown:#e0d2c4;--primary-pink:#dfb58e;--primary-pink-deep:#e4bd98;--cream:#1e1916;--light-pink:#382b26;--white:#2b221e;--shadow-soft:0 10px 30px #0005;--account-ink:#f3e9de;--account-muted:#c9b7a9;--account-deep:#e4bd98;--account-border:#554238;--account-surface:#2b221e;--account-wash:#382b26}
+html[data-theme="dark"] body{background:#1e1916!important;color:#f3e9de!important}
+html[data-theme="dark"] header,html[data-theme="dark"] nav,html[data-theme="dark"] .account-topbar{background:#2a211e!important;color:#f3e9de!important;border-color:#4d3b31!important}
+html[data-theme="dark"] .shop-section,html[data-theme="dark"] .checkout-section,html[data-theme="dark"] .account-page{background:#1e1916!important;color:#f3e9de!important}
+html[data-theme="dark"] .product-card,html[data-theme="dark"] .cart-panel,html[data-theme="dark"] .order-panel,html[data-theme="dark"] .checkout-card,html[data-theme="dark"] .account-card,html[data-theme="dark"] .overview-card{background:#2b221e!important;color:#f3e9de!important;border-color:#554238!important}
+html[data-theme="dark"] .account-welcome,html[data-theme="dark"] .account-summary,html[data-theme="dark"] .referral-terms{background:#382b26!important;border-color:#654c3f!important}
+html[data-theme="dark"] .account-order,html[data-theme="dark"] .cart-line,html[data-theme="dark"] .account-row,html[data-theme="dark"] .account-list>p,html[data-theme="dark"] .empty-account,html[data-theme="dark"] .order-card,html[data-theme="dark"] .review-entry{background:#382b26!important;color:#f3e9de!important;border-color:#5a463b!important}
+html[data-theme="dark"] .cart-page-card,html[data-theme="dark"] .cart-checkout-card{background:#2b221e!important;color:#f3e9de!important;border-color:#554238!important}
+html[data-theme="dark"] .cart-page-line{background:#382b26!important;color:#f3e9de!important;border-color:#5a463b!important}
+html[data-theme="dark"] .cart-page-line-actions button{background:#2b221e!important;color:#e4bd98!important;border-color:#755b49!important}
+html[data-theme="dark"] input,html[data-theme="dark"] textarea,html[data-theme="dark"] select{background:#2a211e!important;color:#f5ece2!important;border-color:#755b49!important}
+html[data-theme="dark"] .profile-dropdown-menu{background:#2b221e!important;border-color:#654c3f!important}
+html[data-theme="dark"] .auth-card{background:#2b221e!important;color:#f3e9de!important;border-color:#654c3f!important}
+html[data-theme="dark"] .settings-check{background:#382b26!important;color:#f3e9de!important;border-color:#5a463b!important}
+html[data-theme="dark"] .profile-dropdown-menu::before{background:#2b221e!important;border-color:#654c3f!important}
+html[data-theme="dark"] .account-menu-links a{background:#382b26!important;color:#f3e9de!important;border-color:#5a463b!important}
+html[data-theme="dark"] .dropdown-header,html[data-theme="dark"] .account-card-heading{border-color:#5a463b!important}
+html[data-theme="dark"] .dropdown-user-info h4,html[data-theme="dark"] .dropdown-user-info p,html[data-theme="dark"] .account-topbar nav a,html[data-theme="dark"] .account-topbar nav button,html[data-theme="dark"] .account-brand{color:#f3e9de!important}
+html[data-theme="dark"] footer{background:#151316!important}
+
+/* Light admin charts use small labels, so give those labels a stronger ink value. */
+html:not([data-theme="dark"]) body.admin-mode .admin-section-heading>div>p,
+html:not([data-theme="dark"]) body.admin-mode .admin-kpi span,
+html:not([data-theme="dark"]) body.admin-mode .admin-kpi small,
+html:not([data-theme="dark"]) body.admin-mode .admin-chart-card small,
+html:not([data-theme="dark"]) body.admin-mode .chart-empty,
+html:not([data-theme="dark"]) body.admin-mode .admin-product-card summary small,
+html:not([data-theme="dark"]) body.admin-mode .admin-photo-field small,
+html:not([data-theme="dark"]) body.admin-mode .admin-order-title p,
+html:not([data-theme="dark"]) body.admin-mode .admin-order-items li small,
+html:not([data-theme="dark"]) body.admin-mode .admin-order-items li strong,
+html:not([data-theme="dark"]) body.admin-mode .customer-admin-row small{
+  color:#66534a!important;
+}
+
+html[data-grayscale="true"] {
+  filter: grayscale(100%) !important;
+  -webkit-filter: grayscale(100%) !important;
+}
+html[data-grayscale="true"] img,
+html[data-grayscale="true"] svg,
+html[data-grayscale="true"] video {
+  filter: grayscale(100%) contrast(108%) !important;
+}
+
+:focus-visible {
+  outline: 3px solid #C99562 !important;
+  outline-offset: 2px !important;
+}
+
+html[data-high-contrast="true"] body{color:#171315!important}
+html[data-high-contrast="true"] a,html[data-high-contrast="true"] button{ text-decoration-thickness:2px }
+html[data-high-contrast="true"] :focus-visible{outline:3px solid #174baf!important;outline-offset:3px!important}
+html[data-theme="dark"][data-high-contrast="true"] body{color:#fff!important}
+html[data-theme="dark"][data-high-contrast="true"] a,html[data-theme="dark"][data-high-contrast="true"] button{color:#fff!important}
+html[data-reduce-motion="true"],html[data-reduce-motion="true"] * ,html[data-reduce-motion="true"] *::before,html[data-reduce-motion="true"] *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+
+/* Keep every page surface legible when a preference is applied. */
+html[data-theme="dark"] body,html[data-theme="dark"] main,html[data-theme="dark"] section,
+html[data-theme="dark"] .hero,
+html[data-theme="dark"] #home,html[data-theme="dark"] #cakes,html[data-theme="dark"] #custom,
+html[data-theme="dark"] #gallery,html[data-theme="dark"] #about,html[data-theme="dark"] #contact,
+html[data-theme="dark"] .shop-section,html[data-theme="dark"] .checkout-section,
+html[data-theme="dark"] .account-page,html[data-theme="dark"] .cart-page-shell{
+  background-color:#1e1916!important;color:#f3e9de!important;
+}
+html[data-theme="dark"] .hero,html[data-theme="dark"] #home,
+html[data-theme="dark"] #cakes,html[data-theme="dark"] #custom,
+html[data-theme="dark"] #gallery,html[data-theme="dark"] #about,
+html[data-theme="dark"] #contact,html[data-theme="dark"] .shop-section,
+html[data-theme="dark"] .checkout-section{background-image:none!important}
+html[data-theme="dark"] h1,html[data-theme="dark"] h2,html[data-theme="dark"] h3,
+html[data-theme="dark"] h4,html[data-theme="dark"] p,html[data-theme="dark"] label,
+html[data-theme="dark"] summary,html[data-theme="dark"] li,html[data-theme="dark"] .account-muted,
+html[data-theme="dark"] .checkout-intro,html[data-theme="dark"] .product-description,
+html[data-theme="dark"] .allergen-note,html[data-theme="dark"] .photo-credit,
+html[data-theme="dark"] .orders-card .order-items-text,html[data-theme="dark"] .orders-card .order-delivery{
+  color:#e2d5c8!important;
+}
+html[data-theme="dark"] a,html[data-theme="dark"] .text-link,html[data-theme="dark"] .account-kicker,
+html[data-theme="dark"] .product-category,html[data-theme="dark"] .product-price,
+html[data-theme="dark"] .account-message{color:#e4bd98!important}
+html[data-theme="dark"] .allergen-note,html[data-theme="dark"] .review-entry,
+html[data-theme="dark"] .occasion-form,html[data-theme="dark"] .occasion-row,
+html[data-theme="dark"] .account-order,html[data-theme="dark"] .orders-card .order-timeline li,
+html[data-theme="dark"] .settings-check{background:#382b26!important;border-color:#5a463b!important;color:#f3e9de!important}
+html[data-theme="dark"] .product-card,html[data-theme="dark"] .cart-panel,
+html[data-theme="dark"] .order-panel,html[data-theme="dark"] .checkout-card,
+html[data-theme="dark"] .account-card,html[data-theme="dark"] .overview-card,
+html[data-theme="dark"] .cart-page-card,html[data-theme="dark"] .cart-checkout-card,
+html[data-theme="dark"] .orders-card .order-card{background:#2b221e!important;color:#f3e9de!important;border-color:#554238!important}
+html[data-theme="dark"] input,html[data-theme="dark"] textarea,html[data-theme="dark"] select,
+html[data-theme="dark"] .product-content select,html[data-theme="dark"] .settings-field select,
+html[data-theme="dark"] .account-form input,html[data-theme="dark"] .account-form textarea,
+html[data-theme="dark"] .cart-form-field input,html[data-theme="dark"] .cart-form-field textarea,
+html[data-theme="dark"] .cart-form-field select{background:#241c18!important;color:#f5ece2!important;border-color:#755b49!important}
+
+html[data-high-contrast="true"]{--primary-pink:#76503a;--primary-pink-deep:#4f3328;--account-pink:#714a33;--account-deep:#E0587D;--account-muted:#533c38;--account-border:#6b514c}
+html[data-high-contrast="true"] body,html[data-high-contrast="true"] p,
+html[data-high-contrast="true"] label,html[data-high-contrast="true"] small,
+html[data-high-contrast="true"] .account-muted,html[data-high-contrast="true"] .checkout-intro,
+html[data-high-contrast="true"] .product-description,html[data-high-contrast="true"] .orders-card .order-items-text,
+html[data-high-contrast="true"] .orders-card .order-delivery{color:#241817!important}
+html[data-high-contrast="true"] a,html[data-high-contrast="true"] .text-link,
+html[data-high-contrast="true"] .account-kicker,html[data-high-contrast="true"] .product-category,
+html[data-high-contrast="true"] .product-price,html[data-high-contrast="true"] .account-message{color:#E0587D!important}
+html[data-high-contrast="true"] button,html[data-high-contrast="true"] .btn,
+html[data-high-contrast="true"] .account-button,html[data-high-contrast="true"] .orders-actions button{
+  border-width:2px!important;border-color:#4b2d28!important;
+}
+html[data-high-contrast="true"] a.btn-primary,html[data-high-contrast="true"] a.return-home-btn,
+html[data-high-contrast="true"] .btn-primary,html[data-high-contrast="true"] .account-button.primary{
+  background:#65402f!important;color:#fff!important;border-color:#241817!important;
+}
+html[data-high-contrast="true"] input,html[data-high-contrast="true"] textarea,
+html[data-high-contrast="true"] select{border:2px solid #49312d!important}
+html[data-high-contrast="true"] :focus-visible{outline:3px solid #0645ad!important;outline-offset:3px!important;box-shadow:0 0 0 2px #fff!important}
+html[data-theme="dark"][data-high-contrast="true"]{--primary-pink:#f1d5b7;--primary-pink-deep:#f4dec4;--account-pink:#f1d5b7;--account-deep:#f4dec4;--account-muted:#f0e2d4;--account-border:#8a705d}
+html[data-theme="dark"][data-high-contrast="true"] body,html[data-theme="dark"][data-high-contrast="true"] p,
+html[data-theme="dark"][data-high-contrast="true"] label,html[data-theme="dark"][data-high-contrast="true"] small,
+html[data-theme="dark"][data-high-contrast="true"] .account-muted,html[data-theme="dark"][data-high-contrast="true"] .checkout-intro,
+html[data-theme="dark"][data-high-contrast="true"] .product-description{color:#fff!important}
+html[data-theme="dark"][data-high-contrast="true"] a,html[data-theme="dark"][data-high-contrast="true"] .text-link,
+html[data-theme="dark"][data-high-contrast="true"] .account-kicker,html[data-theme="dark"][data-high-contrast="true"] .product-category,
+html[data-theme="dark"][data-high-contrast="true"] .product-price{color:#f4dec4!important}
+html[data-theme="dark"][data-high-contrast="true"] button,html[data-theme="dark"][data-high-contrast="true"] .btn,
+html[data-theme="dark"][data-high-contrast="true"] .account-button,html[data-theme="dark"][data-high-contrast="true"] .orders-actions button{border-color:#f4dec4!important}
+html[data-theme="dark"][data-high-contrast="true"] input,html[data-theme="dark"][data-high-contrast="true"] textarea,
+html[data-theme="dark"][data-high-contrast="true"] select{border-color:#f4e6d7!important}
+html[data-theme="dark"][data-high-contrast="true"] .account-button.secondary,
+html[data-theme="dark"][data-high-contrast="true"] .store-secondary,
+html[data-theme="dark"][data-high-contrast="true"] .review-form button,
+html[data-theme="dark"][data-high-contrast="true"] .account-topbar nav button{
+  background:#f4ece4!important;color:#33251e!important;
+}
+html[data-theme="dark"][data-high-contrast="true"] .account-topbar nav button{background:transparent!important;color:#f4dec4!important}
+html[data-theme="dark"][data-high-contrast="true"] .btn-primary,
+html[data-theme="dark"][data-high-contrast="true"] .account-button.primary,
+html[data-theme="dark"][data-high-contrast="true"] .orders-actions .retry-payment{
+  background:#65402f!important;color:#fff!important;
+}
+/* Dark theme overrides for the original storefront's hard-coded light accents. */
+html[data-theme="dark"] a.btn-primary,html[data-theme="dark"] button.btn-primary,
+html[data-theme="dark"] .account-button.primary,html[data-theme="dark"] .btn-primary{
+  color:#fff!important;background:linear-gradient(135deg,#80503d,#634031)!important;
+  border-color:#aa8064!important;box-shadow:0 10px 28px #09060988!important;
+}
+html[data-theme="dark"] a.return-home-btn{
+  color:#fff!important;background:linear-gradient(135deg,#80503d,#634031)!important;
+  border:1px solid #aa8064!important;box-shadow:0 10px 28px #09060988!important;
+}
+html[data-theme="dark"] a.return-home-btn:hover{color:#fff!important;background:#65402f!important}
+html[data-theme="dark"] .auth-card .tab-buttons{background:#382b26!important;border:1px solid #654c3f!important}
+html[data-theme="dark"] .auth-card .tab-btn{color:#f3e9de!important}
+html[data-theme="dark"] .auth-card .tab-btn.active{background:#634031!important;color:#fff!important}
+html[data-theme="dark"] .auth-card button:not(.btn):not(.tab-btn){color:#e4bd98!important}
+html[data-theme="dark"] input::placeholder,html[data-theme="dark"] textarea::placeholder{
+  color:#cbbcae!important;opacity:1!important;
+}
+html[data-theme="dark"] .order-success{background:rgba(19,16,20,.88)!important}
+html[data-theme="dark"] .order-success-card{background:#2b221e!important;border-color:#654c3f!important}
+html[data-theme="dark"] .order-success-card h2{color:#e4bd98!important}
+html[data-theme="dark"] .order-success-card>p,html[data-theme="dark"] .order-success-card small{color:#e2d5c8!important}
+html[data-theme="dark"] .admin-tools,html[data-theme="dark"] .password-details,
+html[data-theme="dark"] .address-details,html[data-theme="dark"] .review-details,
+html[data-theme="dark"] .cart-page-card-heading{border-color:#5a463b!important}
+html[data-theme="dark"] .order-admin-controls button,html[data-theme="dark"] .retry-payment,
+html[data-theme="dark"] .admin-order-card .order-admin-controls button{
+  color:#fff!important;background:linear-gradient(120deg,#80503d,#634031)!important;border-color:#aa8064!important;
+}
+html[data-theme="dark"] .admin-list-row,html[data-theme="dark"] .insight-wide,
+html[data-theme="dark"] .insight-grid>article,html[data-theme="dark"] .account-summary,
+html[data-theme="dark"] .address-form,html[data-theme="dark"] .password-form{
+  background:#382b26!important;border-color:#5a463b!important;color:#f3e9de!important;
+}
+html[data-theme="dark"] .insight-grid>article span,html[data-theme="dark"] .admin-list-row small,
+html[data-theme="dark"] .account-summary span,html[data-theme="dark"] .account-list,
+html[data-theme="dark"] .account-list>p,html[data-theme="dark"] .cart-gift-history,
+html[data-theme="dark"] .orders-policy{color:#d2c1b3!important}
+html[data-theme="dark"] .favorite-toggle,html[data-theme="dark"] .cart-page-card-heading h2 span{
+  background:#3a2d27!important;color:#e4bd98!important;border-color:#80634f!important;
+}
+html[data-theme="dark"][data-high-contrast="true"] a.return-home-btn{
+  background:#65402f!important;color:#fff!important;
+}
+html[data-theme="dark"] a.btn-outline,html[data-theme="dark"] button.btn-outline,
+html[data-theme="dark"] .account-button.secondary,html[data-theme="dark"] .store-secondary{
+  color:#f7eee5!important;background:#382b26!important;border-color:#9b806b!important;
+}
+html[data-theme="dark"] a.btn-outline:hover,html[data-theme="dark"] button.btn-outline:hover,
+html[data-theme="dark"] .account-button.secondary:hover,html[data-theme="dark"] .store-secondary:hover{
+  color:#fff!important;background:#634031!important;
+}
+html[data-theme="dark"] .hero-visual .halo{
+  background:radial-gradient(circle,rgba(227,163,75,.12) 0%,rgba(96,49,69,.22) 48%,transparent 72%)!important;
+  animation:none!important;
+}
+html[data-theme="dark"] .blob{opacity:.32!important}
+html[data-theme="dark"] .blob path{fill:#45362d!important}
+html[data-theme="dark"] .cake-card .icon-wrap,
+html[data-theme="dark"] .info-row .ic,
+html[data-theme="dark"] .about-photo{
+  background:#382b26!important;border:1px solid #654c3f!important;
+}
+html[data-theme="dark"] .cake-card{background:#2b221e!important;border-color:#4d3b31!important}
+html[data-theme="dark"] .g-item{background:#2b221e!important;border-color:#5a463b!important}
+html[data-theme="dark"] .hero-cake-art,html[data-theme="dark"] .custom-cake-art{
+  filter:drop-shadow(0 26px 34px rgba(0,0,0,.38))!important;
+}
+/* Admin dashboard contrast: order history and chart labels must remain readable in dark mode. */
+html[data-theme="dark"] body.admin-mode,html[data-theme="dark"] body.admin-mode #shop{background:#1e1916!important;color:#f3e9de!important}
+html[data-theme="dark"] body.admin-mode .admin-welcome,
+html[data-theme="dark"] body.admin-mode .admin-chart-card,html[data-theme="dark"] body.admin-mode .admin-subpanel,
+html[data-theme="dark"] body.admin-mode .admin-product-card,html[data-theme="dark"] body.admin-mode .upcoming-deliveries{
+  background:#2b221e!important;color:#f3e9de!important;border-color:#5a463b!important;
+}
+html[data-theme="dark"] body.admin-mode .admin-welcome h2,html[data-theme="dark"] body.admin-mode .admin-tools h3,
+html[data-theme="dark"] body.admin-mode .admin-tools h4,html[data-theme="dark"] body.admin-mode .admin-kpi strong,
+html[data-theme="dark"] body.admin-mode .admin-product-card summary strong,
+html[data-theme="dark"] body.admin-mode .customer-admin-row strong{color:#f4ece4!important}
+html[data-theme="dark"] body.admin-mode .admin-welcome p,html[data-theme="dark"] body.admin-mode .admin-section-heading>div>p,
+html[data-theme="dark"] body.admin-mode .admin-kpi span,html[data-theme="dark"] body.admin-mode .admin-kpi small,
+html[data-theme="dark"] body.admin-mode .admin-product-card summary small,html[data-theme="dark"] body.admin-mode .admin-product-details,
+html[data-theme="dark"] body.admin-mode .admin-subpanel>p,html[data-theme="dark"] body.admin-mode .chart-empty,
+html[data-theme="dark"] body.admin-mode .upcoming-deliveries p{color:#d5c5b7!important}
+html[data-theme="dark"] body.admin-mode .admin-kpi,html[data-theme="dark"] body.admin-mode .admin-chart-card,
+html[data-theme="dark"] body.admin-mode .admin-tools,html[data-theme="dark"] body.admin-mode .admin-product-card,
+html[data-theme="dark"] body.admin-mode .admin-subpanel,html[data-theme="dark"] body.admin-mode .admin-kpi,
+html[data-theme="dark"] body.admin-mode .admin-list-row{border-color:#5a463b!important}
+html[data-theme="dark"] body.admin-mode .admin-kpi{background:#382b26!important}
+html[data-theme="dark"] body.admin-mode .admin-kpi strong{color:#e4bd98!important}
+html[data-theme="dark"] body.admin-mode .status-donut::after{background:#2b221e!important}
+html[data-theme="dark"] body.admin-mode .status-donut>span,html[data-theme="dark"] body.admin-mode .status-chart-layout li strong,
+html[data-theme="dark"] body.admin-mode .popular-cake-row strong{color:#f3e9de!important}
+html[data-theme="dark"] body.admin-mode .status-chart-layout li,html[data-theme="dark"] body.admin-mode .popular-cake-row>span,
+html[data-theme="dark"] body.admin-mode .popular-cake-row small,html[data-theme="dark"] body.admin-mode .bar-column small,
+html[data-theme="dark"] body.admin-mode .bar-value{color:#d5c5b7!important}
+html[data-theme="dark"] body.admin-mode .popular-cake-row>div{background:#4a3b32!important}
+html[data-theme="dark"] body.admin-mode .admin-product-details{color:#dfd0c3!important}
+html[data-theme="dark"] body.admin-mode .admin-photo-field{background:#382b26!important;border-color:#80634f!important}
+html[data-theme="dark"] body.admin-mode .admin-photo-field small,html[data-theme="dark"] body.admin-mode .product-photo-preview{color:#dfd0c3!important}
+html[data-theme="dark"] body.admin-mode .order-card{background:#322720!important;color:#f4ece4!important;border-color:#654c3f!important}
+html[data-theme="dark"] body.admin-mode .order-card h4,html[data-theme="dark"] body.admin-mode .order-number,
+html[data-theme="dark"] body.admin-mode .order-items-text,html[data-theme="dark"] body.admin-mode .order-delivery,
+html[data-theme="dark"] body.admin-mode .order-timeline li,html[data-theme="dark"] body.admin-mode .order-timeline time{
+  color:#f0e4d9!important;
+}
+html[data-theme="dark"] body.admin-mode .order-timeline li{background:#40332b!important;border:1px solid #5a463b!important}
+html[data-theme="dark"] body.admin-mode .order-badge{background:#4a392f!important;color:#ead8c1!important}
+html[data-theme="dark"] body.admin-mode .upcoming-deliveries{background:#382b26!important}
+html[data-theme="dark"] body.admin-mode .admin-list-row{background:#382b26!important;color:#f3e9de!important}
+html[data-theme="dark"] body.admin-mode .admin-filter label,html[data-theme="dark"] body.admin-mode .report-range label,
+html[data-theme="dark"] body.admin-mode .customer-search{color:#dfd0c3!important}
+html[data-theme="dark"] body.admin-mode .admin-form label{color:#e7dacf!important}
+html[data-theme="dark"] body.admin-mode .admin-order-card{background:#2a211e!important;border-color:#5a463b!important;color:#f3e9de!important}
+html[data-theme="dark"] body.admin-mode .admin-order-card .order-card-top,html[data-theme="dark"] body.admin-mode .admin-order-card .order-admin-controls{border-color:#5a463b!important}
+html[data-theme="dark"] body.admin-mode .admin-order-title h4,html[data-theme="dark"] body.admin-mode .admin-order-items li b{color:#f4ece4!important}
+html[data-theme="dark"] body.admin-mode .admin-order-title p,html[data-theme="dark"] body.admin-mode .admin-order-block>span,html[data-theme="dark"] body.admin-mode .admin-order-block>strong,html[data-theme="dark"] body.admin-mode .admin-order-items li span,html[data-theme="dark"] body.admin-mode .admin-order-items li strong{color:#dfd0c3!important}
+html[data-theme="dark"] body.admin-mode .admin-order-block,html[data-theme="dark"] body.admin-mode .admin-order-activity .order-timeline li,html[data-theme="dark"] body.admin-mode .admin-order-card .order-admin-controls select,html[data-theme="dark"] body.admin-mode .admin-order-card .order-admin-controls input{background:#382b26!important;border-color:#5a463b!important;color:#f3e9de!important}
+html[data-theme="dark"] body.admin-mode .admin-order-items li,html[data-theme="dark"] body.admin-mode .admin-order-block>p{border-color:#5a463b!important}
+html[data-theme="dark"] body.admin-mode .admin-order-block h5,html[data-theme="dark"] body.admin-mode .admin-order-activity h5,html[data-theme="dark"] body.admin-mode .admin-order-block>p b{color:#e4bd98!important}
+html[data-theme="dark"] body.admin-mode .admin-choice-field{background:#382b26!important;border-color:#5a463b!important}
+html[data-theme="dark"] body.admin-mode .admin-choice-field legend,html[data-theme="dark"] body.admin-mode .admin-choice-field .tag-checks label,html[data-theme="dark"] body.admin-mode .admin-check-row label{color:#e7dacf!important}
+html[data-theme="dark"] body.admin-mode .admin-choice-field .tag-checks label,html[data-theme="dark"] body.admin-mode .admin-check-row label{background:#382b26!important;border-color:#5a463b!important}
+html[data-theme="dark"] body.admin-mode .admin-choice-field .tag-checks label:hover,html[data-theme="dark"] body.admin-mode .admin-check-row label:hover{background:#45362d!important;border-color:#8a6651!important}
+html[data-theme="dark"] body.admin-mode .admin-policy-form>label{color:#e7dacf!important}
+@media(prefers-reduced-motion:reduce){
+  html,html *,html *::before,html *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+
+/* User-selectable pastel accents. The selected accent is stored in Cake UI Preferences. */
+html[data-accent="sage"]{--palette-sage:#89947b;--palette-sage-deep:#68745f;--palette-blush:#e7c2c0;--palette-blush-deep:#bd8585}
+html[data-accent="blush"]{--palette-sage:#d6a09b;--palette-sage-deep:#a87570;--palette-blush:#f1deda;--palette-blush-deep:#b77d77}
+html[data-accent="butter"]{--palette-sage:#d0bd8f;--palette-sage-deep:#8f7948;--palette-blush:#eee5cf;--palette-blush-deep:#a58c58}
+html[data-accent="sky"]{--palette-sage:#a9c8d0;--palette-sage-deep:#648a94;--palette-blush:#dce9eb;--palette-blush-deep:#6f929a}
+html[data-accent="lilac"]{--palette-sage:#c1aecf;--palette-sage-deep:#867095;--palette-blush:#e8e0ed;--palette-blush-deep:#907ba0}
+
+.accent-picker{margin:2px 0 0;padding:12px;border:1px solid var(--account-border);border-radius:13px;background:var(--account-wash)}
+.accent-picker legend{padding:0 6px;color:var(--account-ink);font-size:.78rem;font-weight:650}
+.accent-options{display:flex;flex-wrap:wrap;gap:9px}
+.accent-options label{position:relative;display:flex;align-items:center;gap:7px;min-height:36px;padding:4px 10px;border:1px solid var(--account-border);border-radius:999px;background:var(--account-surface);color:var(--account-ink);font-size:.76rem;cursor:pointer;transition:border-color .18s ease,background .18s ease,transform .18s ease}
+.accent-options label:hover{transform:translateY(-1px)}
+.accent-options input{position:absolute;width:1px;height:1px;opacity:0}
+.accent-options input:focus-visible+.accent-swatch{outline:2px solid var(--palette-ink);outline-offset:3px}
+.accent-options label:has(input:checked){border-color:var(--palette-sage-deep);background:var(--palette-blush);color:var(--palette-ink)}
+.accent-swatch{width:19px;height:19px;border:1px solid #554b4030;border-radius:50%}
+.swatch-sage{background:#89947b}.swatch-blush{background:#d6a09b}.swatch-butter{background:#d0bd8f}.swatch-sky{background:#a9c8d0}.swatch-lilac{background:#c1aecf}
+html[data-theme="dark"] .accent-picker{background:#382b26;border-color:#5a463b}
+html[data-theme="dark"] .accent-picker legend,html[data-theme="dark"] .accent-options label{color:#f3e9de}
+html[data-theme="dark"] .accent-options label{background:#2b221e;border-color:#5a463b}
+html[data-theme="dark"] .accent-options label:has(input:checked){background:#49382e;border-color:#c9aa83}
+
+/* Improve body-copy contrast without changing the site's typefaces or headings. */
+html:not([data-theme="dark"]):not([data-high-contrast="true"]) body :is(p, li, label, figcaption, .muted, .description, .subtitle, .helper-text, .form-hint, .account-muted, .checkout-intro, .product-description, [class*="description"], [class*="subtitle"], [class*="hint"]){
+  color:#5b4941;
+}
+html:not([data-theme="dark"]):not([data-high-contrast="true"]) body small,
+html:not([data-theme="dark"]):not([data-high-contrast="true"]) body .text-muted{
+  color:#66534a;
+}
+
+/* Shared dark surfaces for page-specific cards and panels, including the editorial pages. */
+html[data-theme="dark"] body :is(article, [class*="card"]:not([class*="giftcard-design"]), [class*="panel"], [class*="surface"], [class*="builder"], [class*="form-box"], [class*="callout"], [class*="faq-item"]){
+  background-color:#2b221e!important;
+  color:#f3e9de!important;
+  border-color:#554238!important;
+}
+html[data-theme="dark"] body :is(main, section, article, aside, .hero, [class*="shell"], [class*="stage"], [class*="content"]){
+  color:#f3e9de;
+}
+html[data-theme="dark"] body :is(p, li, label, figcaption, small, .muted, .description, .subtitle, .helper-text, .form-hint, .account-muted, .checkout-intro, .product-description, [class*="description"], [class*="subtitle"], [class*="hint"]){
+  color:#dfd0c3!important;
+}
+html[data-theme="dark"] body :is(input, textarea, select){
+  background:#241c18!important;color:#f5ece2!important;border-color:#755b49!important;
+}
+html[data-theme="dark"] body :is(input, textarea)::placeholder{color:#cbbcae!important;opacity:1!important}
+html[data-theme="dark"] body :is(header, nav){background-color:#2a211e!important;color:#f3e9de!important;border-color:#4d3b31!important}
+html[data-theme="dark"] body footer{background-color:#151316!important;color:#f3e9de!important}
+html[data-theme="dark"] body .gift-hero{background-image:linear-gradient(120deg,#2a211eeF,#382b26eF)!important;background-color:#2a211e!important}
