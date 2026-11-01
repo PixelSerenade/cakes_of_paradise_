@@ -4,12 +4,12 @@
   if (!image || !dots) return;
 
   const fallbackSlides = [
-    { src: '/public/images/editorial/hero-blush.webp?v=20261101-ai-hero', alt: 'AI illustrated blush celebration cake' },
-    { src: '/public/images/editorial/hero-blue.webp?v=20261101-ai-hero', alt: 'AI illustrated powder blue cake with ivory flowers' },
-    { src: '/public/images/editorial/hero-sage.webp?v=20261101-ai-hero', alt: 'AI illustrated sage green cake with cream bows' },
-    { src: '/public/images/editorial/birthday-cake.png?v=20261101-ai-hero', alt: 'AI illustrated birthday cake with colorful decorations' },
-    { src: '/public/images/editorial/anniversary-cake.png?v=20261101-ai-hero', alt: 'AI illustrated anniversary cake with vintage piping' },
-    { src: '/public/images/editorial/wedding-cake.png?v=20261101-ai-hero', alt: 'AI illustrated tiered wedding cake with delicate flowers' },
+    { src: '/public/images/hero-generated/blush-celebration.webp?v=20261102-ai-hero', alt: 'AI illustrated blush celebration cake' },
+    { src: '/public/images/hero-generated/blue-celebration.webp?v=20261102-ai-hero', alt: 'AI illustrated powder blue cake with ivory flowers' },
+    { src: '/public/images/hero-generated/sage-celebration.webp?v=20261102-ai-hero', alt: 'AI illustrated sage green cake with cream bows' },
+    { src: '/public/images/hero-generated/birthday-cake.jpg?v=20261102-ai-hero', alt: 'AI illustrated birthday cake with colorful decorations' },
+    { src: '/public/images/hero-generated/anniversary-cake.jpg?v=20261102-ai-hero', alt: 'AI illustrated anniversary cake with vintage piping' },
+    { src: '/public/images/hero-generated/wedding-cake.jpg?v=20261102-ai-hero', alt: 'AI illustrated tiered wedding cake with delicate flowers' },
   ];
   let slides = fallbackSlides;
   let active = 0;

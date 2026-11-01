@@ -14,7 +14,7 @@ body.admin-mode .admin-nav-icon{width:26px;height:26px;border-radius:8px;backgro
 body.admin-mode #adminPageNav a.active .admin-nav-icon{background:#e5c1ba;color:#845d58}
 body.admin-mode .admin-main{grid-column:2;min-width:0;padding:0 clamp(16px,1.6vw,28px) 34px;background:#f5f1e8!important}
 body.admin-mode .admin-mobile-heading{display:none}
-body.admin-mode .admin-welcome-banner{position:relative;display:flex;align-items:center;min-height:180px;margin:0 -28px 15px;padding:28px clamp(26px,3vw,50px);overflow:hidden;isolation:isolate;background:#f4e7df url('/public/images/editorial/hero-memory.png?v=20261101-ai-hero') center 43%/cover no-repeat}
+body.admin-mode .admin-welcome-banner{position:relative;display:flex;align-items:center;min-height:180px;margin:0 -28px 15px;padding:28px clamp(26px,3vw,50px);overflow:hidden;isolation:isolate;background:#f4e7df url('/public/images/hero-generated/ivory-bloom.jpg?v=20261102-ai-hero') center 43%/cover no-repeat}
 body.admin-mode .admin-welcome-banner::before{position:absolute;inset:0;z-index:-1;content:"";background:linear-gradient(90deg,#f5eae2 0%,#f5eae2f0 38%,#f5eae280 62%,#f5eae20a 100%)}
 body.admin-mode .admin-welcome-banner .eyebrow{margin:0;color:#927a67;font:600 .58rem "DM Sans",sans-serif;letter-spacing:.17em}
 body.admin-mode .admin-welcome-banner h1{margin:5px 0 3px;color:#302a25;font:500 clamp(2rem,3.2vw,3rem)/1.05 "Cormorant Garamond",Georgia,serif}

@@ -137,20 +137,20 @@
       return;
     }
     const categoryMeta = {
-      'Birthday Cakes': { desc: 'Celebrate milestones with handcrafted birthday cakes made to bring joy to every wish.', img: '/public/images/editorial/birthday-cake.png?v=20261101-ai-hero' },
+      'Birthday Cakes': { desc: 'Celebrate milestones with handcrafted birthday cakes made to bring joy to every wish.', img: '/public/images/hero-generated/birthday-cake.jpg?v=20261102-ai-hero' },
       'Wedding Cakes': {
         desc: 'Elegant, multi-tiered artisanal centerpieces baked fresh for your special day.',
-        img: '/public/images/editorial/wedding-cake.png?v=20261101-ai-hero'
+        img: '/public/images/hero-generated/wedding-cake.jpg?v=20261102-ai-hero'
       },
       'Anniversary Cakes': {
         desc: 'Sweet romance baked into every layer with premium chocolates, fresh berries, and florals.',
-        img: '/public/images/editorial/anniversary-cake.png?v=20261101-ai-hero'
+        img: '/public/images/hero-generated/anniversary-cake.jpg?v=20261102-ai-hero'
       },
-      'Cupcakes & Jars': { desc: 'Bite-sized perfection and dessert jars filled with velvety sponge and luscious fillings.', img: '/public/images/editorial/cupcakes.png?v=20261101-ai-hero' },
-      'Theme Cakes': { desc: 'Artistic custom creations sculpted to match your celebration theme and passions.', img: '/public/images/editorial/theme-cake.png?v=20261101-ai-hero' },
-      'Photo Cakes': { desc: 'Personalised edible photo memories printed with food-safe colors on delicious fresh cake.', img: '/public/images/editorial/theme-cake.png?v=20261101-ai-hero' }
+      'Cupcakes & Jars': { desc: 'Bite-sized perfection and dessert jars filled with velvety sponge and luscious fillings.', img: '/public/images/hero-generated/cupcakes.jpg?v=20261102-ai-hero' },
+      'Theme Cakes': { desc: 'Artistic custom creations sculpted to match your celebration theme and passions.', img: '/public/images/hero-generated/theme-cake.jpg?v=20261102-ai-hero' },
+      'Photo Cakes': { desc: 'Personalised edible photo memories printed with food-safe colors on delicious fresh cake.', img: '/public/images/hero-generated/theme-cake.jpg?v=20261102-ai-hero' }
     };
-    const meta = categoryMeta[category] || { desc: 'Handcrafted cakes made fresh to order in Surathkal.', img: '/public/images/editorial/hero-memory.png?v=20261101-ai-hero' };
+    const meta = categoryMeta[category] || { desc: 'Handcrafted cakes made fresh to order in Surathkal.', img: '/public/images/hero-generated/ivory-bloom.jpg?v=20261102-ai-hero' };
     const titleEl = document.getElementById('categoryBannerTitle');
     const descEl = document.getElementById('categoryBannerDesc');
     const imgEl = document.getElementById('categoryBannerImg');
@@ -313,12 +313,12 @@
   function startHeroCakeSlideshow() {
     const image = document.querySelector('#home .hero-cake-photo');
     if (!image || image.dataset.slideshowStarted) return;
-    const initialSrc = image.getAttribute('src') || '/public/images/editorial/home-hero-original.jpg?v=20261101-all-ai-slides';
+    const initialSrc = image.getAttribute('src') || '/public/images/hero-generated/home-scrapbook.jpg?v=20261102-ai-hero';
     const slides = [
       { src: initialSrc, alt: image.alt || 'Original AI-generated Cakes of Paradise scrapbook artwork featuring celebration cakes' },
-      { src: '/public/images/editorial/hero-blush.webp?v=20261101-all-ai-slides', alt: 'AI illustrated blush vintage celebration cake with cherries and buttercream piping' },
-      { src: '/public/images/editorial/hero-blue.webp?v=20261101-all-ai-slides', alt: 'AI illustrated powder blue vintage cake with ivory flowers and ribbon bows' },
-      { src: '/public/images/editorial/hero-sage.webp?v=20261101-all-ai-slides', alt: 'AI illustrated sage green vintage cake with cream bows and delicate blossoms' },
+      { src: '/public/images/hero-generated/blush-celebration.webp?v=20261102-ai-hero', alt: 'AI illustrated blush vintage celebration cake with cherries and buttercream piping' },
+      { src: '/public/images/hero-generated/blue-celebration.webp?v=20261102-ai-hero', alt: 'AI illustrated powder blue vintage cake with ivory flowers and ribbon bows' },
+      { src: '/public/images/hero-generated/sage-celebration.webp?v=20261102-ai-hero', alt: 'AI illustrated sage green vintage cake with cream bows and delicate blossoms' },
     ];
     image.dataset.slideshowStarted = 'true';
     let index = 0;
